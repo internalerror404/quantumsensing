@@ -107,7 +107,7 @@ Need new code:
 | uniform vs QFI weights | trivial, but `q` is threaded through everywhere |
 | homogeneous vs heterogeneous packet width | width sampler is hardcoded log-uniform |
 | independent vs correlated pure probes | **no off-diagonal `W` support anywhere** — `light_ray.py` and both experiment scripts assume `W=diag(q)`. This is the largest of the five |
-| delay-only vs delay + static redshift | **unblocked** — §6 forward blocks exist; the ablation run itself remains |
+| delay-only vs delay + static redshift | **DONE** — Experiment D+R-1 (`run_joint_ablation.sh`, `results/joint_delay_redshift.json`); see the D+R-1 section below |
 
 ## §6 static redshift / conformal rank restoration — DONE
 
@@ -140,6 +140,45 @@ narrow 0.30-radius bumps) → 2.0e-11 (2048) → 4.4e-15 (4096) → 5.8e-17 (819
 **combined** delay+redshift channel is gauge invariant for the allowed class, not only the
 redshift block. The delay+redshift ablation should integrate these modes at order ≥ 2048 or
 widen the bumps.
+
+## Experiment D+R-1: joint delay–redshift rank restoration — DONE
+
+The delay-vs-delay+redshift ablation, run as the mixed-channel experiment rather than a
+concatenation smoke test. Joint stationary family `h = Σθᵢeᵢ + Σαⱼφⱼη` with d_p ∈ {6,8,12,16}
+stationary physical modes (all h₀ᵢ=0, inside the static ansatz; the scalar modes have
+nonzero R_p, so the rank law is tested in its nontrivial form), the four §6 conformal
+modes, 144 candidate rays, 10 candidate links. Order 1024; 7.9 s. **All ten locked gates
+pass**, including stop-on-patch. Observed ranks, every d_p:
+
+| arm | expected | observed |
+|---|---|---|
+| A: K=d_p+4 delay rays | d_p | d_p ✓ |
+| B: + 3 greedy links | d_p+3 | d_p+3 ✓ |
+| C: + 4 greedy links | d_p+4 | d_p+4 ✓ |
+| D: + 4 MORE delay rays (negative control) | d_p, nullity 4 | d_p, nullity 4 ✓ |
+| E: + all 10 links | d_p+4 | d_p+4 ✓ |
+| F: E + constant conformal mode | d_p+4; kernel on that mode | ✓, kernel weight > 0.999 |
+
+The rank law `rank(J_joint) = d_p + rank(R_c)` held in every registered case. Arm D is the
+load-bearing negative control: four *optimally chosen* additional delay rays leave the
+conformal nullity at exactly 4, while four clock links lift it to 0 — more data through the
+null channel does nothing; a new observable does everything. Whitened λ_min moves from
+~1e-35 (arms A, D) to 3e-2 (arm C). Gate 9 confirms appending clock rows never shrinks the
+physical block's spectrum (max degradation ≤ 0); gate 7's kernel vector localizes on the
+constant conformal mode to >0.999.
+
+The supplementary §6 gauge check is now a **machine-readable gate**
+(`combined_static_gauge_invariance`: delay residuals 1.4e-8 / 2.0e-11 / 4.4e-15 at orders
+1024/2048/4096, selected order 2048 against 1e-10; redshift response exactly 0), so it no
+longer lives only in narrative history.
+
+Statistical layer, declared not hidden: unit channel noise, standard normal prior, parameter
+metric from the full candidate bank. Under that declaration the clock rows are weak (entries
+~0.05, the bump amplitude at the clocks), so conformal posterior std moves only 1.0000 →
+0.9995; a declared clock-precision scan shows the conversion (s_clock = 1.0 / 0.1 / 0.02 →
+0.9995 / 0.962 / 0.806 at d_p=6). Rank restoration is exact at any noise level; how much
+*uncertainty* the clocks remove is a precision statement, and the report keeps the two
+claims separate. Coverage is calibrated (~0.95) in every arm.
 
 ## §7 PTA / LISA application gate — ABSENT
 
@@ -210,8 +249,8 @@ study on registered seeds, the post-hoc Pareto analysis, a CI portability gate
 JSON reports), and **§6 static redshift** (externally authored patch, independently
 verified and integrated). What remains:
 
-1. **Delay-only vs delay+redshift ablation** — the first registered run that joins the two
-   forward blocks; the §6 caveat above sets its quadrature requirements.
+1. ~~Delay-only vs delay+redshift ablation~~ — **done** (Experiment D+R-1, all ten gates,
+   every d_p). The paper's central experimental figure now exists.
 2. **Registered deterministic full-metric campaign** — RMSE, worst-direction error,
    credible-interval coverage, condition number, blocked/unblocked retention, build and
    selection time, at order 1024, over `seed_set`. The paper's main quantitative table.

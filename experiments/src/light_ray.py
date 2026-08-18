@@ -571,3 +571,85 @@ def static_gauge_redshift_matrix(links: Iterable[StaticClockLink],
             h_b = mode.tensor(point_b)[0]
             out[ell, j] = 0.5 * float(h_b[0, 0] - h_a[0, 0])
     return out
+
+
+@dataclass(frozen=True)
+class StaticTensorMode:
+    """A stationary tensor perturbation h = phi(x) * polarization.
+
+    Generic counterpart of :class:`StaticConformalMode`: any constant symmetric
+    polarization with a stationary scalar profile. Modes with h_0i = 0 stay
+    inside the static-metric ansatz under which the endpoint redshift formula
+    R_AB h = 1/2 [h_00(B) - h_00(A)] is derived; the redshift matrix should not
+    be applied to polarizations with nonzero h_0i.
+    """
+
+    center: Array
+    radii: Array
+    polarization: Array
+    label: str
+
+    def __post_init__(self) -> None:
+        center = np.asarray(self.center, dtype=float)
+        radii = np.asarray(self.radii, dtype=float)
+        polarization = np.asarray(self.polarization, dtype=float)
+        if center.shape != (3,) or radii.shape != (3,):
+            raise ValueError("center and radii must have shape (3,)")
+        if polarization.shape != (4, 4):
+            raise ValueError("polarization must have shape (4,4)")
+        if not np.allclose(polarization, polarization.T):
+            raise ValueError("polarization must be symmetric")
+        if np.any(radii <= 0.0):
+            raise ValueError("radii must be strictly positive")
+        object.__setattr__(self, "center", center)
+        object.__setattr__(self, "radii", radii)
+        object.__setattr__(self, "polarization", polarization)
+
+    def phi(self, spatial_points: Array) -> Array:
+        values, _ = static_product_bump(spatial_points, self.center, self.radii)
+        return values
+
+    def tensor(self, spatial_points: Array) -> Array:
+        values = self.phi(spatial_points)
+        return values[:, None, None] * self.polarization[None, :, :]
+
+    def contraction(self, spacetime_points: Array, k: Array) -> Array:
+        spacetime_points = np.asarray(spacetime_points, dtype=float)
+        if spacetime_points.ndim != 2 or spacetime_points.shape[1] != 4:
+            raise ValueError("spacetime_points must have shape (N,4)")
+        h = self.tensor(spacetime_points[:, 1:])
+        return np.einsum("nij,i,j->n", h, k, k)
+
+
+def static_tensor_delay_matrix(rays: Iterable[Ray], modes: Iterable,
+                               order: int = DEFAULT_ORDER) -> Array:
+    """Delay matrix for any stationary modes exposing .contraction(points, k)."""
+    ray_list = list(rays)
+    mode_list = list(modes)
+    out = np.empty((len(ray_list), len(mode_list)), dtype=float)
+    for a, ray in enumerate(ray_list):
+        lam, weights = gauss_legendre_interval(ray.lam_min, ray.lam_max, order=order)
+        points = ray.points(lam)
+        for j, mode in enumerate(mode_list):
+            out[a, j] = 0.5 * float(weights @ mode.contraction(points, ray.k))
+    return out
+
+
+def static_tensor_redshift_matrix(links: Iterable[StaticClockLink],
+                                  modes: Iterable) -> Array:
+    """Endpoint matrix R_AB h = 1/2 [h_00(B) - h_00(A)] for stationary modes.
+
+    Valid within the static ansatz (stationary h, h_0i = 0 for the modes it is
+    applied to). Works for any mode exposing .tensor(spatial_points).
+    """
+    link_list = list(links)
+    mode_list = list(modes)
+    out = np.empty((len(link_list), len(mode_list)), dtype=float)
+    for ell, link in enumerate(link_list):
+        point_a = link.emitter.position[None, :]
+        point_b = link.receiver.position[None, :]
+        for j, mode in enumerate(mode_list):
+            h_a = mode.tensor(point_a)[0]
+            h_b = mode.tensor(point_b)[0]
+            out[ell, j] = 0.5 * float(h_b[0, 0] - h_a[0, 0])
+    return out

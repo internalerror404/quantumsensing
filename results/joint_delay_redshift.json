@@ -1,0 +1,677 @@
+{
+  "experiment": "joint_delay_redshift_rank_restoration",
+  "principle": "additional samples of a channel cannot reveal a direction annihilated by that channel; an additional observable can",
+  "conventions": {
+    "metric": "diag(-1,1,1,1)",
+    "delay": "A_gamma h = 0.5 integral h(k,k) d lambda",
+    "redshift": "R_AB h = 0.5 [h_00(B)-h_00(A)] (static ansatz, all modes have h_0i=0)",
+    "channel_weights": "unit noise on every channel; standard normal prior (declared)",
+    "parameter_metric": "R = diag(||column||^2) of the FULL candidate bank per d_p",
+    "quadrature_order": 1024,
+    "gauge_stress_orders": [
+      1024,
+      2048,
+      4096
+    ],
+    "svd_relative_tolerance": 1e-10,
+    "zero_matrix_absolute_tolerance": 1e-14,
+    "seed": 2026
+  },
+  "dimensions": {
+    "physical_dimensions": [
+      6,
+      8,
+      12,
+      16
+    ],
+    "conformal_modes": 4,
+    "candidate_rays": 144,
+    "candidate_links": 10,
+    "jacobian_build_seconds": 1.0844924719999653
+  },
+  "per_dp": {
+    "6": {
+      "selected_rays": [
+        1,
+        24,
+        25,
+        35,
+        61,
+        64,
+        68,
+        117,
+        134,
+        143
+      ],
+      "extra_rays": [
+        109,
+        99,
+        27,
+        41
+      ],
+      "links_4": [
+        "O0->O2",
+        "O1->O2",
+        "O1->O3",
+        "O3->O4"
+      ],
+      "links_3": [
+        "O1->O2",
+        "O1->O3",
+        "O3->O4"
+      ],
+      "ray_selection_seconds": 0.00031314200003862425,
+      "link_selection_seconds": 0.00019413400002576964,
+      "physical_pool_rank": 6,
+      "selected_physical_singular_values": [
+        0.14805227806976434,
+        0.11498754140582625,
+        0.026639462177420404,
+        0.016975077837444147,
+        0.014904703313298127,
+        0.010922127023614803
+      ],
+      "physical_degradation_max": -2.9614270486387484e-05,
+      "arms": {
+        "A_delay_only": {
+          "rows": 10,
+          "columns": 10,
+          "expected_rank": 6,
+          "observed_rank": 6,
+          "rank_threshold": 1.4805227806976435e-11,
+          "nullity": 4,
+          "lambda_min_whitened": 1.1063923302862308e-35,
+          "lambda_max_whitened": 1.146956662463677,
+          "posterior_rmse_physical": 0.9970090673424459,
+          "posterior_rmse_conformal": 1.0,
+          "worst_direction_posterior_std": 1.0,
+          "coverage_95": 0.95125,
+          "conformal_posterior_std_mean": 1.0
+        },
+        "B_plus_3_links": {
+          "rows": 13,
+          "columns": 10,
+          "expected_rank": 9,
+          "observed_rank": 9,
+          "rank_threshold": 1.648707260034777e-11,
+          "nullity": 1,
+          "lambda_min_whitened": 2.5003660601386367e-17,
+          "lambda_max_whitened": 1.182408257965232,
+          "posterior_rmse_physical": 0.9964134057535595,
+          "posterior_rmse_conformal": 0.9995373870431663,
+          "worst_direction_posterior_std": 1.0,
+          "coverage_95": 0.95,
+          "conformal_posterior_std_mean": 0.9995373751996988,
+          "rank_law_prediction": 9
+        },
+        "C_plus_4_links": {
+          "rows": 14,
+          "columns": 10,
+          "expected_rank": 10,
+          "observed_rank": 10,
+          "rank_threshold": 1.6509034433678505e-11,
+          "nullity": 0,
+          "lambda_min_whitened": 0.02995598355327325,
+          "lambda_max_whitened": 1.1940225234418358,
+          "posterior_rmse_physical": 0.9962133679075756,
+          "posterior_rmse_conformal": 0.999460593238162,
+          "worst_direction_posterior_std": 0.9999628741511325,
+          "coverage_95": 0.9475,
+          "conformal_posterior_std_mean": 0.9994605844231605,
+          "conformal_posterior_std_vs_clock_noise": {
+            "1.0": 0.9994605844231605,
+            "0.1": 0.9622816355836447,
+            "0.02": 0.8064276442727827
+          },
+          "rank_law_prediction": 10
+        },
+        "D_plus_4_more_rays": {
+          "rows": 14,
+          "columns": 10,
+          "expected_rank": 6,
+          "observed_rank": 6,
+          "rank_threshold": 1.7431423469299524e-11,
+          "nullity": 4,
+          "lambda_min_whitened": 6.788152891693942e-35,
+          "lambda_max_whitened": 1.8744948966748867,
+          "posterior_rmse_physical": 0.9956781492721251,
+          "posterior_rmse_conformal": 1.0,
+          "worst_direction_posterior_std": 1.0,
+          "coverage_95": 0.95625,
+          "conformal_posterior_std_mean": 1.0
+        },
+        "E_plus_all_links": {
+          "rows": 20,
+          "columns": 10,
+          "expected_rank": 10,
+          "observed_rank": 10,
+          "rank_threshold": 1.8117087322346278e-11,
+          "nullity": 0,
+          "lambda_min_whitened": 0.11582753138142296,
+          "lambda_max_whitened": 1.578134876230415,
+          "posterior_rmse_physical": 0.9954266853575924,
+          "posterior_rmse_conformal": 0.9987705613719263,
+          "worst_direction_posterior_std": 0.9999404781082116,
+          "coverage_95": 0.952,
+          "conformal_posterior_std_mean": 0.9987705613563538,
+          "conformal_posterior_std_vs_clock_noise": {
+            "1.0": 0.9987705613563538,
+            "0.1": 0.9244257214780959,
+            "0.02": 0.6689044781233707
+          },
+          "rank_law_prediction": 10
+        },
+        "F_plus_constant_mode": {
+          "rows": 20,
+          "columns": 11,
+          "expected_rank": 10,
+          "observed_rank": 10,
+          "kernel_weight_on_constant_mode": 1.0
+        }
+      }
+    },
+    "8": {
+      "selected_rays": [
+        1,
+        24,
+        25,
+        27,
+        35,
+        64,
+        68,
+        92,
+        109,
+        117,
+        134,
+        143
+      ],
+      "extra_rays": [
+        43,
+        125,
+        99,
+        41
+      ],
+      "links_4": [
+        "O0->O2",
+        "O1->O2",
+        "O1->O3",
+        "O3->O4"
+      ],
+      "links_3": [
+        "O1->O2",
+        "O1->O3",
+        "O3->O4"
+      ],
+      "ray_selection_seconds": 0.0003239910000161217,
+      "link_selection_seconds": 0.00019874600002367515,
+      "physical_pool_rank": 8,
+      "selected_physical_singular_values": [
+        0.1544032122077687,
+        0.1388522150768936,
+        0.02705109185088012,
+        0.021678366652163602,
+        0.017075934381706764,
+        0.013006890291545392,
+        0.010806375247819251,
+        0.009393693405900638
+      ],
+      "physical_degradation_max": -4.4200914899792526e-05,
+      "arms": {
+        "A_delay_only": {
+          "rows": 12,
+          "columns": 12,
+          "expected_rank": 8,
+          "observed_rank": 8,
+          "rank_threshold": 1.5440321220776872e-11,
+          "nullity": 4,
+          "lambda_min_whitened": 0.0,
+          "lambda_max_whitened": 1.1896415300163958,
+          "posterior_rmse_physical": 0.9972420039178309,
+          "posterior_rmse_conformal": 1.0,
+          "worst_direction_posterior_std": 1.0,
+          "coverage_95": 0.9514583333333333,
+          "conformal_posterior_std_mean": 1.0
+        },
+        "B_plus_3_links": {
+          "rows": 15,
+          "columns": 12,
+          "expected_rank": 11,
+          "observed_rank": 11,
+          "rank_threshold": 1.6227437791396697e-11,
+          "nullity": 1,
+          "lambda_min_whitened": -4.228833001924225e-17,
+          "lambda_max_whitened": 1.204454201840194,
+          "posterior_rmse_physical": 0.9967968733765838,
+          "posterior_rmse_conformal": 0.9995373859884491,
+          "worst_direction_posterior_std": 0.9999999999999999,
+          "coverage_95": 0.9489583333333333,
+          "conformal_posterior_std_mean": 0.9995373741451963,
+          "rank_law_prediction": 11
+        },
+        "C_plus_4_links": {
+          "rows": 16,
+          "columns": 12,
+          "expected_rank": 12,
+          "observed_rank": 12,
+          "rank_threshold": 1.6860723419804208e-11,
+          "nullity": 0,
+          "lambda_min_whitened": 0.029873319838027927,
+          "lambda_max_whitened": 1.251602916662581,
+          "posterior_rmse_physical": 0.9966496211430305,
+          "posterior_rmse_conformal": 0.9994605872789276,
+          "worst_direction_posterior_std": 0.9999630034339173,
+          "coverage_95": 0.9489583333333333,
+          "conformal_posterior_std_mean": 0.999460578463475,
+          "conformal_posterior_std_vs_clock_noise": {
+            "1.0": 0.999460578463475,
+            "0.1": 0.962261559384313,
+            "0.02": 0.806283292767424
+          },
+          "rank_law_prediction": 12
+        },
+        "D_plus_4_more_rays": {
+          "rows": 16,
+          "columns": 12,
+          "expected_rank": 8,
+          "observed_rank": 8,
+          "rank_threshold": 1.7956673271464777e-11,
+          "nullity": 4,
+          "lambda_min_whitened": 0.0,
+          "lambda_max_whitened": 1.8735639126684274,
+          "posterior_rmse_physical": 0.996361026532658,
+          "posterior_rmse_conformal": 1.0,
+          "worst_direction_posterior_std": 1.0,
+          "coverage_95": 0.9514583333333333,
+          "conformal_posterior_std_mean": 1.0
+        },
+        "E_plus_all_links": {
+          "rows": 22,
+          "columns": 12,
+          "expected_rank": 12,
+          "observed_rank": 12,
+          "rank_threshold": 1.844988828907771e-11,
+          "nullity": 0,
+          "lambda_min_whitened": 0.087306073035614,
+          "lambda_max_whitened": 1.6408007740299875,
+          "posterior_rmse_physical": 0.996064362057433,
+          "posterior_rmse_conformal": 0.9987705360472913,
+          "worst_direction_posterior_std": 0.9999559163999825,
+          "coverage_95": 0.9545833333333333,
+          "conformal_posterior_std_mean": 0.9987705360318249,
+          "conformal_posterior_std_vs_clock_noise": {
+            "1.0": 0.9987705360318249,
+            "0.1": 0.9243732301020375,
+            "0.02": 0.6687437685373692
+          },
+          "rank_law_prediction": 12
+        },
+        "F_plus_constant_mode": {
+          "rows": 22,
+          "columns": 13,
+          "expected_rank": 12,
+          "observed_rank": 12,
+          "kernel_weight_on_constant_mode": 1.0
+        }
+      }
+    },
+    "12": {
+      "selected_rays": [
+        1,
+        2,
+        13,
+        24,
+        27,
+        35,
+        53,
+        61,
+        64,
+        68,
+        92,
+        104,
+        109,
+        111,
+        117,
+        143
+      ],
+      "extra_rays": [
+        99,
+        41,
+        89,
+        36
+      ],
+      "links_4": [
+        "O0->O2",
+        "O1->O2",
+        "O1->O3",
+        "O3->O4"
+      ],
+      "links_3": [
+        "O1->O2",
+        "O1->O3",
+        "O3->O4"
+      ],
+      "ray_selection_seconds": 0.000412378999953944,
+      "link_selection_seconds": 0.00019487899999148794,
+      "physical_pool_rank": 12,
+      "selected_physical_singular_values": [
+        0.16109981101190068,
+        0.1423496925197627,
+        0.12439864458619644,
+        0.02543912329974885,
+        0.023947721965666625,
+        0.020426893852533014,
+        0.01716788564790766,
+        0.014350603320383596,
+        0.009659487561670128,
+        0.009400825328961507,
+        0.008794408038454476,
+        0.00789746925014439
+      ],
+      "physical_degradation_max": -0.0005369529911210813,
+      "arms": {
+        "A_delay_only": {
+          "rows": 16,
+          "columns": 16,
+          "expected_rank": 12,
+          "observed_rank": 12,
+          "rank_threshold": 1.610998110119007e-11,
+          "nullity": 4,
+          "lambda_min_whitened": 3.45246048025552e-35,
+          "lambda_max_whitened": 1.8076158201842123,
+          "posterior_rmse_physical": 0.9973775742069043,
+          "posterior_rmse_conformal": 1.0,
+          "worst_direction_posterior_std": 1.0,
+          "coverage_95": 0.9484375,
+          "conformal_posterior_std_mean": 1.0
+        },
+        "B_plus_3_links": {
+          "rows": 19,
+          "columns": 16,
+          "expected_rank": 15,
+          "observed_rank": 15,
+          "rank_threshold": 1.706512846295803e-11,
+          "nullity": 1,
+          "lambda_min_whitened": -1.253916350526985e-18,
+          "lambda_max_whitened": 1.8293513167194013,
+          "posterior_rmse_physical": 0.9968818896376594,
+          "posterior_rmse_conformal": 0.9995385074722773,
+          "worst_direction_posterior_std": 1.0,
+          "coverage_95": 0.94890625,
+          "conformal_posterior_std_mean": 0.999538495744558,
+          "rank_law_prediction": 15
+        },
+        "C_plus_4_links": {
+          "rows": 20,
+          "columns": 16,
+          "expected_rank": 16,
+          "observed_rank": 16,
+          "rank_threshold": 1.7579331036520845e-11,
+          "nullity": 0,
+          "lambda_min_whitened": 0.028053387258950267,
+          "lambda_max_whitened": 1.8394050237409738,
+          "posterior_rmse_physical": 0.9967839192153857,
+          "posterior_rmse_conformal": 0.9994617079841479,
+          "worst_direction_posterior_std": 0.9999707373372262,
+          "coverage_95": 0.95140625,
+          "conformal_posterior_std_mean": 0.9994616991980028,
+          "conformal_posterior_std_vs_clock_noise": {
+            "1.0": 0.9994616991980028,
+            "0.1": 0.9673042800435411,
+            "0.02": 0.8814202772647294
+          },
+          "rank_law_prediction": 16
+        },
+        "D_plus_4_more_rays": {
+          "rows": 20,
+          "columns": 16,
+          "expected_rank": 12,
+          "observed_rank": 12,
+          "rank_threshold": 1.800229828383352e-11,
+          "nullity": 4,
+          "lambda_min_whitened": 5.268537283271123e-35,
+          "lambda_max_whitened": 2.2465806750987287,
+          "posterior_rmse_physical": 0.9966733760552238,
+          "posterior_rmse_conformal": 1.0,
+          "worst_direction_posterior_std": 1.0,
+          "coverage_95": 0.94875,
+          "conformal_posterior_std_mean": 1.0
+        },
+        "E_plus_all_links": {
+          "rows": 26,
+          "columns": 16,
+          "expected_rank": 16,
+          "observed_rank": 16,
+          "rank_threshold": 1.8775229207840284e-11,
+          "nullity": 0,
+          "lambda_min_whitened": 0.03416449035642677,
+          "lambda_max_whitened": 1.8955009961520985,
+          "posterior_rmse_physical": 0.996197029540976,
+          "posterior_rmse_conformal": 0.9987740661017805,
+          "worst_direction_posterior_std": 0.9999697568517463,
+          "coverage_95": 0.9509375,
+          "conformal_posterior_std_mean": 0.9987740660901596,
+          "conformal_posterior_std_vs_clock_noise": {
+            "1.0": 0.9987740660901596,
+            "0.1": 0.9360706127235666,
+            "0.02": 0.7850530419391084
+          },
+          "rank_law_prediction": 16
+        },
+        "F_plus_constant_mode": {
+          "rows": 26,
+          "columns": 17,
+          "expected_rank": 16,
+          "observed_rank": 16,
+          "kernel_weight_on_constant_mode": 1.0
+        }
+      }
+    },
+    "16": {
+      "selected_rays": [
+        1,
+        2,
+        13,
+        24,
+        25,
+        31,
+        35,
+        53,
+        61,
+        64,
+        65,
+        68,
+        92,
+        104,
+        109,
+        111,
+        117,
+        130,
+        137,
+        143
+      ],
+      "extra_rays": [
+        89,
+        27,
+        36,
+        41
+      ],
+      "links_4": [
+        "O0->O2",
+        "O1->O2",
+        "O1->O3",
+        "O3->O4"
+      ],
+      "links_3": [
+        "O1->O2",
+        "O1->O3",
+        "O3->O4"
+      ],
+      "ray_selection_seconds": 0.0005722239999954581,
+      "link_selection_seconds": 0.00017294799999945099,
+      "physical_pool_rank": 16,
+      "selected_physical_singular_values": [
+        0.1669875421430113,
+        0.14275809952619953,
+        0.1372886258219798,
+        0.11787673527863024,
+        0.026070908957863004,
+        0.02478976635043866,
+        0.022268626040155764,
+        0.01802865698954934,
+        0.016757097382527956,
+        0.013393587256978094,
+        0.011938420854057422,
+        0.009645369541893491,
+        0.009280559370463431,
+        0.009126646379458167,
+        0.008030919267846937,
+        0.007895126729272403
+      ],
+      "physical_degradation_max": -0.00017029766985822078,
+      "arms": {
+        "A_delay_only": {
+          "rows": 20,
+          "columns": 20,
+          "expected_rank": 16,
+          "observed_rank": 16,
+          "rank_threshold": 1.669875421430113e-11,
+          "nullity": 4,
+          "lambda_min_whitened": 2.968614567495629e-36,
+          "lambda_max_whitened": 1.7209933103034754,
+          "posterior_rmse_physical": 0.9974213319819547,
+          "posterior_rmse_conformal": 1.0,
+          "worst_direction_posterior_std": 1.0,
+          "coverage_95": 0.952625,
+          "conformal_posterior_std_mean": 1.0
+        },
+        "B_plus_3_links": {
+          "rows": 23,
+          "columns": 20,
+          "expected_rank": 19,
+          "observed_rank": 19,
+          "rank_threshold": 1.6831903854724245e-11,
+          "nullity": 1,
+          "lambda_min_whitened": 5.068141445865162e-17,
+          "lambda_max_whitened": 1.7319481527677003,
+          "posterior_rmse_physical": 0.9969756858108471,
+          "posterior_rmse_conformal": 0.9995388769547721,
+          "worst_direction_posterior_std": 0.9999999999999999,
+          "coverage_95": 0.95125,
+          "conformal_posterior_std_mean": 0.9995388652264499,
+          "rank_law_prediction": 19
+        },
+        "C_plus_4_links": {
+          "rows": 24,
+          "columns": 20,
+          "expected_rank": 20,
+          "observed_rank": 20,
+          "rank_threshold": 1.70870058701025e-11,
+          "nullity": 0,
+          "lambda_min_whitened": 0.028092880126014724,
+          "lambda_max_whitened": 1.7379226818776399,
+          "posterior_rmse_physical": 0.9969015952887496,
+          "posterior_rmse_conformal": 0.9994620798260253,
+          "worst_direction_posterior_std": 0.9999705923043289,
+          "coverage_95": 0.946625,
+          "conformal_posterior_std_mean": 0.9994620710111239,
+          "conformal_posterior_std_vs_clock_noise": {
+            "1.0": 0.9994620710111239,
+            "0.1": 0.9689041915369934,
+            "0.02": 0.9131081091988782
+          },
+          "rank_law_prediction": 20
+        },
+        "D_plus_4_more_rays": {
+          "rows": 24,
+          "columns": 20,
+          "expected_rank": 16,
+          "observed_rank": 16,
+          "rank_threshold": 1.8430915850460816e-11,
+          "nullity": 4,
+          "lambda_min_whitened": 1.315906710068998e-35,
+          "lambda_max_whitened": 2.2841124105410415,
+          "posterior_rmse_physical": 0.9968642788318216,
+          "posterior_rmse_conformal": 1.0,
+          "worst_direction_posterior_std": 1.0000000000000004,
+          "coverage_95": 0.945375,
+          "conformal_posterior_std_mean": 1.0
+        },
+        "E_plus_all_links": {
+          "rows": 30,
+          "columns": 20,
+          "expected_rank": 20,
+          "observed_rank": 20,
+          "rank_threshold": 1.848296669261217e-11,
+          "nullity": 0,
+          "lambda_min_whitened": 0.03500137893444437,
+          "lambda_max_whitened": 1.7801741151395074,
+          "posterior_rmse_physical": 0.9962388924638497,
+          "posterior_rmse_conformal": 0.9987775974545408,
+          "worst_direction_posterior_std": 0.9999697207750318,
+          "coverage_95": 0.9505,
+          "conformal_posterior_std_mean": 0.9987775974545406,
+          "conformal_posterior_std_vs_clock_noise": {
+            "1.0": 0.9987775974545406,
+            "0.1": 0.9466717853556821,
+            "0.02": 0.8981403954884601
+          },
+          "rank_law_prediction": 20
+        },
+        "F_plus_constant_mode": {
+          "rows": 30,
+          "columns": 21,
+          "expected_rank": 20,
+          "observed_rank": 20,
+          "kernel_weight_on_constant_mode": 1.0
+        }
+      }
+    }
+  },
+  "checks": {
+    "gate_2_conformal_delay_kernel": {
+      "pass": true,
+      "max_abs": 7.632783294297949e-16,
+      "rank": 0,
+      "threshold": 1e-14
+    },
+    "gate_8_combined_static_gauge_invariance": {
+      "orders": [
+        1024,
+        2048,
+        4096
+      ],
+      "delay_max_abs": [
+        1.367341599325814e-08,
+        2.0475736530562935e-11,
+        4.401355300440315e-15
+      ],
+      "redshift_max_abs": 0.0,
+      "selected_order": 2048,
+      "threshold": 1e-10,
+      "pass": true
+    },
+    "gate_1_physical_delay_rank": {
+      "pass": true
+    },
+    "gate_3_rank_law": {
+      "pass": true
+    },
+    "gate_4_four_link_restoration": {
+      "pass": true
+    },
+    "gate_5_three_link_bound": {
+      "pass": true
+    },
+    "gate_6_more_delay_negative_control": {
+      "pass": true
+    },
+    "gate_7_constant_mode_invisible": {
+      "pass": true
+    },
+    "gate_9_no_physical_degradation": {
+      "pass": true
+    }
+  },
+  "all_pass": true,
+  "paper_claim": "Across stationary physical families of dimension 6, 8, 12 and 16, delay-only sensing recovered the physical subspace but retained a four-dimensional conformal kernel. Selected clock comparisons lifted exactly those directions -- three links gave d_p+3, four gave d_p+4 -- whereas four additional delay rays did not. The observed joint rank agreed with d_p + rank(R_c) in every registered case."
+}

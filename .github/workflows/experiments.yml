@@ -34,6 +34,8 @@ jobs:
         run: bash experiments/run_design_demo.sh
       - name: Static redshift rank restoration
         run: bash experiments/run_static_redshift.sh
+      - name: Joint delay-redshift ablation (D+R-1)
+        run: bash experiments/run_joint_ablation.sh
       - name: Selector sanity training
         run: bash experiments/run_selector_sanity.sh
       - name: Selector held-out evaluation
