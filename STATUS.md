@@ -143,9 +143,11 @@ The deterministic **scaling study has now run on the full registered surface wit
 registered seeds** — the first use of `seed_set` anywhere in the package
 (`results/scaling_study.json`, `run_scaling_study.sh`):
 
-- greedy D-optimal worst case: **3.8 ms** at the largest registered instance
-  (M=4096, d=16, K=32); median 0.14–2.8 ms across all 64 cells;
-- **100% full-rank success on every cell and every registered seed**;
+- greedy D-optimal worst case: **5.4 ms** at the largest registered instances;
+  median 0.14–2.8 ms across all 64 cells; peak traced memory **586 KiB**;
+- **100% full-rank success on every cell and every registered seed**, including
+  under a pinned worst-case 20% angular-sector block — median λ_min retains 97%
+  of its unblocked value (worst cell 42%, still full rank);
 - relaxed-E reference at K/d=1.5: 0.3 s (M=256) to 42.5 s (M=4096, d=16).
 
 The post-hoc practical-utility analysis (`selector_evaluation.json`) shows the v0.2 policy is

@@ -21,6 +21,7 @@ from __future__ import annotations
 import argparse
 import json
 import time
+import tracemalloc
 from pathlib import Path
 
 import numpy as np
@@ -54,16 +55,34 @@ def main() -> None:
             for ratio in BUDGET_RATIOS:
                 k = int(round(d * ratio))
                 lat, lam, full = [], [], []
+                lam_blk, full_blk, mem_kib = [], [], []
+                directions = np.array([r.theta for r in rays])
                 for seed in SEED_SET:
                     rng = np.random.default_rng(seed)
                     widths = np.exp(rng.uniform(np.log(0.05), np.log(0.20), size=len(rays)))
                     q = 1.0 / np.square(widths)
+                    tracemalloc.start()
                     start = time.perf_counter()
                     idx = greedy_d_design(j, q, k)
                     lat.append(time.perf_counter() - start)
+                    mem_kib.append(tracemalloc.get_traced_memory()[1] / 1024.0)
+                    tracemalloc.stop()
                     vals = np.linalg.eigvalsh(fisher(j, q, idx))
                     lam.append(float(vals[0]))
                     full.append(bool(vals[0] > 1e-10 * max(float(vals[-1]), 1.0)))
+                    # Registered worst-case blocking: a contiguous 20% angular
+                    # sector around a random axis, pinned at the cap rather
+                    # than drawn from U(0, 0.2), so this measures the hardest
+                    # registered case instead of an easier random draw.
+                    axis = rng.normal(size=3)
+                    axis /= np.linalg.norm(axis)
+                    proj = directions @ axis
+                    blocked = proj >= np.quantile(proj, 0.8)
+                    q_blk = np.where(blocked, 1e-12, q)
+                    idx_b = greedy_d_design(j, q_blk, k)
+                    vals_b = np.linalg.eigvalsh(fisher(j, q_blk, idx_b))
+                    lam_blk.append(float(vals_b[0]))
+                    full_blk.append(bool(vals_b[0] > 1e-10 * max(float(vals_b[-1]), 1.0)))
                 cell = {
                     "M": len(rays), "d": d, "K": k, "K_over_d": ratio,
                     "greedy_D": {
@@ -71,7 +90,12 @@ def main() -> None:
                         "max_latency_ms": float(np.max(lat) * 1000),
                         "median_lambda_min": float(np.median(lam)),
                         "full_rank_rate": float(np.mean(full)),
+                        "peak_memory_kib": float(np.max(mem_kib)),
                         "seeds": SEED_SET,
+                    },
+                    "greedy_D_blocked_20pct_sector": {
+                        "median_lambda_min": float(np.median(lam_blk)),
+                        "full_rank_rate": float(np.mean(full_blk)),
                     },
                 }
                 if ratio == 1.5:

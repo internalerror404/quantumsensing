@@ -111,5 +111,8 @@ proposed_v0_3_practical_gates:
   scaling_study_v0_2_result: >
     Registered surface M in {256,512,1024,4096}, d in {6,8,12,16}, K/d in
     {1.0,1.25,1.5,2.0}, registered seed_set: greedy D-optimal worst case
-    3.8 ms (M=4096, d=16, K=32), 100% full-rank success on every cell.
-    Amortization is not currently justified by latency.
+    5.4 ms at M=4096, peak traced memory 586 KiB, 100% full-rank success on
+    every cell -- including under a pinned worst-case 20% angular-sector
+    block, where the median lambda_min retains 97% of its unblocked value
+    (worst cell 42%, still full rank). Amortization is not currently
+    justified by latency, memory, or blocking robustness.
