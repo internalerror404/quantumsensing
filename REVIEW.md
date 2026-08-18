@@ -7,6 +7,71 @@ Everything shared was reconstructed into the layout the scripts assume and **exe
 numbers below are measured on this machine (Linux, NumPy 2.4.6, SciPy 1.17.1, Torch 2.13, CPU),
 not inferred from reading. Reproduction scripts are in `review/`.
 
+---
+
+## STATUS: the three blocking findings are fixed
+
+Fixed on this branch and re-verified by running the package. The diagnoses below are kept as the
+evidence trail; measurements marked "was" are the pre-fix numbers.
+
+| finding | before | after |
+|---|---|---|
+| **B1** selector 10x worse than random | 0.0020 vs random 0.0205 | **0.120 vs random 0.0185** — gate 2 passes at 3.57x (random) and 1.92x (angular), both CIs excluding 1.0 |
+| **B3** gate 3 vacuous, fails when honest | analytic zero substituted; real value 3.3e-07 vs 1e-10 | **integrates all 288 rays at order 1024: 1.2e-12** |
+| **M4/M5** gates 1, 5, 6 cannot fail | slope -2.0000000000000004; gate 6 error exactly 0.0 | **gate 5 computes Var(nu) from the packet (matches 1/(4s^2) to 6.7e-16); gate 6 uses a non-polynomial V, error 1.5e-14; gate 1 is now a relative residual on the assembled tensor** |
+| **M1** task mixing leaves D-optimal ranking invariant | logdet shift spread 4e-12; ~100% subset overlap | **12/12 distinct D-optimal subsets, 26% mean pairwise overlap** |
+| **B4** relaxed-E "oracle" below a naive search | -7.0% vs 40x-restart, 7.9 s | **-0.4% to -1.0% vs 40x-restart, 3.5 s** |
+| **new** gate 8, gauge-quotient independence | untested | **margin 7.5e5, passes** |
+
+Also fixed in passing, because they blocked the Mac run or the above: the `torch>=2.2` /
+NumPy 2 pin conflict, `python` to `${PYTHON:-python3}` in all four run scripts,
+`matplotlib.use("Agg")`, angular *sector* blocking replacing i.i.d. thinning, availability
+masking of logits, float64 in the training loss, rank-1 greedy D (263x, identical subset),
+analytic posterior RMSE replacing 500-trial Monte Carlo, and `worst_direction_error` /
+`full_rank` added to the Stage 1 metrics.
+
+A minimal evaluation harness was added (`experiments/run_selector_eval.sh`) because B1 is not
+verifiable without one. On 100 held-out tasks at a seed distinct from training:
+
+```
+                  median lambda_min
+   learned              0.1202
+   random               0.0185
+   angular_spread       0.0509
+   leverage             0.5286
+   greedy_D             2.1746
+   relaxed_E            3.7157
+
+   gate 2 vs random           3.57x  CI95 [2.28, 5.85]   PASS
+   gate 2 vs angular_spread   1.92x  CI95 [1.09, 3.26]   PASS
+   gate 3 vs oracle           0.026x CI95 [0.015, 0.041] FAIL - gap reported, as the spec permits
+   gate 4 speedup              494x  (1.80 ms vs 889 ms) PASS
+   held-out full-rank rate     100%
+```
+
+**Gate 3 still fails, and that is the honest result.** The policy is ~40x below the relaxed-E
+oracle and ~18x below greedy D-optimal, which runs in 0.6 ms. The spec anticipates this
+("or the gap is reported"). It is a real finding about DeepSets-with-top-K on this problem, not
+a bug: closing it needs a better selection mechanism, not a longer run. Note also that gate 2
+passes while the policy loses to a 0.6 ms greedy heuristic by 18x -- the gate only requires
+beating the two weakest baselines, which is the discrimination problem in M7.
+
+Whole suite, end to end: **2.7 minutes.**
+
+```
+run_task1.sh            46.6 s     8/8 gates
+run_design_demo.sh       4.1 s     (was 8.5 s)
+run_selector_sanity.sh  16.4 s     1200 steps
+run_selector_eval.sh    92.1 s     100 held-out tasks
+make_figures.py          1.7 s
+```
+
+Still open, in priority order: the full evaluation harness for gates 1 and 5 and the nine
+ablations (B2), the registered multi-seed campaign, spec section 6 (static redshift), and spec
+section 7 (PTA). See `STATUS.md`.
+
+---
+
 ## Bottom line
 
 The physics and the linear algebra are sound — I checked the derivations and they hold, and the

@@ -1,0 +1,49 @@
+{
+  "tasks": 100,
+  "heldout_seed": 2026,
+  "median_lambda_min": {
+    "learned": 0.12017536927024929,
+    "random": 0.018458408633910448,
+    "angular_spread": 0.050947766832377527,
+    "leverage": 0.5285558280690095,
+    "greedy_D": 2.1746029505631226,
+    "relaxed_E": 3.7157122145717487
+  },
+  "learned_gate_2_vs_baselines": {
+    "random": {
+      "median_ratio": 3.573908566548079,
+      "ci95": [
+        2.283799806240722,
+        5.85457572868627
+      ],
+      "pass": true
+    },
+    "angular_spread": {
+      "median_ratio": 1.9240791091961142,
+      "ci95": [
+        1.0938994677063463,
+        3.2580128136599207
+      ],
+      "pass": true
+    }
+  },
+  "learned_gate_2_pass": true,
+  "learned_gate_3_oracle_ratio": {
+    "median_ratio": 0.026091172062053098,
+    "ci95": [
+      0.015299965318898195,
+      0.04054943629460247
+    ],
+    "target": 0.95,
+    "pass": false,
+    "note": "spec permits reporting the gap instead of passing"
+  },
+  "learned_gate_4_speedup": {
+    "policy_ms_per_task": 2.5588179199803562,
+    "oracle_ms_per_task": 885.6856113600043,
+    "speedup": 346.1307678221996,
+    "target": 20.0,
+    "pass": true
+  },
+  "heldout_full_rank_rate": 1.0
+}

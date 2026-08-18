@@ -33,8 +33,10 @@
       "logdet": -5.156366371282739,
       "condition_number": 26240.629219406044,
       "rank": 12,
-      "posterior_rmse": 0.6944312478609714,
-      "runtime_seconds": 8.441700003913866e-05
+      "posterior_rmse": 0.6962156644009005,
+      "worst_direction_error": 0.9995354059245658,
+      "full_rank": true,
+      "runtime_seconds": 9.296000007452676e-05
     },
     {
       "name": "angular_spread",
@@ -60,8 +62,10 @@
       "logdet": 5.803936241211572,
       "condition_number": 175.65109165277693,
       "rank": 12,
-      "posterior_rmse": 0.6413942001266646,
-      "runtime_seconds": 0.0010482090000323296
+      "posterior_rmse": 0.6452933213424277,
+      "worst_direction_error": 0.9522622677418605,
+      "full_rank": true,
+      "runtime_seconds": 0.0010925320002570515
     },
     {
       "name": "leverage",
@@ -87,8 +91,10 @@
       "logdet": 26.82970506970267,
       "condition_number": 3766.8626864805206,
       "rank": 12,
-      "posterior_rmse": 0.4285023100499552,
-      "runtime_seconds": 0.0004660630000898891
+      "posterior_rmse": 0.4283618057714915,
+      "worst_direction_error": 0.9907289303297931,
+      "full_rank": true,
+      "runtime_seconds": 0.00038751700003558653
     },
     {
       "name": "greedy_D",
@@ -114,35 +120,39 @@
       "logdet": 33.45292976837985,
       "condition_number": 73.97721827825451,
       "rank": 12,
-      "posterior_rmse": 0.30923274295818504,
-      "runtime_seconds": 0.06176263999998355
+      "posterior_rmse": 0.3159945357320433,
+      "worst_direction_error": 0.7347549795947595,
+      "full_rank": true,
+      "runtime_seconds": 0.0005601079997177294
     },
     {
       "name": "relaxed_E",
       "indices": [
-        22,
-        35,
+        34,
         37,
+        48,
         49,
         58,
         91,
         103,
-        111,
+        124,
         161,
-        168,
         174,
-        228,
+        202,
+        213,
+        218,
         250,
-        254,
-        290,
-        296
+        324,
+        368
       ],
-      "min_eigenvalue": 2.4458969381255717,
-      "logdet": 24.64964884552475,
-      "condition_number": 13.648846391181403,
+      "min_eigenvalue": 2.6512234901803424,
+      "logdet": 27.40637908662678,
+      "condition_number": 16.285228628237125,
       "rank": 12,
-      "posterior_rmse": 0.3816664520081768,
-      "runtime_seconds": 7.235603158999993
+      "posterior_rmse": 0.35047133545327436,
+      "worst_direction_error": 0.5233362180593245,
+      "full_rank": true,
+      "runtime_seconds": 3.261700887999723
     }
   ]
 }

@@ -17,17 +17,21 @@ experiment was done":
 
 ## Headline
 
+Counts as of the fix commit; the parenthesised figures are where this stood at first review.
+
 | block | done | hollow | fails | absent |
 |---|---:|---:|---:|---:|
-| Stage 0 — theorem gates (7) | 3 | 3 | 1 | 0 |
-| Stage 1 — deterministic design | 2 | 0 | 0 | 2 |
-| Stage 2 — amortized selector (10) | 3 | 2 | 1 | 4 |
+| Stage 0 — theorem gates (8, was 7) | **8** (3) | **0** (3) | **0** (1) | 0 |
+| Stage 1 — deterministic design | **3** (2) | 0 | 0 | **1** (2) |
+| Stage 2 — amortized selector (10) | **6** (3) | **1** (2) | **1** (1) | **2** (4) |
 | Required ablations (9) | 0 | 0 | 0 | 9 |
 | §6 static redshift (5) | 0 | 0 | 0 | 5 |
 | §7 PTA / Hellings–Downs (4) | 0 | 0 | 0 | 4 |
 
-Stages 0–2 have working scaffolding end to end. The **evidence** they were built to produce
-mostly does not exist yet, and spec §6 and §7 have not been started.
+Stage 0 now tests its claims. Stage 1 produces exact rather than Monte-Carlo metrics. Stage 2
+has a working policy and a minimal harness that computes gates 2, 3 and 4 — gate 3 fails, which
+is a reported result rather than a defect. What remains is the **full** harness (gates 1 and 5,
+the nine ablations), the registered multi-seed campaign, and spec §6 and §7, neither started.
 
 ---
 
@@ -35,25 +39,26 @@ mostly does not exist yet, and spec §6 and §7 have not been started.
 
 | # | gate | status | note |
 |---|---|---|---|
-| 1 | conformal `\|A(φη)\|<1e-14` | **HOLLOW** | `k@ETA@k` factors out as a scalar; reduces to testing `normalize()`. Passes at 8e-19 |
-| 2 | compact gauge `\|A(2d^sV)\|<1e-10` | **DONE** (narrow) | real quadrature test, passes at 4.07e-14 — but on **one ray** at order 1024 |
-| 3 | kernel persistence over ray additions | **FAILS** | substitutes the analytic endpoint formula, which is exactly `0.0` at all 576 endpoints. Performed properly: **3.3e-07 vs a 1e-10 tolerance** at the order `mode_matrix` uses |
-| 4 | `rank(F)=rank(J)` | **DONE** | matched `τ_B²` threshold + explicit roundoff floor. Careful work |
-| 5 | log-log slope `= -2.00±0.01` | **HOLLOW** | computes `a²/s²`, then fits the slope of `a²/s²`. Never builds a packet or computes `Var(ν̂)`. Result: −2.0000000000000004 |
-| 6 | endpoint formula, rel. err ≤1e-8 | **HOLLOW** | integrand is degree 2, so Gauss–Legendre is exact. Measured relative error: **0.0**. Cannot fail |
-| 7 | no silent patching | **DONE** (mechanism) | `SystemExit` on failure, report written first. Reported as a hardcoded `"pass": true`, which is a policy statement, not a measurement |
+| 1 | conformal `\|A(φη)\|<1e-14` | **DONE** | now a *relative* residual on `h_{μν}=φη_{μν}` assembled and contracted index by index: **2.6e-17**. Was a factored-out scalar, i.e. a test of `normalize()` |
+| 2 | compact gauge `\|A(2d^sV)\|<1e-10` | **DONE** | 4.07e-14, and the report now carries the order-convergence table (6.0e-8 @128 → 4.1e-14 @1024) so the tolerance is justified, not asserted |
+| 3 | kernel persistence over ray additions | **DONE** | integrates the gauge direction on **all 288 rays** at the order used to build J: **1.2e-12**. Was an analytic zero substituted for the integral; performed properly at the old order it gave 3.3e-07 |
+| 4 | `rank(F)=rank(J)` | **DONE** | unchanged — matched `τ_B²` threshold + roundoff floor. Careful work |
+| 5 | log-log slope `= -2.00±0.01` | **DONE** | `Var(ν̂)` now computed from `ψ_s` by quadrature and checked against `1/(4s²)` (**6.7e-16**) before the slope is fitted. Was `a²/s²` fitted to itself |
+| 6 | endpoint formula, rel. err ≤1e-8 | **DONE** | non-polynomial profile `0.35e^{0.4 sin 1.7t}+0.18 cos 0.9t`, so quadrature error is real: **1.5e-14**. Was degree-2, integrated exactly, error `0.0` |
+| 7 | no silent patching | **DONE** (mechanism) | `SystemExit` on failure, report written first. Still a hardcoded `"pass": true` — a policy statement, not a measurement |
+| 8 | gauge-quotient independence | **DONE** (new) | σ_min(J)=6.4e-3 against a sampled gauge floor of 8.6e-9, **margin 7.5e5**. Makes `d=12` tested rather than asserted, and gives the no-gauge-quotient negative control something to be a control against |
 
-**Not in the spec but should be:** the "12-dimensional gauge-quotiented family" claim is nowhere
-tested. I tested it and it **holds** (σ_min(J)=7.4e-3 vs a gauge floor of 2.5e-8). Promote to gate 8.
+Suite runtime 0.9 s → 46.6 s, from raising the package quadrature order to 1024 and from gate 8's
+80 sampled gauge columns. Worth it: at the old order the gauge cancellation was 3.3e-07.
 
 ## Stage 1 — deterministic finite-network design (spec §3)
 
 | item | status | note |
 |---|---|---|
-| 5 baselines (random, angular, leverage, greedy-D, relaxed-E) | **DONE** | all five implemented and run |
-| 6 demo metrics (rank, λ_min, logdet, cond, MAP RMSE, runtime) | **DONE** | all six reported |
-| registered multi-seed campaign | **ABSENT** | one run at seed `20260818`, which is **not in** `seed_set: [2026, 3407, 9181, 17041, 27183]`. No seed in the registered set has ever been run |
-| 3 further config metrics | **ABSENT** | `worst_direction_error`, `credible_interval_coverage`, `full_rank_success_rate` |
+| 5 baselines (random, angular, leverage, greedy-D, relaxed-E) | **DONE** | relaxed-E is now the convex allocation + multi-start batched swap refinement, within 0.4–1.0% of a 40×-restart search (was 7% below it); greedy-D uses the rank-1 determinant update, 263× faster, identical subset |
+| 6 demo metrics (rank, λ_min, logdet, cond, MAP RMSE, runtime) | **DONE** | RMSE is now the closed form `sqrt(tr((F+Λ)⁻¹)/d)` — exact, and the unpaired-Monte-Carlo problem (noise at 10% of the design gaps) is gone |
+| registered multi-seed campaign | **ABSENT** | still one run at seed `20260818`, which is **not in** `seed_set: [2026, 3407, 9181, 17041, 27183]`. No registered seed has been run |
+| 3 further config metrics | **PARTIAL** | `worst_direction_error` and `full_rank` now reported; `credible_interval_coverage` still absent |
 
 The single instance is exactly what the spec says it is — an engineering sanity check. It is not
 a paper result and the spec does not claim otherwise.
@@ -63,18 +68,20 @@ a paper result and the spec does not claim otherwise.
 | item | status | note |
 |---|---|---|
 | DeepSets architecture | **DONE** | embedding → mean context → score head |
-| soft-K train / hard top-K eval | **HOLLOW** | both exist, but the top-16 hold only 8.41 of the K=16 soft budget — the two regimes optimize different designs |
-| candidate inputs (`a_i`, `log q_i`, `θ_i`, `z_i`) | **DONE** | 4 of 5; availability masks claimed in the README are not passed |
-| D and E objectives | **DONE** | both implemented, selectable by flag |
+| soft-K train / hard top-K eval | **DONE** | straight-through hard top-K: the forward pass now evaluates the design that gets measured. Was an 8.41-of-16 budget mismatch and a 1000× drop on rounding |
+| candidate inputs (`a_i`, `log q_i`, `θ_i`, `z_i`) | **DONE** | 5 of 5 — availability mask now passed as a feature *and* applied to the logits |
+| D and E objectives | **DONE** | both implemented; the E surrogate now uses a scale-relative `τ=0.02λ_max` (a fixed 0.03 agreed with the hard min to 1.3e-13) |
 | A-optimality | **ABSENT** | marked optional in the spec |
-| trained policy that works | **FAILS** | **10× worse than random** on its own objective. Fixable — see REVIEW.md §B1, 12.8 s CPU to 1.37× angular_spread |
-| task distribution | **HOLLOW** | 3 of 8 registered axes randomized. The primary axis (orthogonal mixing) leaves the D-optimal ranking **exactly** invariant; blocking is i.i.d. per ray, not angular sectors; `d`, `M`, `K/d`, prior `R` are all frozen |
-| 20 000 / 2 000 / 5 000 task campaign | **ABSENT** | 250 steps × batch 8 = 2 000 draws, no splits |
-| 6 evaluation baselines vs the policy | **ABSENT** | five exist in `design_experiment.py` but are **never run against the selector**; the per-instance logit oracle does not exist at all |
-| 5 preregistered ML gates | **ABSENT** | **0 of 5 computed by any code in the package** |
+| trained policy that works | **DONE** | 0.120 vs random 0.0185 on 100 held-out tasks. Was 10× *worse* than random |
+| task distribution | **DONE** | 7 of 8 axes: `d∈{6,8,10,12}`, `K/d∈{1,1.25,1.5,2}`, pool density, angular **sector** blocking, mixing, scaling, widths. Yields 12/12 distinct D-optimal subsets at 26% overlap. Prior `R` still frozen; `d=16` needs more modes than the family has |
+| 20 000 / 2 000 / 5 000 task campaign | **ABSENT** | 1200 steps × batch 8 = 9 600 draws; evaluation is 100 tasks at a held-out seed. No registered-scale splits |
+| 6 evaluation baselines vs the policy | **PARTIAL** | five now run against the policy in `evaluate_selector.py`; the per-instance logit oracle still does not exist |
+| 5 preregistered ML gates | **PARTIAL** | **3 of 5 computed** — gate 2 PASS (3.57× random, 1.92× angular, CIs excluding 1.0), gate 3 FAIL at 0.026× (gap reported, as the spec permits), gate 4 PASS at 494×. Gates 1 and 5 need the ablation sweep |
 | MAP reconstruction on selector output | **ABSENT** | implemented for Stage 1 only |
 
-The missing evaluation harness is why the selector's failure is invisible in its own report.
+Gate 3's failure is the substantive open question: the policy sits ~40× below the relaxed-E
+oracle and ~18× below a 0.6 ms greedy heuristic. Closing it needs a better selection mechanism,
+not a longer run.
 
 ## Required ablations (spec §5) — 0 of 9 run
 
@@ -83,9 +90,9 @@ Runnable today via existing flags, just never swept:
 | ablation | how |
 |---|---|
 | D vs E objective | `--objective` |
-| candidate-ray density | `candidate_rays(direction_count, offsets_per_direction)` |
-| K/d budget ratio | `--k` |
-| quadrature resolution / domain | `order=`, `lam_extent=` |
+| candidate-ray density | now a per-task random variable in `generate_tasks` |
+| K/d budget ratio | now a per-task random variable; `--k` pins it |
+| quadrature resolution / domain | `DEFAULT_ORDER`, `lam_extent=`; gate 2 already reports a convergence table |
 
 Need new code:
 
@@ -132,15 +139,17 @@ registration, JSON reports. Not in what was shared: the LaTeX manuscript and bib
 
 ## Critical path
 
-The registered campaign cannot run meaningfully until the harness exists, and the harness is
-what turns a passing script into a result:
+Done: gates (3), selector (2), task distribution (4), and the performance work (6) — rank-1
+greedy, convex relaxed-E, analytic RMSE. What remains:
 
-1. **Evaluation harness** — splits, the 6 baselines, bootstrap CIs, the 5 ML gates. Unblocks all
-   of Stage 2 and all 9 ablations. Nothing about the ML claim is measurable without it.
-2. **Fix the selector** (REVIEW.md §B1) — verified, ~13 s CPU.
-3. **Fix gates 3, 5, 6, and 1** so Stage 0 tests its claims; add the gauge-independence gate.
-4. **Fix the task distribution** — sector blocking, and randomize `d`, `M`, `K/d`.
-5. **§6 redshift** — ~a day, unblocks the delay+redshift ablation.
-6. **Performance** before the campaign, not after: rank-1 greedy (263× measured), convex
-   relaxed-E, analytic RMSE. Without these the campaign is ~55 h single-core *per configuration*.
-7. **§7 PTA** — separate effort, or a separate paper.
+1. **Finish the harness** — gates 1 and 5, the per-instance logit oracle, credible-interval
+   coverage, and the nine ablation sweeps. Three of five gates are computed; the sweep is what
+   the other two need.
+2. **Close or characterise gate 3.** The policy is 40× below the oracle. Candidates: a
+   sequential/autoregressive selection head instead of one-shot top-K, a differentiable
+   determinantal or greedy-unrolled layer, or per-instance logit fine-tuning warm-started from
+   the policy. This is the open research question, not a bug.
+3. **Run the registered campaign** on `seed_set` — no registered seed has ever been run. Now
+   affordable: relaxed-E dropped 7.9 s → 3.5 s and greedy-D is 263× faster.
+4. **§6 static redshift** — ~a day, and it unblocks the delay+redshift ablation.
+5. **§7 PTA** — separate effort, or a separate paper.

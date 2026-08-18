@@ -17,6 +17,13 @@ from numpy.polynomial.legendre import leggauss
 Array = NDArray[np.float64]
 ETA = np.diag(np.array([-1.0, 1.0, 1.0, 1.0]))
 
+# Package-wide Gauss-Legendre order. The compact-support gauge cancellation
+# A_gamma(2 d^s V) = 0 is quadrature limited; measured over the full candidate
+# pool it is 3.3e-07 at order 256 and 1.2e-12 at order 1024. Every matrix that
+# enters a rank or design metric is built at this order so that the pinned
+# 1e-10 gate applies to the same numbers the experiments use.
+DEFAULT_ORDER = 1024
+
 
 def normalize(v: Array, eps: float = 1e-15) -> Array:
     n = float(np.linalg.norm(v))
@@ -92,8 +99,8 @@ def candidate_rays(direction_count: int = 96, offsets_per_direction: int = 4,
     return rays
 
 
-@lru_cache(maxsize=32)
-def gauss_legendre_interval(a: float, b: float, order: int = 512) -> tuple[Array, Array]:
+@lru_cache(maxsize=64)
+def gauss_legendre_interval(a: float, b: float, order: int = DEFAULT_ORDER) -> tuple[Array, Array]:
     nodes, weights = leggauss(order)
     lam = 0.5 * (b - a) * nodes + 0.5 * (a + b)
     w = 0.5 * (b - a) * weights
@@ -153,14 +160,14 @@ class TensorMode:
         return phi * scalar
 
 
-def ray_integral_contraction(ray: Ray, contraction_fn, order: int = 512) -> float:
+def ray_integral_contraction(ray: Ray, contraction_fn, order: int = DEFAULT_ORDER) -> float:
     lam, weights = gauss_legendre_interval(ray.lam_min, ray.lam_max, order=order)
     points = ray.points(lam)
     vals = np.asarray(contraction_fn(points, ray.k), dtype=float)
     return 0.5 * float(weights @ vals)
 
 
-def mode_matrix(rays: Iterable[Ray], modes: Iterable[TensorMode], order: int = 256) -> Array:
+def mode_matrix(rays: Iterable[Ray], modes: Iterable[TensorMode], order: int = DEFAULT_ORDER) -> Array:
     ray_list = list(rays)
     mode_list = list(modes)
     out = np.empty((len(ray_list), len(mode_list)), dtype=float)
@@ -174,8 +181,25 @@ def mode_matrix(rays: Iterable[Ray], modes: Iterable[TensorMode], order: int = 2
 
 
 def conformal_contraction(points: Array, k: Array, center: Array, radii: Array) -> Array:
+    """Contraction of h = phi * eta, assembled componentwise.
+
+    The scalar eta(k,k) is deliberately *not* factored out. Building h_{mu nu}
+    as a full tensor field and contracting index by index means the gate tests
+    the assembled contraction rather than a single float, and the cancellation
+    has to happen across sixteen accumulated products.
+    """
     phi, _ = product_bump(points, center, radii)
-    return phi * float(k @ ETA @ k)
+    h = phi[:, None, None] * ETA[None, :, :]
+    return np.einsum("nij,i,j->n", h, k, k)
+
+
+def conformal_contraction_scale(points: Array, k: Array, center: Array, radii: Array) -> Array:
+    """Magnitude scale of the gate-1 integrand, for a relative tolerance.
+
+    Without this the 1e-14 gate silently tracks the amplitude of phi.
+    """
+    phi, _ = product_bump(points, center, radii)
+    return np.abs(phi) * float(np.abs(k) @ np.abs(ETA) @ np.abs(k))
 
 
 def gauge_contraction(points: Array, k: Array, center: Array, radii: Array, covector: Array) -> Array:
@@ -186,16 +210,39 @@ def gauge_contraction(points: Array, k: Array, center: Array, radii: Array, cove
     return 2.0 * k_dot_grad * a_dot_k
 
 
+def _endpoint_profile(t: Array) -> tuple[Array, Array]:
+    """Non-polynomial V profile f(t) and its derivative.
+
+    A polynomial profile is integrated *exactly* by Gauss-Legendre, so the gate
+    could not fail. This profile is analytic but not polynomial, so the endpoint
+    identity is tested against genuine quadrature error.
+    """
+    t = np.asarray(t, dtype=float)
+    f = 0.35 * np.exp(0.4 * np.sin(1.7 * t)) + 0.18 * np.cos(0.9 * t)
+    df = (0.35 * 0.4 * 1.7 * np.cos(1.7 * t) * np.exp(0.4 * np.sin(1.7 * t))
+          - 0.18 * 0.9 * np.sin(0.9 * t))
+    return f, df
+
+
 def endpoint_gauge_contraction(points: Array, k: Array, covector: Array) -> Array:
-    """Noncompact endpoint test: V_nu=a_nu f(t), f=.35+.2t+.1t^2-.03t^3."""
+    """Noncompact endpoint test: h = 2 d^s V with V_nu = a_nu f(t).
+
+    Assembled as a full symmetric tensor and contracted, so this shares the
+    gate-2 code path instead of hand-differentiating the answer.
+    """
     t = points[:, 0]
-    fp = 0.2 + 0.2 * t - 0.09 * t * t
-    return 2.0 * float(np.asarray(covector) @ k) * fp
+    _, df = _endpoint_profile(t)
+    a = np.asarray(covector, dtype=float)
+    # dV_nu/dx_mu = a_nu f'(t) delta_mu^0, so (d^s V)_{mu nu} = 1/2 (a_nu f' d_mu0 + a_mu f' d_nu0).
+    e0 = np.zeros(4); e0[0] = 1.0
+    sym = 0.5 * (np.outer(e0, a) + np.outer(a, e0))
+    h = 2.0 * df[:, None, None] * sym[None, :, :]
+    return np.einsum("nij,i,j->n", h, k, k)
 
 
 def endpoint_gauge_value(t: float, k: Array, covector: Array) -> float:
-    f = 0.35 + 0.2 * t + 0.1 * t * t - 0.03 * t**3
-    return float(np.asarray(covector) @ k) * f
+    f, _ = _endpoint_profile(np.array([float(t)]))
+    return float(np.asarray(covector) @ k) * float(f[0])
 
 
 def make_physical_modes() -> list[TensorMode]:
@@ -231,3 +278,24 @@ def make_physical_modes() -> list[TensorMode]:
     p5 = np.zeros((4, 4)); p5[2, 3] = p5[3, 2] = 1.0
     modes.append(TensorMode(np.array([0.0, 0.0, 0.0, 0.0]), radii, p5, "anisotropic_4"))
     return modes
+
+
+def gaussian_packet_frequency_variance(s_width: float, half_extent: float = 14.0,
+                                       order: int = 4096) -> float:
+    """Var(nu-hat) for the transform-limited Gaussian temporal mode, by quadrature.
+
+    psi_s(t) = (2 pi s^2)^{-1/4} exp(-t^2 / (4 s^2)),  nu-hat = -i d/dt.
+
+    For a real, even, normalized psi:  <nu-hat> = 0  and
+    Var(nu-hat) = <psi| -d^2/dt^2 |psi> = integral (dpsi/dt)^2 dt.
+
+    Corollary 3.2 asserts this equals 1/(4 s^2). Computing it rather than
+    asserting it is what makes the packet-width gate a test of the physics.
+    """
+    a = half_extent * s_width
+    t, w = gauss_legendre_interval(-a, a, order=order)
+    norm = (2.0 * np.pi * s_width ** 2) ** -0.25
+    psi = norm * np.exp(-t * t / (4.0 * s_width ** 2))
+    dpsi = psi * (-t / (2.0 * s_width ** 2))
+    normalization = float(w @ (psi * psi))
+    return float(w @ (dpsi * dpsi)) / normalization

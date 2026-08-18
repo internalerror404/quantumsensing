@@ -2,4 +2,4 @@ numpy>=2.0
 scipy>=1.12
 matplotlib>=3.8
 PyYAML>=6.0
-torch>=2.2
+torch>=2.4          # 2.2 and 2.3 are not NumPy 2 compatible
