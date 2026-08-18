@@ -33,7 +33,9 @@ stop-on-failure process control (gate 7) pass**; calling all eight "theorem gate
 overstate what gate 7 measures. Stage 1 produces exact rather than Monte-Carlo metrics. Stage 2
 has a working policy and a minimal harness that computes gates 2, 3 and 4 — gate 3 fails, which
 is a reported result rather than a defect. What remains is the **full** harness (gates 1 and 5,
-the nine ablations), the registered multi-seed campaign, and spec §6 and §7, neither started.
+What remains is the deterministic full-metric campaign, the eight scientific ablations and
+numerical-convergence sweep, and the separate §7 detector application. §6 is done and
+independently verified; the registered scaling campaign has run on the registered seeds.
 
 ---
 
@@ -76,7 +78,7 @@ a paper result and the spec does not claim otherwise.
 | D and E objectives | **DONE** | both implemented; the E surrogate now uses a scale-relative `τ=0.02λ_max` (a fixed 0.03 agreed with the hard min to 1.3e-13) |
 | A-optimality | **ABSENT** | marked optional in the spec |
 | trained policy that works | **DONE** | 0.120 vs random 0.0185 on 100 held-out tasks. Was 10× *worse* than random |
-| task distribution | **DONE** | 7 of 8 axes: `d∈{6,8,10,12}`, `K/d∈{1,1.25,1.5,2}`, pool density, angular **sector** blocking, mixing, scaling, widths. Yields 12/12 distinct D-optimal subsets at 26% overlap. Prior `R` still frozen; `d=16` needs more modes than the family has |
+| task distribution | **DONE** | 7 of 8 axes: `d∈{6,8,10,12}`, `K/d∈{1,1.25,1.5,2}`, pool density, angular **sector** blocking, mixing, scaling, widths. Yields 12/12 distinct D-optimal subsets at 26% overlap. Prior `R` still frozen. `d=16` is supported by the physical family and certified modulo gauge (gate 8), but was not part of the frozen DeepSets v0.2 training distribution |
 | 20 000 / 2 000 / 5 000 task campaign | **ABSENT** | 1200 steps × batch 8 = 9 600 draws; evaluation is 100 tasks at a held-out seed. No registered-scale splits |
 | 6 evaluation baselines vs the policy | **PARTIAL** | five now run against the policy in `evaluate_selector.py`; the per-instance logit oracle still does not exist |
 | 5 preregistered ML gates | **PARTIAL** | **3 of 5 computed** — gate 2 PASS (3.57× random, 1.92× angular, CIs excluding 1.0), gate 3 FAIL at 0.026× (gap reported, as the spec permits), gate 4 PASS at **53.8× end-to-end** (16.56 ms policy vs 891.69 ms oracle; an earlier 494×/1.8 ms figure timed only the model forward pass and is superseded). Gates 1 and 5 need the ablation sweep |

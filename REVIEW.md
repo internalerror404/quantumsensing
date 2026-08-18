@@ -74,8 +74,10 @@ policy strictly dominated by greedy-D (23.3× better at 0.37 ms vs 16.6 ms end-t
 Preregistered v0.2 outcomes unchanged; consequence and forward-only v0.3 gates in `STATUS.md`
 and `configs/experiment.yaml`. `STATUS.md` is the canonical record for these numbers.
 
-Still open, in priority order: spec section 6 (static redshift), the ablation sweeps and gates
-1 and 5, the full deterministic campaign metrics, and spec section 7 (PTA). See `STATUS.md`.
+**Supersession note:** §6 static redshift has since been implemented and independently verified
+(byte-identical reruns at orders 512 and 1024); see the canonical `STATUS.md` and
+`results/static_redshift_experiment.json`. Still open: the joint delay+redshift ablation, the
+full deterministic campaign metrics, the remaining ablation sweeps, and spec section 7 (PTA).
 
 ---
 

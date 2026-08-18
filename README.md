@@ -30,6 +30,20 @@ F = J^T diag(q) J.
 
 All rank and design metrics are computed after declaring a parameter-space normalization or prior precision. Raw eigenvalues are not compared across arbitrary parameter units.
 
+> **Project state (2026-08-18).** This README describes the original v0.2 design. The canonical
+> live record is `STATUS.md`; the executed review is `REVIEW.md`. Deltas against the text below:
+> Stage 0 now comprises **seven scientific/numerical checks plus one stop-on-failure process
+> control** (gate 3 integrates the gauge direction on every ray; gate 5 computes Var(nu) from
+> the packet; gate 6 uses a non-polynomial profile; gate 8 certifies the gauge quotient at
+> d in {6,8,12,16}). The **§6 static redshift experiment is implemented and passing**
+> (`experiments/run_static_redshift.sh`, report in `results/static_redshift_experiment.json`).
+> The deterministic scaling study has run on the registered seeds (`run_scaling_study.sh`).
+> The **DeepSets v0.2 selector is frozen as a dominated negative baseline** — it beats random
+> and angular-spread but is strictly Pareto-dominated by greedy D-optimal selection (23x
+> objective at 0.37 ms vs 16.6 ms); the large learned-selector campaign will not be run for
+> this architecture, and stronger forward-only gates for any v0.3 selector are registered in
+> `configs/experiment.yaml`.
+
 ## 2. Stage 0: pinned theorem gates
 
 Run:
@@ -232,6 +246,15 @@ pip install -r requirements.txt
 
 # Short engineering-only selector check
 ./run_selector_sanity.sh
+
+# Selector held-out evaluation vs deterministic baselines
+./run_selector_eval.sh
+
+# Static redshift rank restoration (section 6)
+./run_static_redshift.sh
+
+# Deterministic design scaling study (registered seeds)
+./run_scaling_study.sh
 ```
 
 The short selector run verifies code paths only. The paper result requires the registered multi-seed train/validation/test campaign, bootstrap intervals, and saved task manifests.
