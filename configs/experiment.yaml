@@ -1,0 +1,80 @@
+project: qfi_lorentzian_light_ray_tomography
+seed_set: [2026, 3407, 9181, 17041, 27183]
+background:
+  spacetime: Minkowski_1_plus_3
+  domain: [-1, 1]^4_interior_world_tube
+  ray_segment_lambda: [-2.5, 2.5]
+  dimensions: 4
+finite_family:
+  physical_dimension: [6, 8, 12, 16]
+  conformal_modes: 4
+  compact_gauge_modes: 4
+  basis: localized_C_infinity_bumps_times_symmetric_polarizations
+candidate_pool:
+  ray_counts: [256, 512, 1024, 4096]
+  directions: Fibonacci_sphere
+  transverse_offsets_per_direction: [1, 4, 8]
+probe:
+  state: independent_transform_limited_single_photon_Gaussians
+  temporal_width_s: log_uniform_0.05_to_0.20
+  qfi_weight: 1_over_s_squared
+budgets:
+  K_over_d: [1.0, 1.25, 1.5, 2.0]
+baselines:
+  - uniform_random
+  - angular_farthest_point
+  - leverage_score
+  - greedy_D_optimal
+  - relaxed_E_optimal_plus_rounding
+  - per_instance_logit_optimizer_oracle
+learned_policy:
+  architecture: DeepSets_candidate_scorer
+  selection: Gumbel_or_soft_topK_train_hard_topK_eval
+  objectives: [D_optimal, E_optimal]
+  training_tasks: 20000
+  validation_tasks: 2000
+  test_tasks: 5000
+  perturbations:
+    blocked_angular_fraction: [0.0, 0.2]
+    packet_width_jitter_log_std: 0.35
+    random_basis_mixing: orthogonal_plus_log_scale
+reconstruction:
+  primary: Bayesian_linear_MAP
+  prior: standard_normal_or_declared_precision_R
+  reason: isolate_design_quality_from_reconstructor_capacity
+metrics:
+  - rank_of_J_and_F
+  - minimum_eigenvalue_of_whitened_QFIM
+  - logdet_of_whitened_QFIM
+  - condition_number
+  - posterior_RMSE
+  - worst_direction_error
+  - credible_interval_coverage
+  - selector_runtime
+  - full_rank_success_rate
+preregistered_gates:
+  theorem_gate_1: "Conformal directions: abs(A_Gamma(phi eta)) < 1e-14."
+  theorem_gate_2: "Compact-support gauge directions: abs(A_Gamma(2 d^s V)) < 1e-10."
+  theorem_gate_3: "Gauge modes remain in the kernel after every ray addition."
+  theorem_gate_4: "rank(F) = rank(J) by SVD; relative tolerance explicitly reported."
+  theorem_gate_5: "1/s^2 scaling log-log slope = -2.00 +/- 0.01."
+  theorem_gate_6: "Endpoint formula relative error <= 1e-8 when V is nonzero at an endpoint."
+  theorem_gate_7: "Any deviation from the five proved results stops the run; no runtime tolerance patching."
+  learned_gate_1: "At K >= d and feasible coverage, full-rank success >= 99% over held-out tasks."
+  learned_gate_2: "Median lambda_min at least 15% above uniform and angular-spread baselines; 95% bootstrap CI excludes zero."
+  learned_gate_3: "Within 5% of per-instance relaxed/greedy oracle on the registered objective, or report failure."
+  learned_gate_4: "At least 20x faster design inference than per-instance optimization on the same CPU/GPU target."
+  learned_gate_5: "No gauge or conformal leakage under any ablation."
+ablations:
+  - no_gauge_quotient
+  - unweighted_rays_instead_of_QFI_weights
+  - D_vs_E_objective
+  - homogeneous_vs_heterogeneous_packet_width
+  - independent_vs_correlated_probe_covariance
+  - delay_only_vs_delay_plus_static_redshift_endpoint_channels
+  - candidate_pool_density
+  - ray_budget
+application_gate:
+  name: PTA_link_response_to_Hellings_Downs
+  status: separate_application_layer_not_evidence_for_spacelike_ellipticity
+  requirement: "After deterministic per-link validation and stochastic averaging, reproduce the Hellings-Downs curve with <1% RMS error."

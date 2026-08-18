@@ -1,0 +1,33 @@
+{
+  "seed": 20260818,
+  "objective": "E",
+  "steps": 250,
+  "batch": 8,
+  "selected_rays": 16,
+  "final_loss": -2.14835262298584,
+  "loss_tail_mean": -2.094958441257477,
+  "heldout": {
+    "indices": [
+      4,
+      13,
+      19,
+      37,
+      49,
+      58,
+      61,
+      80,
+      96,
+      103,
+      115,
+      132,
+      133,
+      143,
+      161,
+      224
+    ],
+    "rank": 12,
+    "min_eigenvalue": 0.0020369708072394133,
+    "logdet": 7.70570445572506
+  },
+  "status": "engineering sanity run only; not a paper result without the preregistered multi-seed evaluation"
+}
