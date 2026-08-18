@@ -66,9 +66,14 @@ run_selector_eval.sh    92.1 s     100 held-out tasks
 make_figures.py          1.7 s
 ```
 
-Still open, in priority order: the full evaluation harness for gates 1 and 5 and the nine
-ablations (B2), the registered multi-seed campaign, spec section 6 (static redshift), and spec
-section 7 (PTA). See `STATUS.md`.
+**Update after the scaling study:** the deterministic scaling study has since run over the full
+registered surface on the registered seeds: greedy-D worst case **3.8 ms** at M=4096, d=16,
+K=32, 100% full-rank on all 64 cells. The post-hoc Pareto analysis shows the policy strictly
+dominated by greedy-D (23.3× better, 45× faster). Preregistered v0.2 outcomes unchanged;
+consequence and forward-only v0.3 gates in `STATUS.md` and `configs/experiment.yaml`.
+
+Still open, in priority order: spec section 6 (static redshift), the ablation sweeps and gates
+1 and 5, the full deterministic campaign metrics, and spec section 7 (PTA). See `STATUS.md`.
 
 ---
 

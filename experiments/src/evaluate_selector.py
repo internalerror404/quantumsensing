@@ -59,8 +59,14 @@ def main() -> None:
 
     names = ("learned", "random", "angular_spread", "leverage", "greedy_D", "relaxed_E")
     scores = {n: [] for n in names}
+    latency = {n: 0.0 for n in names}
     full_rank = []
-    t_policy = t_oracle = 0.0
+
+    def timed(name, fn):
+        start = time.perf_counter()
+        idx = fn()
+        latency[name] += time.perf_counter() - start
+        return idx
 
     for _ in range(args.tasks):
         js, qs, feats, avail, d, k = generate_tasks(
@@ -74,18 +80,20 @@ def main() -> None:
         start = time.perf_counter()
         logits = select(model, feats, avail, k)[0]
         chosen = np.argsort(logits)[-k:]
-        t_policy += time.perf_counter() - start
+        latency["learned"] += time.perf_counter() - start
 
-        start = time.perf_counter()
-        oracle = relaxed_e_design(j, q, k, restarts=4)
-        t_oracle += time.perf_counter() - start
+        oracle = timed("relaxed_E", lambda: relaxed_e_design(j, q, k, restarts=4))
+        rnd = timed("random", lambda: usable[random_design(usable.size, k, rng)])
+        ang = timed("angular_spread",
+                    lambda: usable[angular_spread_design([rays[i] for i in usable], k)])
+        lev = timed("leverage", lambda: leverage_design(j, q, k))
+        grd = timed("greedy_D", lambda: greedy_d_design(j, q, k))
 
-        local = angular_spread_design([rays[i] for i in usable], k)
         scores["learned"].append(lam_min(j, q, chosen))
-        scores["random"].append(lam_min(j, q, usable[random_design(usable.size, k, rng)]))
-        scores["angular_spread"].append(lam_min(j, q, usable[local]))
-        scores["leverage"].append(lam_min(j, q, leverage_design(j, q, k)))
-        scores["greedy_D"].append(lam_min(j, q, greedy_d_design(j, q, k)))
+        scores["random"].append(lam_min(j, q, rnd))
+        scores["angular_spread"].append(lam_min(j, q, ang))
+        scores["leverage"].append(lam_min(j, q, lev))
+        scores["greedy_D"].append(lam_min(j, q, grd))
         scores["relaxed_E"].append(lam_min(j, q, oracle))
         full_rank.append(np.linalg.matrix_rank(j[chosen], tol=1e-10 * np.abs(j).max()) == d)
 
@@ -99,7 +107,41 @@ def main() -> None:
         gate2[baseline] = {"median_ratio": ratio, "ci95": [lo, hi],
                            "pass": bool(ratio >= 1.15 and lo > 1.0)}
     oracle_ratio, o_lo, o_hi = bootstrap_ratio_ci(arr["learned"], arr["relaxed_E"], boot)
-    speedup = t_oracle / max(t_policy, 1e-12)
+    ms = {n: 1000.0 * latency[n] / max(n_tasks, 1) for n in names}
+    speedup = ms["relaxed_E"] / max(ms["learned"], 1e-9)
+
+    # ---- POST-HOC practical-utility analysis (not preregistered) ----
+    # The preregistered gates stand exactly as computed above. This section asks
+    # a question they do not: is the policy on the runtime-quality Pareto
+    # frontier of the registered baselines at all? Gate 4 compares latency only
+    # against the slow per-instance optimizer, so a policy can pass all its
+    # gates while a *faster* deterministic heuristic also achieves a *better*
+    # objective -- strict domination that the gates never look at.
+    med = {n: float(np.median(v)) for n, v in arr.items()}
+    dominators = []
+    for b in names:
+        if b == "learned":
+            continue
+        ratio, lo, hi = bootstrap_ratio_ci(arr[b], arr["learned"], boot)
+        if med[b] >= med["learned"] and ms[b] <= ms["learned"] and lo > 1.0:
+            dominators.append({"baseline": b, "quality_ratio": ratio,
+                               "ci95": [lo, hi], "latency_ms": ms[b]})
+    faster = [b for b in names if b != "learned" and ms[b] <= ms["learned"]]
+    best_faster = max(faster, key=lambda b: med[b]) if faster else None
+    quality_at_latency = (med["learned"] / med[best_faster]) if best_faster else float("inf")
+    post_hoc = {
+        "post_hoc": True,
+        "note": "not preregistered; preregistered gate outcomes above are unchanged",
+        "latency_ms_per_task": ms,
+        "pareto_dominated_by": dominators,
+        "pareto_dominated": bool(dominators),
+        "quality_at_latency": {
+            "best_baseline_not_slower_than_policy": best_faster,
+            "policy_over_that_baseline": quality_at_latency,
+            "proposed_v0_3_target": 0.95,
+            "pass": bool(quality_at_latency >= 0.95),
+        },
+    }
 
     report = {
         "tasks": n_tasks,
@@ -113,11 +155,13 @@ def main() -> None:
             "note": "spec permits reporting the gap instead of passing",
         },
         "learned_gate_4_speedup": {
-            "policy_ms_per_task": 1000 * t_policy / max(n_tasks, 1),
-            "oracle_ms_per_task": 1000 * t_oracle / max(n_tasks, 1),
+            "policy_ms_per_task": ms["learned"],
+            "oracle_ms_per_task": ms["relaxed_E"],
             "speedup": speedup, "target": 20.0, "pass": bool(speedup >= 20.0),
         },
         "heldout_full_rank_rate": float(np.mean(full_rank)) if full_rank else 0.0,
+        "post_hoc_practical_utility": post_hoc,
+        "policy_status": "frozen as an honest negative baseline for one-shot amortized selection",
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(report, indent=2), encoding="utf-8")

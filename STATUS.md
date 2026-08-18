@@ -137,19 +137,45 @@ registration, JSON reports. Not in what was shared: the LaTeX manuscript and bib
 
 ---
 
+## Resolution of the ML question (post-hoc, v0.2 gates unchanged)
+
+The deterministic **scaling study has now run on the full registered surface with the
+registered seeds** — the first use of `seed_set` anywhere in the package
+(`results/scaling_study.json`, `run_scaling_study.sh`):
+
+- greedy D-optimal worst case: **3.8 ms** at the largest registered instance
+  (M=4096, d=16, K=32); median 0.14–2.8 ms across all 64 cells;
+- **100% full-rank success on every cell and every registered seed**;
+- relaxed-E reference at K/d=1.5: 0.3 s (M=256) to 42.5 s (M=4096, d=16).
+
+The post-hoc practical-utility analysis (`selector_evaluation.json`) shows the v0.2 policy is
+**strictly Pareto-dominated**: greedy-D is 23.3× better on the objective (CI95 [13.5, 43.7])
+at 0.37 ms vs the policy's 16.6 ms. Preregistered outcomes stand: gate 2 PASS, gate 3 FAIL
+(gap reported), gate 4 PASS.
+
+**Consequence for Paper 1:** deterministic Fisher-aware selection is cheap everywhere the
+registration reaches, so amortization is not currently justified by latency. The one-shot
+DeepSets selector is frozen as an honest negative baseline; Paper 1 should present it as a
+diagnostic ("one-shot amortized selection was tested and dominated by deterministic
+Fisher-aware optimization"), resting on the theorems, the eight gates, the registered
+deterministic experiments, static-redshift rank restoration, and one-shot discrimination.
+Stronger gates for any future v0.3 architecture (Pareto non-domination, quality-at-latency
+≥ 0.95, staged 0.80/0.95 oracle targets) are registered forward-only in
+`configs/experiment.yaml`.
+
 ## Critical path
 
-Done: gates (3), selector (2), task distribution (4), and the performance work (6) — rank-1
-greedy, convex relaxed-E, analytic RMSE. What remains:
+Done: gates (3), selector repair (2), task distribution (4), performance (6), the scaling
+study on registered seeds, the post-hoc Pareto analysis, and a CI portability gate
+(`.github/workflows/experiments.yml`, macos-14 + ubuntu × Python 3.11/3.12, uploading the
+JSON reports). What remains:
 
-1. **Finish the harness** — gates 1 and 5, the per-instance logit oracle, credible-interval
-   coverage, and the nine ablation sweeps. Three of five gates are computed; the sweep is what
-   the other two need.
-2. **Close or characterise gate 3.** The policy is 40× below the oracle. Candidates: a
-   sequential/autoregressive selection head instead of one-shot top-K, a differentiable
-   determinantal or greedy-unrolled layer, or per-instance logit fine-tuning warm-started from
-   the policy. This is the open research question, not a bug.
-3. **Run the registered campaign** on `seed_set` — no registered seed has ever been run. Now
-   affordable: relaxed-E dropped 7.9 s → 3.5 s and greedy-D is 263× faster.
-4. **§6 static redshift** — ~a day, and it unblocks the delay+redshift ablation.
+1. **§6 static redshift** — ~a day, unblocks the delay+redshift ablation. Now the top item.
+2. **Finish the harness** — gates 1 and 5, credible-interval coverage, and the nine ablation
+   sweeps (deterministic-only now, which makes them much cheaper).
+3. **Registered deterministic campaign** — extend the scaling study's registered-seed runs to
+   the full metric set (RMSE, worst-direction, coverage) as the paper's quantitative table.
+4. **v0.3 learned selector** — only if an activation condition in the YAML becomes true;
+   sequential Fisher-aware scoring (a_i^T F_t^{-1} a_i, alignment with v_min(F_t)) + swap
+   refinement, against the forward-registered practical gates.
 5. **§7 PTA** — separate effort, or a separate paper.

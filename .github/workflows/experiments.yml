@@ -1,0 +1,44 @@
+name: experiment-suite
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  suite:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-14, ubuntu-latest]
+        python: ["3.11", "3.12"]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          if [ "$RUNNER_OS" = "Linux" ]; then
+            # CPU wheels: the default Linux torch wheel pulls the CUDA stack.
+            python3 -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+          fi
+          python3 -m pip install -r requirements.txt
+      - name: Theorem gates (8 pinned gates)
+        run: bash experiments/run_task1.sh
+      - name: Deterministic design benchmark
+        run: bash experiments/run_design_demo.sh
+      - name: Selector sanity training
+        run: bash experiments/run_selector_sanity.sh
+      - name: Selector held-out evaluation
+        run: bash experiments/run_selector_eval.sh
+      - name: Upload JSON reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports-${{ matrix.os }}-py${{ matrix.python }}
+          path: results/*.json

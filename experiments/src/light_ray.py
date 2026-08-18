@@ -245,7 +245,7 @@ def endpoint_gauge_value(t: float, k: Array, covector: Array) -> float:
     return float(np.asarray(covector) @ k) * float(f[0])
 
 
-def make_physical_modes() -> list[TensorMode]:
+def make_physical_modes(count: int = 12) -> list[TensorMode]:
     centers = [
         np.array([-0.55, -0.45, -0.15, 0.10]),
         np.array([-0.15, 0.35, -0.35, -0.10]),
@@ -277,7 +277,28 @@ def make_physical_modes() -> list[TensorMode]:
     # One additional mixed spatial mode for d=12.
     p5 = np.zeros((4, 4)); p5[2, 3] = p5[3, 2] = 1.0
     modes.append(TensorMode(np.array([0.0, 0.0, 0.0, 0.0]), radii, p5, "anisotropic_4"))
-    return modes
+
+    if count > 12:
+        # Extension to d=16 for the registered scaling surface. New centers keep
+        # the bumps inside the interior world tube; polarizations repeat earlier
+        # families at distinct locations, so independence comes from support.
+        extra_centers = [
+            np.array([-0.35, 0.50, 0.30, -0.20]),
+            np.array([0.45, -0.40, -0.30, 0.15]),
+            np.array([0.10, 0.45, 0.25, 0.30]),
+            np.array([-0.50, -0.10, 0.45, -0.05]),
+        ]
+        p6 = np.diag(np.array([-2.0, -2.0, -2.0, -2.0]))
+        p7 = np.zeros((4, 4)); p7[0, 1] = p7[1, 0] = 1.0
+        p8 = np.zeros((4, 4)); p8[2, 2] = 1.0; p8[3, 3] = -1.0
+        p9 = np.zeros((4, 4)); p9[0, 3] = p9[3, 0] = 1.0
+        for j, (c, pol, label) in enumerate(zip(
+                extra_centers, (p6, p7, p8, p9),
+                ("scalar_ext", "frame_drag_ext_1", "anisotropic_ext", "frame_drag_ext_3"))):
+            modes.append(TensorMode(c, radii, pol, label))
+    if count > len(modes):
+        raise ValueError(f"at most {len(modes)} modes available")
+    return modes[:count]
 
 
 def gaussian_packet_frequency_variance(s_width: float, half_extent: float = 14.0,

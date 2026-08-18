@@ -78,3 +78,38 @@ application_gate:
   name: PTA_link_response_to_Hellings_Downs
   status: separate_application_layer_not_evidence_for_spacelike_ellipticity
   requirement: "After deterministic per-link validation and stochastic averaging, reproduce the Hellings-Downs curve with <1% RMS error."
+
+# --------------------------------------------------------------------------
+# Added post-hoc after the v0.2 selector evaluation. The v0.2 preregistered
+# gate outcomes stand exactly as computed (learned_gate_2 PASS, learned_gate_3
+# FAIL with the gap reported, learned_gate_4 PASS); nothing below is applied
+# retroactively. These gates bind ONLY a future (v0.3+) learned architecture.
+proposed_v0_3_practical_gates:
+  rationale: >
+    learned_gate_4 compares latency against the expensive per-instance
+    optimizer only. The v0.2 policy passed its gates while being strictly
+    Pareto-dominated by greedy D-optimal selection (23x better objective at
+    0.4 ms vs 17 ms). Latency against a slow oracle must not obscure
+    domination by a faster heuristic.
+  practical_gate_A_no_domination: >
+    No registered baseline may be simultaneously at least as good on the
+    registered objective and at least as fast as the learned policy, with one
+    inequality strict (95% bootstrap CI on the paired quality ratio).
+  practical_gate_B_quality_at_latency: >
+    policy_objective / max(objective over baselines not slower than the
+    policy) >= 0.95.
+  staged_architecture_targets:
+    raw_policy_over_oracle: 0.80
+    refined_policy_over_oracle: 0.95
+    refinement: sequential learned warm start plus 2-5 deterministic swap rounds
+  activation_condition: >
+    Pursue a v0.3 learned selector only if the deterministic scaling study
+    stops supporting 'deterministic selection is cheap enough': candidate
+    pools far beyond M=4096, strict-latency online redesign, an expensive
+    forward model, correlated-probe joint design, or added discrete resources
+    (clocks, polarization links, network topology).
+  scaling_study_v0_2_result: >
+    Registered surface M in {256,512,1024,4096}, d in {6,8,12,16}, K/d in
+    {1.0,1.25,1.5,2.0}, registered seed_set: greedy D-optimal worst case
+    3.8 ms (M=4096, d=16, K=32), 100% full-rank success on every cell.
+    Amortization is not currently justified by latency.

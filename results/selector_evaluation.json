@@ -39,11 +39,42 @@
     "note": "spec permits reporting the gap instead of passing"
   },
   "learned_gate_4_speedup": {
-    "policy_ms_per_task": 2.5588179199803562,
-    "oracle_ms_per_task": 885.6856113600043,
-    "speedup": 346.1307678221996,
+    "policy_ms_per_task": 16.56314170999792,
+    "oracle_ms_per_task": 891.6944764000021,
+    "speedup": 53.83607120029368,
     "target": 20.0,
     "pass": true
   },
-  "heldout_full_rank_rate": 1.0
+  "heldout_full_rank_rate": 1.0,
+  "post_hoc_practical_utility": {
+    "post_hoc": true,
+    "note": "not preregistered; preregistered gate outcomes above are unchanged",
+    "latency_ms_per_task": {
+      "learned": 16.56314170999792,
+      "random": 0.09003229000114743,
+      "angular_spread": 0.8318417400028011,
+      "leverage": 0.3124414799998476,
+      "greedy_D": 0.36942992000291497,
+      "relaxed_E": 891.6944764000021
+    },
+    "pareto_dominated_by": [
+      {
+        "baseline": "greedy_D",
+        "quality_ratio": 23.31911979341812,
+        "ci95": [
+          13.455526045825673,
+          43.741646065129174
+        ],
+        "latency_ms": 0.36942992000291497
+      }
+    ],
+    "pareto_dominated": true,
+    "quality_at_latency": {
+      "best_baseline_not_slower_than_policy": "greedy_D",
+      "policy_over_that_baseline": 0.05526313170830995,
+      "proposed_v0_3_target": 0.95,
+      "pass": false
+    }
+  },
+  "policy_status": "frozen as an honest negative baseline for one-shot amortized selection"
 }
