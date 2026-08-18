@@ -21,14 +21,16 @@ Counts as of the fix commit; the parenthesised figures are where this stood at f
 
 | block | done | hollow | fails | absent |
 |---|---:|---:|---:|---:|
-| Stage 0 — theorem gates (8, was 7) | **8** (3) | **0** (3) | **0** (1) | 0 |
-| Stage 1 — deterministic design | **3** (2) | 0 | 0 | **1** (2) |
+| Stage 0 — 7 numerical checks + 1 process control | **8** (3) | **0** (3) | **0** (1) | 0 |
+| Stage 1 — deterministic design | **4** (2) | 0 | 0 | 0, with 2 partial (2) |
 | Stage 2 — amortized selector (10) | **6** (3) | **1** (2) | **1** (1) | **2** (4) |
 | Required ablations (9) | 0 | 0 | 0 | 9 |
 | §6 static redshift (5) | 0 | 0 | 0 | 5 |
 | §7 PTA / Hellings–Downs (4) | 0 | 0 | 0 | 4 |
 
-Stage 0 now tests its claims. Stage 1 produces exact rather than Monte-Carlo metrics. Stage 2
+Stage 0 now tests its claims — precisely: **seven scientific/numerical checks and one
+stop-on-failure process control (gate 7) pass**; calling all eight "theorem gates" would
+overstate what gate 7 measures. Stage 1 produces exact rather than Monte-Carlo metrics. Stage 2
 has a working policy and a minimal harness that computes gates 2, 3 and 4 — gate 3 fails, which
 is a reported result rather than a defect. What remains is the **full** harness (gates 1 and 5,
 the nine ablations), the registered multi-seed campaign, and spec §6 and §7, neither started.
@@ -46,7 +48,7 @@ the nine ablations), the registered multi-seed campaign, and spec §6 and §7, n
 | 5 | log-log slope `= -2.00±0.01` | **DONE** | `Var(ν̂)` now computed from `ψ_s` by quadrature and checked against `1/(4s²)` (**6.7e-16**) before the slope is fitted. Was `a²/s²` fitted to itself |
 | 6 | endpoint formula, rel. err ≤1e-8 | **DONE** | non-polynomial profile `0.35e^{0.4 sin 1.7t}+0.18 cos 0.9t`, so quadrature error is real: **1.5e-14**. Was degree-2, integrated exactly, error `0.0` |
 | 7 | no silent patching | **DONE** (mechanism) | `SystemExit` on failure, report written first. Still a hardcoded `"pass": true` — a policy statement, not a measurement |
-| 8 | gauge-quotient independence | **DONE** (new) | σ_min(J)=6.4e-3 against a sampled gauge floor of 8.6e-9, **margin 7.5e5**. Makes `d=12` tested rather than asserted, and gives the no-gauge-quotient negative control something to be a control against |
+| 8 | gauge-quotient independence | **DONE** (new) | certified at **every registered dimension**: margins 1.9e6 (d=6), 7.7e5 (d=8), 7.5e5 (d=12), 6.9e5 (d=16) against a sampled gauge floor of 8.6e-9. Makes each `d` the scaling study uses tested rather than asserted |
 
 Suite runtime 0.9 s → 46.6 s, from raising the package quadrature order to 1024 and from gate 8's
 80 sampled gauge columns. Worth it: at the old order the gauge cancellation was 3.3e-07.
@@ -57,7 +59,8 @@ Suite runtime 0.9 s → 46.6 s, from raising the package quadrature order to 102
 |---|---|---|
 | 5 baselines (random, angular, leverage, greedy-D, relaxed-E) | **DONE** | relaxed-E is now the convex allocation + multi-start batched swap refinement, within 0.4–1.0% of a 40×-restart search (was 7% below it); greedy-D uses the rank-1 determinant update, 263× faster, identical subset |
 | 6 demo metrics (rank, λ_min, logdet, cond, MAP RMSE, runtime) | **DONE** | RMSE is now the closed form `sqrt(tr((F+Λ)⁻¹)/d)` — exact, and the unpaired-Monte-Carlo problem (noise at 10% of the design gaps) is gone |
-| registered multi-seed campaign | **ABSENT** | still one run at seed `20260818`, which is **not in** `seed_set: [2026, 3407, 9181, 17041, 27183]`. No registered seed has been run |
+| registered scaling campaign — runtime, rank, memory, blocking | **DONE** | full surface × `seed_set` in `results/scaling_study.json`; see the resolution section below |
+| registered full-metric campaign — RMSE, worst-direction, coverage | **PARTIAL / REMAINING** | metrics implemented in `design_experiment.py` (except coverage) but not yet swept over the registered seeds; this is the paper's main quantitative table |
 | 3 further config metrics | **PARTIAL** | `worst_direction_error` and `full_rank` now reported; `credible_interval_coverage` still absent |
 
 The single instance is exactly what the spec says it is — an engineering sanity check. It is not
@@ -76,14 +79,14 @@ a paper result and the spec does not claim otherwise.
 | task distribution | **DONE** | 7 of 8 axes: `d∈{6,8,10,12}`, `K/d∈{1,1.25,1.5,2}`, pool density, angular **sector** blocking, mixing, scaling, widths. Yields 12/12 distinct D-optimal subsets at 26% overlap. Prior `R` still frozen; `d=16` needs more modes than the family has |
 | 20 000 / 2 000 / 5 000 task campaign | **ABSENT** | 1200 steps × batch 8 = 9 600 draws; evaluation is 100 tasks at a held-out seed. No registered-scale splits |
 | 6 evaluation baselines vs the policy | **PARTIAL** | five now run against the policy in `evaluate_selector.py`; the per-instance logit oracle still does not exist |
-| 5 preregistered ML gates | **PARTIAL** | **3 of 5 computed** — gate 2 PASS (3.57× random, 1.92× angular, CIs excluding 1.0), gate 3 FAIL at 0.026× (gap reported, as the spec permits), gate 4 PASS at 494×. Gates 1 and 5 need the ablation sweep |
+| 5 preregistered ML gates | **PARTIAL** | **3 of 5 computed** — gate 2 PASS (3.57× random, 1.92× angular, CIs excluding 1.0), gate 3 FAIL at 0.026× (gap reported, as the spec permits), gate 4 PASS at **53.8× end-to-end** (16.56 ms policy vs 891.69 ms oracle; an earlier 494×/1.8 ms figure timed only the model forward pass and is superseded). Gates 1 and 5 need the ablation sweep |
 | MAP reconstruction on selector output | **ABSENT** | implemented for Stage 1 only |
 
 Gate 3's failure is the substantive open question: the policy sits ~40× below the relaxed-E
 oracle and ~18× below a 0.6 ms greedy heuristic. Closing it needs a better selection mechanism,
 not a longer run.
 
-## Required ablations (spec §5) — 0 of 9 run
+## Required ablations — 0 run (8 registered scientific ablations in `experiment.yaml`, plus one numerical-convergence sweep the spec text lists; quadrature convergence validates implementation, not physics, so it is counted separately)
 
 Runnable today via existing flags, just never swept:
 
@@ -143,17 +146,34 @@ The deterministic **scaling study has now run on the full registered surface wit
 registered seeds** — the first use of `seed_set` anywhere in the package
 (`results/scaling_study.json`, `run_scaling_study.sh`):
 
-- greedy D-optimal worst case: **5.4 ms** at the largest registered instances;
-  median 0.14–2.8 ms across all 64 cells; peak traced memory **586 KiB**;
+- greedy D-optimal worst case: **~6 ms** at M=4096 (run-to-run range 3.8–6.0 ms on
+  this machine); median 0.14–2.8 ms across all 64 cells; peak traced memory **586 KiB**;
 - **100% full-rank success on every cell and every registered seed**, including
   under a pinned worst-case 20% angular-sector block — median λ_min retains 97%
   of its unblocked value (worst cell 42%, still full rank);
-- relaxed-E reference at K/d=1.5: 0.3 s (M=256) to 42.5 s (M=4096, d=16).
+- relaxed-E reference at K/d=1.5: 0.3 s (M=256) to 42.5 s (M=4096, d=16);
+- **order stability**: the runtime sweep builds J at order 512; on the boundary
+  cells (M=256/d=6, M=1024/d=12, M=4096/d=16) the greedy-selected subsets are
+  **identical** between orders 512 and 1024 on every registered seed, with
+  λ_min shifts ≤ 2.9e-8. Final paper tables must still be built at order 1024;
+- **normalization declared**: reported eigenvalues are of the whitened
+  visibility operator, R = diag(‖J_col‖²), J̃ = JR^(-1/2). Rank and
+  blocked/unblocked ratios are normalization-independent; absolute
+  cross-family λ_min values are not physical QFI in the raw parameterization;
+- **cost structure**: at M=4096 the J-build is ~13 s while selection is
+  milliseconds. The DeepSets policy consumes features derived from J, so it
+  never touched the dominant cost — it amortized the step that was already
+  cheap. This, not latency alone, is why ML has no operational role here.
 
 The post-hoc practical-utility analysis (`selector_evaluation.json`) shows the v0.2 policy is
 **strictly Pareto-dominated**: greedy-D is 23.3× better on the objective (CI95 [13.5, 43.7])
 at 0.37 ms vs the policy's 16.6 ms. Preregistered outcomes stand: gate 2 PASS, gate 3 FAIL
 (gap reported), gate 4 PASS.
+
+**Selector disposition:** DeepSets v0.2 is frozen; the 20 000/2 000/5 000-task campaign will
+**not** be run for this architecture — a post-hoc practical-futility decision (recorded here,
+gates unchanged): a larger campaign would only add precision around a structurally clear
+conclusion.
 
 **Consequence for Paper 1:** deterministic Fisher-aware selection is cheap everywhere the
 registration reaches, so amortization is not currently justified by latency. The one-shot
@@ -173,10 +193,14 @@ study on registered seeds, the post-hoc Pareto analysis, and a CI portability ga
 JSON reports). What remains:
 
 1. **§6 static redshift** — ~a day, unblocks the delay+redshift ablation. Now the top item.
-2. **Finish the harness** — gates 1 and 5, credible-interval coverage, and the nine ablation
-   sweeps (deterministic-only now, which makes them much cheaper).
-3. **Registered deterministic campaign** — extend the scaling study's registered-seed runs to
-   the full metric set (RMSE, worst-direction, coverage) as the paper's quantitative table.
+2. **Registered deterministic full-metric campaign** — RMSE, worst-direction error,
+   credible-interval coverage, condition number, blocked/unblocked retention, build and
+   selection time, at order 1024, over `seed_set`. The paper's main quantitative table.
+3. **Deterministic ablations** — no-gauge-quotient negative control, uniform vs QFI weights,
+   homogeneous vs heterogeneous widths, delay vs delay+redshift (after §6), candidate
+   density, K/d, D vs E. The learned-policy ablation campaign is no longer needed for
+   Paper 1. Off-diagonal W (correlated probes) is deliberately deferred past Paper 1 — it
+   is the foundation of the quantum companion paper, not a blocker here.
 4. **v0.3 learned selector** — only if an activation condition in the YAML becomes true;
    sequential Fisher-aware scoring (a_i^T F_t^{-1} a_i, alignment with v_min(F_t)) + swap
    refinement, against the forward-registered practical gates.

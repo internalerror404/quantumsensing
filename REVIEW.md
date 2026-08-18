@@ -45,7 +45,7 @@ verifiable without one. On 100 held-out tasks at a seed distinct from training:
    gate 2 vs random           3.57x  CI95 [2.28, 5.85]   PASS
    gate 2 vs angular_spread   1.92x  CI95 [1.09, 3.26]   PASS
    gate 3 vs oracle           0.026x CI95 [0.015, 0.041] FAIL - gap reported, as the spec permits
-   gate 4 speedup              494x  (1.80 ms vs 889 ms) PASS
+   gate 4 speedup             53.8x  (16.6 ms vs 892 ms end-to-end) PASS
    held-out full-rank rate     100%
 ```
 
@@ -59,7 +59,7 @@ beating the two weakest baselines, which is the discrimination problem in M7.
 Whole suite, end to end: **2.7 minutes.**
 
 ```
-run_task1.sh            46.6 s     8/8 gates
+run_task1.sh            46.6 s     7 numerical checks + stop-on-failure control
 run_design_demo.sh       4.1 s     (was 8.5 s)
 run_selector_sanity.sh  16.4 s     1200 steps
 run_selector_eval.sh    92.1 s     100 held-out tasks
@@ -67,10 +67,12 @@ make_figures.py          1.7 s
 ```
 
 **Update after the scaling study:** the deterministic scaling study has since run over the full
-registered surface on the registered seeds: greedy-D worst case **3.8 ms** at M=4096, d=16,
-K=32, 100% full-rank on all 64 cells. The post-hoc Pareto analysis shows the policy strictly
-dominated by greedy-D (23.3× better, 45× faster). Preregistered v0.2 outcomes unchanged;
-consequence and forward-only v0.3 gates in `STATUS.md` and `configs/experiment.yaml`.
+registered surface on the registered seeds: greedy-D worst case **~6 ms** at M=4096, d=16, K=32
+(run-to-run range 3.8–6.0 ms on this machine; median per cell 0.14–2.8 ms), 100% full-rank on
+all 64 cells including under a pinned 20% sector block. The post-hoc Pareto analysis shows the
+policy strictly dominated by greedy-D (23.3× better at 0.37 ms vs 16.6 ms end-to-end).
+Preregistered v0.2 outcomes unchanged; consequence and forward-only v0.3 gates in `STATUS.md`
+and `configs/experiment.yaml`. `STATUS.md` is the canonical record for these numbers.
 
 Still open, in priority order: spec section 6 (static redshift), the ablation sweeps and gates
 1 and 5, the full deterministic campaign metrics, and spec section 7 (PTA). See `STATUS.md`.

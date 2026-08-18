@@ -422,11 +422,27 @@
   },
   "gate_8_gauge_quotient": {
     "pass": true,
-    "sigma_min_physical": 0.006393557780699085,
     "gauge_floor": 8.574714598526799e-09,
-    "margin": 745629.2226679529,
     "threshold": 1000.0,
-    "statement": "physical mode family is independent modulo G = {2 d^s V} + {phi eta}"
+    "by_dimension": {
+      "6": {
+        "sigma_min": 0.016425293609213857,
+        "margin": 1915549.890376042
+      },
+      "8": {
+        "sigma_min": 0.006625267649768348,
+        "margin": 772651.6811307772
+      },
+      "12": {
+        "sigma_min": 0.006393557780699085,
+        "margin": 745629.2226679529
+      },
+      "16": {
+        "sigma_min": 0.005885790480704171,
+        "margin": 686412.4062759354
+      }
+    },
+    "statement": "physical mode family is independent modulo G = {2 d^s V} + {phi eta}, certified at every registered dimension d in {6, 8, 12, 16}"
   },
   "all_pass": true
 }

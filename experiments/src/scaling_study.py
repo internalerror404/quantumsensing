@@ -116,11 +116,57 @@ def main() -> None:
         cells.append({"M": len(rays), "jacobian_build_seconds": float(build_s),
                       "quadrature_order": args.order})
 
+    # Order-stability check: the runtime sweep builds J at --order (512 by
+    # default) for speed, but the certified operator uses order 1024 (the
+    # compact-gauge residual at 512 is ~1e-10 -- at the pinned gate, not
+    # comfortably under it). Verify on the boundary cells that the design
+    # conclusions do not depend on the order: same selected subsets, or
+    # negligible lambda_min shift, between 512 and 1024.
+    stability = []
+    for m_target, d, ratio in ((256, 6, 1.5), (1024, 12, 1.5), (4096, 16, 2.0)):
+        n_dir, n_off = POOLS[m_target]
+        rays = candidate_rays(direction_count=n_dir, offsets_per_direction=n_off)
+        k = int(round(d * ratio))
+        per_order = {}
+        for order in (512, 1024):
+            j = mode_matrix(rays, modes16, order=order)[:, :d]
+            j = j / np.maximum(np.linalg.norm(j, axis=0), 1e-12)
+            sel, lam = [], []
+            for seed in SEED_SET:
+                rng = np.random.default_rng(seed)
+                widths = np.exp(rng.uniform(np.log(0.05), np.log(0.20), size=len(rays)))
+                q = 1.0 / np.square(widths)
+                idx = greedy_d_design(j, q, k)
+                sel.append(tuple(idx.tolist()))
+                lam.append(float(np.linalg.eigvalsh(fisher(j, q, idx))[0]))
+            per_order[order] = (sel, lam)
+        identical = [a == b for a, b in zip(per_order[512][0], per_order[1024][0])]
+        rel = [abs(a - b) / max(abs(b), 1e-30)
+               for a, b in zip(per_order[512][1], per_order[1024][1])]
+        stability.append({
+            "M": len(rays), "d": d, "K": k,
+            "subsets_identical_per_seed": identical,
+            "all_subsets_identical": bool(all(identical)),
+            "max_rel_lambda_min_shift": float(max(rel)),
+        })
+
     worst = max((c for c in cells if "greedy_D" in c),
                 key=lambda c: c["greedy_D"]["max_latency_ms"])
     report = {
         "registered_seed_set": SEED_SET,
         "surface": {"M": list(POOLS), "d": DIMS, "K_over_d": BUDGET_RATIOS},
+        "parameter_normalization": (
+            "columns of J whitened to unit norm: R = diag(||J_:,1||^2, ..., ||J_:,d||^2), "
+            "J_tilde = J R^{-1/2}. Reported eigenvalues are of the normalized visibility "
+            "operator, not raw physical QFI; rank and blocked/unblocked ratios are "
+            "normalization-independent, absolute cross-family lambda_min values are not."
+        ),
+        "quadrature_note": (
+            "runtime sweep at --order (default 512) for J-build speed; design-conclusion "
+            "stability vs the certified order 1024 is verified on boundary cells below. "
+            "Final paper tables must use order 1024."
+        ),
+        "order_stability": stability,
         "cells": cells,
         "worst_case_greedy": {
             "M": worst["M"], "d": worst["d"], "K": worst["K"],
@@ -130,7 +176,8 @@ def main() -> None:
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(report, indent=2), encoding="utf-8")
-    print(json.dumps(report["worst_case_greedy"], indent=2))
+    print(json.dumps({"worst_case_greedy": report["worst_case_greedy"],
+                      "order_stability": stability}, indent=2))
 
 
 if __name__ == "__main__":

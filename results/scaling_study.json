@@ -26,6 +26,52 @@
       2.0
     ]
   },
+  "parameter_normalization": "columns of J whitened to unit norm: R = diag(||J_:,1||^2, ..., ||J_:,d||^2), J_tilde = J R^{-1/2}. Reported eigenvalues are of the normalized visibility operator, not raw physical QFI; rank and blocked/unblocked ratios are normalization-independent, absolute cross-family lambda_min values are not.",
+  "quadrature_note": "runtime sweep at --order (default 512) for J-build speed; design-conclusion stability vs the certified order 1024 is verified on boundary cells below. Final paper tables must use order 1024.",
+  "order_stability": [
+    {
+      "M": 256,
+      "d": 6,
+      "K": 9,
+      "subsets_identical_per_seed": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "all_subsets_identical": true,
+      "max_rel_lambda_min_shift": 2.184691974987386e-08
+    },
+    {
+      "M": 1024,
+      "d": 12,
+      "K": 18,
+      "subsets_identical_per_seed": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "all_subsets_identical": true,
+      "max_rel_lambda_min_shift": 1.502934162969226e-08
+    },
+    {
+      "M": 4096,
+      "d": 16,
+      "K": 32,
+      "subsets_identical_per_seed": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "all_subsets_identical": true,
+      "max_rel_lambda_min_shift": 2.859574495287056e-08
+    }
+  ],
   "cells": [
     {
       "M": 256,
@@ -33,8 +79,8 @@
       "K": 6,
       "K_over_d": 1.0,
       "greedy_D": {
-        "median_latency_ms": 0.4769570000036083,
-        "max_latency_ms": 0.5607430000011959,
+        "median_latency_ms": 0.4233530000021801,
+        "max_latency_ms": 0.6398750000187192,
         "median_lambda_min": 1.7248295145221224,
         "full_rank_rate": 1.0,
         "peak_memory_kib": 19.2900390625,
@@ -57,8 +103,8 @@
       "K": 8,
       "K_over_d": 1.25,
       "greedy_D": {
-        "median_latency_ms": 0.5577979999955573,
-        "max_latency_ms": 0.6486150000029056,
+        "median_latency_ms": 0.4908349999936945,
+        "max_latency_ms": 0.7378610000046137,
         "median_lambda_min": 2.896723330585901,
         "full_rank_rate": 1.0,
         "peak_memory_kib": 19.4228515625,
@@ -81,8 +127,8 @@
       "K": 9,
       "K_over_d": 1.5,
       "greedy_D": {
-        "median_latency_ms": 0.6091609999998582,
-        "max_latency_ms": 0.7326749999947424,
+        "median_latency_ms": 0.5375539999761259,
+        "max_latency_ms": 0.591708000001745,
         "median_lambda_min": 2.9313453339762137,
         "full_rank_rate": 1.0,
         "peak_memory_kib": 18.9541015625,
@@ -99,7 +145,7 @@
         "full_rank_rate": 1.0
       },
       "relaxed_E": {
-        "latency_s": 0.31401680300000123,
+        "latency_s": 0.3028626059999908,
         "lambda_min": 5.117571907669209,
         "restarts": 4,
         "seed": 2026
@@ -111,8 +157,8 @@
       "K": 12,
       "K_over_d": 2.0,
       "greedy_D": {
-        "median_latency_ms": 0.7231619999998884,
-        "max_latency_ms": 0.7465629999998669,
+        "median_latency_ms": 0.7138529999792809,
+        "max_latency_ms": 0.7884700000033718,
         "median_lambda_min": 3.8349147812974937,
         "full_rank_rate": 1.0,
         "peak_memory_kib": 19.0166015625,
@@ -135,8 +181,8 @@
       "K": 8,
       "K_over_d": 1.0,
       "greedy_D": {
-        "median_latency_ms": 0.4879379999991329,
-        "max_latency_ms": 0.5066989999988891,
+        "median_latency_ms": 0.47045799999523297,
+        "max_latency_ms": 0.5395840000232965,
         "median_lambda_min": 0.9090147870107971,
         "full_rank_rate": 1.0,
         "peak_memory_kib": 23.3134765625,
@@ -159,8 +205,8 @@
       "K": 10,
       "K_over_d": 1.25,
       "greedy_D": {
-        "median_latency_ms": 0.5758989999975483,
-        "max_latency_ms": 0.6236779999966302,
+        "median_latency_ms": 0.5764800000065406,
+        "max_latency_ms": 0.6551270000159093,
         "median_lambda_min": 1.0008023658567922,
         "full_rank_rate": 1.0,
         "peak_memory_kib": 23.3759765625,
@@ -183,8 +229,8 @@
       "K": 12,
       "K_over_d": 1.5,
       "greedy_D": {
-        "median_latency_ms": 0.6656809999938673,
-        "max_latency_ms": 0.9204150000030609,
+        "median_latency_ms": 0.7022940000069866,
+        "max_latency_ms": 0.7537099999979091,
         "median_lambda_min": 1.6825617635324313,
         "full_rank_rate": 1.0,
         "peak_memory_kib": 23.3759765625,
@@ -201,7 +247,7 @@
         "full_rank_rate": 1.0
       },
       "relaxed_E": {
-        "latency_s": 0.47583640700000274,
+        "latency_s": 0.45722251000000824,
         "lambda_min": 3.5674374182787796,
         "restarts": 4,
         "seed": 2026
@@ -213,8 +259,8 @@
       "K": 16,
       "K_over_d": 2.0,
       "greedy_D": {
-        "median_latency_ms": 0.9310340000041606,
-        "max_latency_ms": 0.9793579999950452,
+        "median_latency_ms": 0.8863799999971889,
+        "max_latency_ms": 0.9472779999839531,
         "median_lambda_min": 2.278107520860196,
         "full_rank_rate": 1.0,
         "peak_memory_kib": 23.2509765625,
@@ -237,8 +283,8 @@
       "K": 12,
       "K_over_d": 1.0,
       "greedy_D": {
-        "median_latency_ms": 0.7622549999979356,
-        "max_latency_ms": 0.9688820000022247,
+        "median_latency_ms": 0.7690540000169221,
+        "max_latency_ms": 0.9382859999789162,
         "median_lambda_min": 0.9113025084579566,
         "full_rank_rate": 1.0,
         "peak_memory_kib": 32.0322265625,
@@ -261,8 +307,8 @@
       "K": 15,
       "K_over_d": 1.25,
       "greedy_D": {
-        "median_latency_ms": 0.9364089999976954,
-        "max_latency_ms": 1.0136090000045783,
+        "median_latency_ms": 0.9252809999793499,
+        "max_latency_ms": 0.9922859999846878,
         "median_lambda_min": 1.1247669086930967,
         "full_rank_rate": 1.0,
         "peak_memory_kib": 32.0322265625,
@@ -285,8 +331,8 @@
       "K": 18,
       "K_over_d": 1.5,
       "greedy_D": {
-        "median_latency_ms": 1.1331749999996532,
-        "max_latency_ms": 1.3722659999970688,
+        "median_latency_ms": 1.1250409999945532,
+        "max_latency_ms": 1.1677800000029492,
         "median_lambda_min": 1.4492825089525134,
         "full_rank_rate": 1.0,
         "peak_memory_kib": 32.0947265625,
@@ -303,7 +349,7 @@
         "full_rank_rate": 1.0
       },
       "relaxed_E": {
-        "latency_s": 1.1173114829999946,
+        "latency_s": 1.0919374919999996,
         "lambda_min": 3.3816952339465525,
         "restarts": 4,
         "seed": 2026
@@ -315,8 +361,8 @@
       "K": 24,
       "K_over_d": 2.0,
       "greedy_D": {
-        "median_latency_ms": 1.4383549999976708,
-        "max_latency_ms": 1.538641999999868,
+        "median_latency_ms": 1.4240050000182691,
+        "max_latency_ms": 1.4934259999961341,
         "median_lambda_min": 2.0185991752523322,
         "full_rank_rate": 1.0,
         "peak_memory_kib": 31.9697265625,
@@ -339,8 +385,8 @@
       "K": 16,
       "K_over_d": 1.0,
       "greedy_D": {
-        "median_latency_ms": 0.983255000001293,
-        "max_latency_ms": 1.1284879999990949,
+        "median_latency_ms": 1.009453999984089,
+        "max_latency_ms": 1.0913559999892186,
         "median_lambda_min": 0.45170556371051257,
         "full_rank_rate": 1.0,
         "peak_memory_kib": 40.9384765625,
@@ -363,8 +409,8 @@
       "K": 20,
       "K_over_d": 1.25,
       "greedy_D": {
-        "median_latency_ms": 1.2282859999999118,
-        "max_latency_ms": 1.2806039999944119,
+        "median_latency_ms": 1.2586429999998927,
+        "max_latency_ms": 1.5921060000039233,
         "median_lambda_min": 0.7003322338302747,
         "full_rank_rate": 1.0,
         "peak_memory_kib": 41.0009765625,
@@ -387,8 +433,8 @@
       "K": 24,
       "K_over_d": 1.5,
       "greedy_D": {
-        "median_latency_ms": 1.462523000000715,
-        "max_latency_ms": 1.5085109999972701,
+        "median_latency_ms": 1.4519430000063949,
+        "max_latency_ms": 1.5813470000125562,
         "median_lambda_min": 0.8206170535756453,
         "full_rank_rate": 1.0,
         "peak_memory_kib": 41.0009765625,
@@ -405,7 +451,7 @@
         "full_rank_rate": 1.0
       },
       "relaxed_E": {
-        "latency_s": 2.4273119479999963,
+        "latency_s": 2.5045771750000085,
         "lambda_min": 2.229222600224202,
         "restarts": 4,
         "seed": 2026
@@ -417,8 +463,8 @@
       "K": 32,
       "K_over_d": 2.0,
       "greedy_D": {
-        "median_latency_ms": 1.8989100000013082,
-        "max_latency_ms": 2.003287000000853,
+        "median_latency_ms": 1.9830829999989419,
+        "max_latency_ms": 2.018407999997862,
         "median_lambda_min": 1.602534001035241,
         "full_rank_rate": 1.0,
         "peak_memory_kib": 40.9384765625,
@@ -437,7 +483,7 @@
     },
     {
       "M": 256,
-      "jacobian_build_seconds": 0.8389778139999962,
+      "jacobian_build_seconds": 0.8412017379999952,
       "quadrature_order": 512
     },
     {
@@ -446,8 +492,8 @@
       "K": 6,
       "K_over_d": 1.0,
       "greedy_D": {
-        "median_latency_ms": 0.40560400000089203,
-        "max_latency_ms": 0.5036100000026522,
+        "median_latency_ms": 0.4309469999839166,
+        "max_latency_ms": 0.5000849999987622,
         "median_lambda_min": 0.39919951652114843,
         "full_rank_rate": 1.0,
         "peak_memory_kib": 35.3837890625,
@@ -470,8 +516,8 @@
       "K": 8,
       "K_over_d": 1.25,
       "greedy_D": {
-        "median_latency_ms": 0.5787119999993706,
-        "max_latency_ms": 0.726567000000955,
+        "median_latency_ms": 0.49474400000804053,
+        "max_latency_ms": 0.6112880000159748,
         "median_lambda_min": 1.3502723243634183,
         "full_rank_rate": 1.0,
         "peak_memory_kib": 35.2666015625,
@@ -494,8 +540,8 @@
       "K": 9,
       "K_over_d": 1.5,
       "greedy_D": {
-        "median_latency_ms": 0.5964269999978455,
-        "max_latency_ms": 0.6315559999947595,
+        "median_latency_ms": 0.5558739999855788,
+        "max_latency_ms": 0.6172349999928883,
         "median_lambda_min": 1.3522634816467094,
         "full_rank_rate": 1.0,
         "peak_memory_kib": 35.2666015625,
@@ -512,7 +558,7 @@
         "full_rank_rate": 1.0
       },
       "relaxed_E": {
-        "latency_s": 0.4524009380000038,
+        "latency_s": 0.4421869200000117,
         "lambda_min": 2.8082098605710746,
         "restarts": 4,
         "seed": 2026
@@ -524,8 +570,8 @@
       "K": 12,
       "K_over_d": 2.0,
       "greedy_D": {
-        "median_latency_ms": 0.7499949999996147,
-        "max_latency_ms": 1.1098319999973683,
+        "median_latency_ms": 0.7155400000158352,
+        "max_latency_ms": 0.8556269999928645,
         "median_lambda_min": 1.961466780916099,
         "full_rank_rate": 1.0,
         "peak_memory_kib": 35.3603515625,
@@ -548,8 +594,8 @@
       "K": 8,
       "K_over_d": 1.0,
       "greedy_D": {
-        "median_latency_ms": 0.5922200000014755,
-        "max_latency_ms": 0.7132060000003548,
+        "median_latency_ms": 0.5255290000150126,
+        "max_latency_ms": 0.5922569999938787,
         "median_lambda_min": 0.48480281768561184,
         "full_rank_rate": 1.0,
         "peak_memory_kib": 43.6259765625,
@@ -572,8 +618,8 @@
       "K": 10,
       "K_over_d": 1.25,
       "greedy_D": {
-        "median_latency_ms": 0.7272439999965741,
-        "max_latency_ms": 0.7850620000056097,
+        "median_latency_ms": 0.6354649999877893,
+        "max_latency_ms": 0.7246140000063406,
         "median_lambda_min": 0.8133295710800352,
         "full_rank_rate": 1.0,
         "peak_memory_kib": 43.6884765625,
@@ -596,8 +642,8 @@
       "K": 12,
       "K_over_d": 1.5,
       "greedy_D": {
-        "median_latency_ms": 0.7493600000003653,
-        "max_latency_ms": 0.7940209999972581,
+        "median_latency_ms": 0.756656000021394,
+        "max_latency_ms": 0.8238059999996494,
         "median_lambda_min": 0.8266698689570333,
         "full_rank_rate": 1.0,
         "peak_memory_kib": 43.6884765625,
@@ -614,7 +660,7 @@
         "full_rank_rate": 1.0
       },
       "relaxed_E": {
-        "latency_s": 0.8525435960000038,
+        "latency_s": 0.8006709459999968,
         "lambda_min": 2.11616153444072,
         "restarts": 4,
         "seed": 2026
@@ -626,8 +672,8 @@
       "K": 16,
       "K_over_d": 2.0,
       "greedy_D": {
-        "median_latency_ms": 1.3462149999980966,
-        "max_latency_ms": 1.7417570000048954,
+        "median_latency_ms": 1.006031999992274,
+        "max_latency_ms": 1.11789299998577,
         "median_lambda_min": 1.0812738031134628,
         "full_rank_rate": 1.0,
         "peak_memory_kib": 43.6572265625,
@@ -650,8 +696,8 @@
       "K": 12,
       "K_over_d": 1.0,
       "greedy_D": {
-        "median_latency_ms": 1.0579440000029194,
-        "max_latency_ms": 1.3828240000037795,
+        "median_latency_ms": 0.8553990000166323,
+        "max_latency_ms": 0.9191389999898547,
         "median_lambda_min": 0.48565773425068554,
         "full_rank_rate": 1.0,
         "peak_memory_kib": 60.4384765625,
@@ -674,8 +720,8 @@
       "K": 15,
       "K_over_d": 1.25,
       "greedy_D": {
-        "median_latency_ms": 1.3336470000027134,
-        "max_latency_ms": 1.5008500000064373,
+        "median_latency_ms": 1.0149029999979575,
+        "max_latency_ms": 1.0807589999899392,
         "median_lambda_min": 0.6817467521779927,
         "full_rank_rate": 1.0,
         "peak_memory_kib": 60.4697265625,
@@ -698,8 +744,8 @@
       "K": 18,
       "K_over_d": 1.5,
       "greedy_D": {
-        "median_latency_ms": 1.668883999997206,
-        "max_latency_ms": 2.1882859999990956,
+        "median_latency_ms": 1.1694860000091012,
+        "max_latency_ms": 1.237305000017841,
         "median_lambda_min": 0.7597446345301471,
         "full_rank_rate": 1.0,
         "peak_memory_kib": 60.5634765625,
@@ -716,7 +762,7 @@
         "full_rank_rate": 1.0
       },
       "relaxed_E": {
-        "latency_s": 2.567422243000003,
+        "latency_s": 2.520326099000016,
         "lambda_min": 2.189306531642481,
         "restarts": 4,
         "seed": 2026
@@ -728,8 +774,8 @@
       "K": 24,
       "K_over_d": 2.0,
       "greedy_D": {
-        "median_latency_ms": 1.6179599999972538,
-        "max_latency_ms": 1.7057880000024284,
+        "median_latency_ms": 1.6681200000050467,
+        "max_latency_ms": 2.0352340000044933,
         "median_lambda_min": 1.157085415412972,
         "full_rank_rate": 1.0,
         "peak_memory_kib": 60.5009765625,
@@ -752,8 +798,8 @@
       "K": 16,
       "K_over_d": 1.0,
       "greedy_D": {
-        "median_latency_ms": 1.2276739999990127,
-        "max_latency_ms": 1.4038050000024782,
+        "median_latency_ms": 1.180779999998549,
+        "max_latency_ms": 1.2403329999983725,
         "median_lambda_min": 0.32393498410015736,
         "full_rank_rate": 1.0,
         "peak_memory_kib": 77.3759765625,
@@ -776,8 +822,8 @@
       "K": 20,
       "K_over_d": 1.25,
       "greedy_D": {
-        "median_latency_ms": 1.4870250000029728,
-        "max_latency_ms": 1.535909000004665,
+        "median_latency_ms": 1.3585570000032021,
+        "max_latency_ms": 1.6167649999943023,
         "median_lambda_min": 0.538909927644696,
         "full_rank_rate": 1.0,
         "peak_memory_kib": 77.5009765625,
@@ -800,8 +846,8 @@
       "K": 24,
       "K_over_d": 1.5,
       "greedy_D": {
-        "median_latency_ms": 1.6949820000036198,
-        "max_latency_ms": 2.3942490000052885,
+        "median_latency_ms": 1.6181839999944714,
+        "max_latency_ms": 1.7218119999995452,
         "median_lambda_min": 0.6736537352605855,
         "full_rank_rate": 1.0,
         "peak_memory_kib": 77.5634765625,
@@ -818,7 +864,7 @@
         "full_rank_rate": 1.0
       },
       "relaxed_E": {
-        "latency_s": 6.633625311999992,
+        "latency_s": 6.431663692000001,
         "lambda_min": 1.534361264486956,
         "restarts": 4,
         "seed": 2026
@@ -830,8 +876,8 @@
       "K": 32,
       "K_over_d": 2.0,
       "greedy_D": {
-        "median_latency_ms": 2.1424109999941265,
-        "max_latency_ms": 2.186659000003033,
+        "median_latency_ms": 2.35829400000398,
+        "max_latency_ms": 3.535980000009431,
         "median_lambda_min": 0.9049234412716514,
         "full_rank_rate": 1.0,
         "peak_memory_kib": 77.5947265625,
@@ -850,7 +896,7 @@
     },
     {
       "M": 512,
-      "jacobian_build_seconds": 1.6563058930000025,
+      "jacobian_build_seconds": 1.5552738280000256,
       "quadrature_order": 512
     },
     {
@@ -859,8 +905,8 @@
       "K": 6,
       "K_over_d": 1.0,
       "greedy_D": {
-        "median_latency_ms": 0.42925099999990834,
-        "max_latency_ms": 0.5123589999982414,
+        "median_latency_ms": 0.5486780000012459,
+        "max_latency_ms": 0.5607960000020284,
         "median_lambda_min": 0.29928726175867265,
         "full_rank_rate": 1.0,
         "peak_memory_kib": 68.0087890625,
@@ -883,8 +929,8 @@
       "K": 8,
       "K_over_d": 1.25,
       "greedy_D": {
-        "median_latency_ms": 0.5451889999932291,
-        "max_latency_ms": 0.6999609999951417,
+        "median_latency_ms": 0.5921879999846169,
+        "max_latency_ms": 0.7267029999979968,
         "median_lambda_min": 0.5839580566583853,
         "full_rank_rate": 1.0,
         "peak_memory_kib": 67.9853515625,
@@ -907,8 +953,8 @@
       "K": 9,
       "K_over_d": 1.5,
       "greedy_D": {
-        "median_latency_ms": 0.6265359999986231,
-        "max_latency_ms": 0.7285570000021835,
+        "median_latency_ms": 0.9904510000069422,
+        "max_latency_ms": 1.3701339999840911,
         "median_lambda_min": 0.9446434073949512,
         "full_rank_rate": 1.0,
         "peak_memory_kib": 68.0166015625,
@@ -925,7 +971,7 @@
         "full_rank_rate": 1.0
       },
       "relaxed_E": {
-        "latency_s": 0.6323852370000083,
+        "latency_s": 0.7138997630000006,
         "lambda_min": 1.5884713258427972,
         "restarts": 4,
         "seed": 2026
@@ -937,8 +983,8 @@
       "K": 12,
       "K_over_d": 2.0,
       "greedy_D": {
-        "median_latency_ms": 0.8107789999911574,
-        "max_latency_ms": 0.9097509999946851,
+        "median_latency_ms": 0.9341180000035365,
+        "max_latency_ms": 1.4452320000089003,
         "median_lambda_min": 0.9546155909773334,
         "full_rank_rate": 1.0,
         "peak_memory_kib": 67.9853515625,
@@ -961,8 +1007,8 @@
       "K": 8,
       "K_over_d": 1.0,
       "greedy_D": {
-        "median_latency_ms": 0.5385550000056583,
-        "max_latency_ms": 0.6412360000069839,
+        "median_latency_ms": 0.6396169999902668,
+        "max_latency_ms": 0.8213710000006813,
         "median_lambda_min": 0.2635666507011452,
         "full_rank_rate": 1.0,
         "peak_memory_kib": 84.1884765625,
@@ -985,8 +1031,8 @@
       "K": 10,
       "K_over_d": 1.25,
       "greedy_D": {
-        "median_latency_ms": 0.7761299999913263,
-        "max_latency_ms": 0.8451650000012023,
+        "median_latency_ms": 0.778553999992937,
+        "max_latency_ms": 0.801378999994995,
         "median_lambda_min": 0.30667543284350857,
         "full_rank_rate": 1.0,
         "peak_memory_kib": 84.2509765625,
@@ -1009,8 +1055,8 @@
       "K": 12,
       "K_over_d": 1.5,
       "greedy_D": {
-        "median_latency_ms": 0.8604040000079749,
-        "max_latency_ms": 0.9406020000000126,
+        "median_latency_ms": 0.9449599999982183,
+        "max_latency_ms": 1.0534960000256888,
         "median_lambda_min": 0.473796660152242,
         "full_rank_rate": 1.0,
         "peak_memory_kib": 84.2822265625,
@@ -1027,7 +1073,7 @@
         "full_rank_rate": 1.0
       },
       "relaxed_E": {
-        "latency_s": 1.716500823000004,
+        "latency_s": 1.7955975440000032,
         "lambda_min": 1.2611612615508128,
         "restarts": 4,
         "seed": 2026
@@ -1039,8 +1085,8 @@
       "K": 16,
       "K_over_d": 2.0,
       "greedy_D": {
-        "median_latency_ms": 1.1361170000014909,
-        "max_latency_ms": 1.2254490000032092,
+        "median_latency_ms": 1.0894600000028731,
+        "max_latency_ms": 1.155268000019305,
         "median_lambda_min": 0.6286638732198702,
         "full_rank_rate": 1.0,
         "peak_memory_kib": 84.2197265625,
@@ -1063,8 +1109,8 @@
       "K": 12,
       "K_over_d": 1.0,
       "greedy_D": {
-        "median_latency_ms": 0.9255930000051649,
-        "max_latency_ms": 1.016319000001431,
+        "median_latency_ms": 0.9584899999879326,
+        "max_latency_ms": 1.1444350000147097,
         "median_lambda_min": 0.2694017154925887,
         "full_rank_rate": 1.0,
         "peak_memory_kib": 117.0322265625,
@@ -1087,8 +1133,8 @@
       "K": 15,
       "K_over_d": 1.25,
       "greedy_D": {
-        "median_latency_ms": 1.159325000003264,
-        "max_latency_ms": 1.2101310000076637,
+        "median_latency_ms": 1.3686079999786216,
+        "max_latency_ms": 1.5093430000092667,
         "median_lambda_min": 0.3394834661998387,
         "full_rank_rate": 1.0,
         "peak_memory_kib": 117.0947265625,
@@ -1111,8 +1157,8 @@
       "K": 18,
       "K_over_d": 1.5,
       "greedy_D": {
-        "median_latency_ms": 1.3543399999917938,
-        "max_latency_ms": 1.4026470000061408,
+        "median_latency_ms": 1.5073640000196065,
+        "max_latency_ms": 1.6572499999938373,
         "median_lambda_min": 0.4766226922076768,
         "full_rank_rate": 1.0,
         "peak_memory_kib": 117.1884765625,
@@ -1129,7 +1175,7 @@
         "full_rank_rate": 1.0
       },
       "relaxed_E": {
-        "latency_s": 5.386365931,
+        "latency_s": 5.281478472999993,
         "lambda_min": 1.4130025064713398,
         "restarts": 4,
         "seed": 2026
@@ -1141,8 +1187,8 @@
       "K": 24,
       "K_over_d": 2.0,
       "greedy_D": {
-        "median_latency_ms": 2.2854130000098394,
-        "max_latency_ms": 2.381902999999852,
+        "median_latency_ms": 2.0073689999833277,
+        "max_latency_ms": 2.103790000006711,
         "median_lambda_min": 0.6645693861873477,
         "full_rank_rate": 1.0,
         "peak_memory_kib": 117.1884765625,
@@ -1165,8 +1211,8 @@
       "K": 16,
       "K_over_d": 1.0,
       "greedy_D": {
-        "median_latency_ms": 1.5101900000047408,
-        "max_latency_ms": 1.7766400000027716,
+        "median_latency_ms": 1.3502259999995658,
+        "max_latency_ms": 1.403377999992017,
         "median_lambda_min": 0.19491853363349315,
         "full_rank_rate": 1.0,
         "peak_memory_kib": 150.0009765625,
@@ -1189,8 +1235,8 @@
       "K": 20,
       "K_over_d": 1.25,
       "greedy_D": {
-        "median_latency_ms": 1.8103770000124086,
-        "max_latency_ms": 1.8895649999990383,
+        "median_latency_ms": 1.6940490000081354,
+        "max_latency_ms": 1.961759000010943,
         "median_lambda_min": 0.3294333431201077,
         "full_rank_rate": 1.0,
         "peak_memory_kib": 150.1572265625,
@@ -1213,8 +1259,8 @@
       "K": 24,
       "K_over_d": 1.5,
       "greedy_D": {
-        "median_latency_ms": 2.2973979999960648,
-        "max_latency_ms": 2.7750850000103355,
+        "median_latency_ms": 1.8257849999940845,
+        "max_latency_ms": 1.9554259999949863,
         "median_lambda_min": 0.44074303710956975,
         "full_rank_rate": 1.0,
         "peak_memory_kib": 150.2197265625,
@@ -1231,7 +1277,7 @@
         "full_rank_rate": 1.0
       },
       "relaxed_E": {
-        "latency_s": 11.755284521999997,
+        "latency_s": 11.397504136999999,
         "lambda_min": 0.9483805854450339,
         "restarts": 4,
         "seed": 2026
@@ -1243,8 +1289,8 @@
       "K": 32,
       "K_over_d": 2.0,
       "greedy_D": {
-        "median_latency_ms": 2.525155000000723,
-        "max_latency_ms": 3.2920249999932594,
+        "median_latency_ms": 2.4100089999876673,
+        "max_latency_ms": 2.6338760000044203,
         "median_lambda_min": 0.5494098842104462,
         "full_rank_rate": 1.0,
         "peak_memory_kib": 150.3134765625,
@@ -1263,7 +1309,7 @@
     },
     {
       "M": 1024,
-      "jacobian_build_seconds": 3.2420726989999906,
+      "jacobian_build_seconds": 3.2019074810000063,
       "quadrature_order": 512
     },
     {
@@ -1272,8 +1318,8 @@
       "K": 6,
       "K_over_d": 1.0,
       "greedy_D": {
-        "median_latency_ms": 0.6641860000087263,
-        "max_latency_ms": 0.9945050000084166,
+        "median_latency_ms": 0.6376400000078775,
+        "max_latency_ms": 0.907361000002993,
         "median_lambda_min": 0.20453299694962693,
         "full_rank_rate": 1.0,
         "peak_memory_kib": 263.0087890625,
@@ -1296,8 +1342,8 @@
       "K": 8,
       "K_over_d": 1.25,
       "greedy_D": {
-        "median_latency_ms": 0.9164629999958152,
-        "max_latency_ms": 0.9570229999980029,
+        "median_latency_ms": 0.8453199999962635,
+        "max_latency_ms": 0.9163379999961307,
         "median_lambda_min": 0.3652065045189434,
         "full_rank_rate": 1.0,
         "peak_memory_kib": 262.9853515625,
@@ -1320,8 +1366,8 @@
       "K": 9,
       "K_over_d": 1.5,
       "greedy_D": {
-        "median_latency_ms": 0.9470629999981384,
-        "max_latency_ms": 1.03995799999268,
+        "median_latency_ms": 0.899115999999367,
+        "max_latency_ms": 1.0520589999885033,
         "median_lambda_min": 0.37519944589400306,
         "full_rank_rate": 1.0,
         "peak_memory_kib": 263.0166015625,
@@ -1338,7 +1384,7 @@
         "full_rank_rate": 1.0
       },
       "relaxed_E": {
-        "latency_s": 1.7053858359999907,
+        "latency_s": 1.5833768310000096,
         "lambda_min": 0.6980655525759769,
         "restarts": 2,
         "seed": 2026
@@ -1350,8 +1396,8 @@
       "K": 12,
       "K_over_d": 2.0,
       "greedy_D": {
-        "median_latency_ms": 1.2328499999938458,
-        "max_latency_ms": 1.4577769999988277,
+        "median_latency_ms": 1.2944640000114305,
+        "max_latency_ms": 1.671456999986276,
         "median_lambda_min": 0.4629742649677614,
         "full_rank_rate": 1.0,
         "peak_memory_kib": 263.0478515625,
@@ -1374,8 +1420,8 @@
       "K": 8,
       "K_over_d": 1.0,
       "greedy_D": {
-        "median_latency_ms": 0.8928749999910224,
-        "max_latency_ms": 1.0445249999975204,
+        "median_latency_ms": 0.8543840000072578,
+        "max_latency_ms": 0.9145559999979014,
         "median_lambda_min": 0.19934341280706744,
         "full_rank_rate": 1.0,
         "peak_memory_kib": 327.2509765625,
@@ -1398,8 +1444,8 @@
       "K": 10,
       "K_over_d": 1.25,
       "greedy_D": {
-        "median_latency_ms": 1.0419590000054768,
-        "max_latency_ms": 1.0955340000009528,
+        "median_latency_ms": 1.0427150000111851,
+        "max_latency_ms": 1.090513999997711,
         "median_lambda_min": 0.2010691349841776,
         "full_rank_rate": 1.0,
         "peak_memory_kib": 327.3759765625,
@@ -1422,8 +1468,8 @@
       "K": 12,
       "K_over_d": 1.5,
       "greedy_D": {
-        "median_latency_ms": 1.3305660000071384,
-        "max_latency_ms": 1.3885390000041298,
+        "median_latency_ms": 1.3367139999900246,
+        "max_latency_ms": 1.3469870000051287,
         "median_lambda_min": 0.20840923227898145,
         "full_rank_rate": 1.0,
         "peak_memory_kib": 327.4072265625,
@@ -1440,7 +1486,7 @@
         "full_rank_rate": 1.0
       },
       "relaxed_E": {
-        "latency_s": 4.9412661439999965,
+        "latency_s": 5.003865281000003,
         "lambda_min": 0.6946611462014011,
         "restarts": 2,
         "seed": 2026
@@ -1452,8 +1498,8 @@
       "K": 16,
       "K_over_d": 2.0,
       "greedy_D": {
-        "median_latency_ms": 1.9170489999993379,
-        "max_latency_ms": 2.1255270000040127,
+        "median_latency_ms": 1.9963249999932486,
+        "max_latency_ms": 2.9756349999843223,
         "median_lambda_min": 0.39198626508784074,
         "full_rank_rate": 1.0,
         "peak_memory_kib": 327.4072265625,
@@ -1476,8 +1522,8 @@
       "K": 12,
       "K_over_d": 1.0,
       "greedy_D": {
-        "median_latency_ms": 1.763944000003903,
-        "max_latency_ms": 2.046352999997225,
+        "median_latency_ms": 1.8929499999842392,
+        "max_latency_ms": 2.0485659999849304,
         "median_lambda_min": 0.18383264778238587,
         "full_rank_rate": 1.0,
         "peak_memory_kib": 456.1259765625,
@@ -1500,8 +1546,8 @@
       "K": 15,
       "K_over_d": 1.25,
       "greedy_D": {
-        "median_latency_ms": 2.1527589999976726,
-        "max_latency_ms": 2.2404999999992015,
+        "median_latency_ms": 2.088528999991013,
+        "max_latency_ms": 2.339949999992541,
         "median_lambda_min": 0.19864461880695547,
         "full_rank_rate": 1.0,
         "peak_memory_kib": 456.1884765625,
@@ -1524,8 +1570,8 @@
       "K": 18,
       "K_over_d": 1.5,
       "greedy_D": {
-        "median_latency_ms": 2.671757000001662,
-        "max_latency_ms": 3.005860000001803,
+        "median_latency_ms": 2.718332999990025,
+        "max_latency_ms": 3.075214000006099,
         "median_lambda_min": 0.20642284155461862,
         "full_rank_rate": 1.0,
         "peak_memory_kib": 456.3134765625,
@@ -1542,7 +1588,7 @@
         "full_rank_rate": 1.0
       },
       "relaxed_E": {
-        "latency_s": 17.73764221799999,
+        "latency_s": 17.673549070000007,
         "lambda_min": 0.7592312233261961,
         "restarts": 2,
         "seed": 2026
@@ -1554,8 +1600,8 @@
       "K": 24,
       "K_over_d": 2.0,
       "greedy_D": {
-        "median_latency_ms": 3.7827300000117248,
-        "max_latency_ms": 5.414600000023029,
+        "median_latency_ms": 3.106903999992028,
+        "max_latency_ms": 3.36724199999594,
         "median_lambda_min": 0.3735129843302973,
         "full_rank_rate": 1.0,
         "peak_memory_kib": 456.3759765625,
@@ -1578,8 +1624,8 @@
       "K": 16,
       "K_over_d": 1.0,
       "greedy_D": {
-        "median_latency_ms": 2.596721999992724,
-        "max_latency_ms": 2.8934990000095695,
+        "median_latency_ms": 2.5668979999977637,
+        "max_latency_ms": 3.42875000001186,
         "median_lambda_min": 0.1419137493960891,
         "full_rank_rate": 1.0,
         "peak_memory_kib": 585.1572265625,
@@ -1602,8 +1648,8 @@
       "K": 20,
       "K_over_d": 1.25,
       "greedy_D": {
-        "median_latency_ms": 3.052988000007417,
-        "max_latency_ms": 3.4412489999908757,
+        "median_latency_ms": 2.9979990000015277,
+        "max_latency_ms": 3.081425000004856,
         "median_lambda_min": 0.18434328318807583,
         "full_rank_rate": 1.0,
         "peak_memory_kib": 585.3134765625,
@@ -1626,8 +1672,8 @@
       "K": 24,
       "K_over_d": 1.5,
       "greedy_D": {
-        "median_latency_ms": 3.6898049999933846,
-        "max_latency_ms": 4.047966999991104,
+        "median_latency_ms": 3.539765999988731,
+        "max_latency_ms": 3.72591799998645,
         "median_lambda_min": 0.20664238562544418,
         "full_rank_rate": 1.0,
         "peak_memory_kib": 585.4072265625,
@@ -1644,7 +1690,7 @@
         "full_rank_rate": 1.0
       },
       "relaxed_E": {
-        "latency_s": 41.82636956899998,
+        "latency_s": 41.80519978999999,
         "lambda_min": 0.6424334659015758,
         "restarts": 2,
         "seed": 2026
@@ -1656,8 +1702,8 @@
       "K": 32,
       "K_over_d": 2.0,
       "greedy_D": {
-        "median_latency_ms": 4.949692999986155,
-        "max_latency_ms": 5.32046800000785,
+        "median_latency_ms": 5.036049000011644,
+        "max_latency_ms": 5.981183000017154,
         "median_lambda_min": 0.3467276662357836,
         "full_rank_rate": 1.0,
         "peak_memory_kib": 585.5947265625,
@@ -1676,15 +1722,15 @@
     },
     {
       "M": 4096,
-      "jacobian_build_seconds": 13.106479496999995,
+      "jacobian_build_seconds": 13.178818224999986,
       "quadrature_order": 512
     }
   ],
   "worst_case_greedy": {
     "M": 4096,
-    "d": 12,
-    "K": 24,
-    "max_latency_ms": 5.414600000023029
+    "d": 16,
+    "K": 32,
+    "max_latency_ms": 5.981183000017154
   },
   "decision_question": "is deterministic selection expensive enough to justify amortization?"
 }

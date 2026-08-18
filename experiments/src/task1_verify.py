@@ -132,8 +132,10 @@ def run(output: Path, svd_tol: float = 1e-10) -> dict:
 
     # Gates 3 and 4: gauge columns stay null as rays are added; ranks agree.
     rays = candidate_rays(direction_count=72, offsets_per_direction=4)
-    modes = make_physical_modes()
-    j_phys = mode_matrix(rays, modes)
+    # Build the full 16-mode family once; gates 3-5 use the 12-mode prefix and
+    # gate 8 certifies every registered dimension d in {6, 8, 12, 16}.
+    j_phys16 = mode_matrix(rays, make_physical_modes(16))
+    j_phys = j_phys16[:, :12]
     conf_col = np.array([ray_integral_contraction(
         r, lambda pts, kk: conformal_contraction(pts, kk, center, radii)) for r in rays])
     # Gate 3 integrates the gauge direction on every ray in the pool, at the
@@ -178,14 +180,21 @@ def run(output: Path, svd_tol: float = 1e-10) -> dict:
     endpoint_rel = abs(endpoint_numeric - endpoint_exact) / max(abs(endpoint_exact), 1e-15)
     gate6 = endpoint_rel <= 1e-8
 
-    # Gate 8: the physical family is independent modulo gauge. Without this the
-    # dimension d = 12 is asserted rather than tested, and the no-gauge-quotient
-    # negative control has nothing to be a control against.
+    # Gate 8: the physical family is independent modulo gauge, certified at
+    # every dimension the registered surface uses. Full rank of J alone does
+    # not certify the quotient -- the scaling study's d=16 family needs the
+    # same gauge-floor comparison as the original d=12 family. The prefix
+    # convention (J_d = first d columns) matches scaling_study.py.
     gauge_block = gauge_reference_block(rays, np.random.default_rng(7))
     gauge_floor = float(np.max(np.abs(gauge_block)))
-    sigma_phys = np.linalg.svd(j_phys, compute_uv=False)
-    quotient_margin = float(sigma_phys.min() / max(gauge_floor, 1e-300))
-    gate8 = quotient_margin > 1e3
+    quotient_by_d = {}
+    for d_check in (6, 8, 12, 16):
+        sigma_d = np.linalg.svd(j_phys16[:, :d_check], compute_uv=False)
+        quotient_by_d[str(d_check)] = {
+            "sigma_min": float(sigma_d.min()),
+            "margin": float(sigma_d.min() / max(gauge_floor, 1e-300)),
+        }
+    gate8 = all(v["margin"] > 1e3 for v in quotient_by_d.values())
 
     results = {
         "conventions": {
@@ -225,9 +234,10 @@ def run(output: Path, svd_tol: float = 1e-10) -> dict:
             "statement": "Any failed gate raises SystemExit; tolerances are not modified at runtime.",
         },
         "gate_8_gauge_quotient": {
-            "pass": gate8, "sigma_min_physical": float(sigma_phys.min()),
-            "gauge_floor": gauge_floor, "margin": quotient_margin, "threshold": 1e3,
-            "statement": "physical mode family is independent modulo G = {2 d^s V} + {phi eta}",
+            "pass": gate8, "gauge_floor": gauge_floor, "threshold": 1e3,
+            "by_dimension": quotient_by_d,
+            "statement": "physical mode family is independent modulo G = {2 d^s V} + {phi eta}, "
+                         "certified at every registered dimension d in {6, 8, 12, 16}",
         },
     }
     results["all_pass"] = all(
