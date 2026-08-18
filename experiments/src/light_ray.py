@@ -320,3 +320,254 @@ def gaussian_packet_frequency_variance(s_width: float, half_extent: float = 14.0
     dpsi = psi * (-t / (2.0 * s_width ** 2))
     normalization = float(w @ (psi * psi))
     return float(w @ (dpsi * dpsi)) / normalization
+
+
+# ---------------------------------------------------------------------------
+# Static endpoint-clock channels
+# ---------------------------------------------------------------------------
+
+
+def static_product_bump(spatial_points: Array, center: Array,
+                        radii: Array) -> tuple[Array, Array]:
+    """A time-independent C-infinity product bump on R^3 and its gradient.
+
+    The static-redshift section uses spatial fields phi(x) with no time
+    dependence.  Keeping this separate from :func:`product_bump` prevents a
+    time-localized four-dimensional test field from being mistaken for a
+    stationary perturbation.
+    """
+    spatial_points = np.asarray(spatial_points, dtype=float)
+    center = np.asarray(center, dtype=float)
+    radii = np.asarray(radii, dtype=float)
+    if spatial_points.ndim != 2 or spatial_points.shape[1] != 3:
+        raise ValueError("spatial_points must have shape (N,3)")
+    if center.shape != (3,) or radii.shape != (3,):
+        raise ValueError("center and radii must have shape (3,)")
+    if np.any(radii <= 0.0):
+        raise ValueError("radii must be strictly positive")
+
+    u = (spatial_points - center[None, :]) / radii[None, :]
+    vals: list[Array] = []
+    ders: list[Array] = []
+    for j in range(3):
+        b, db = smooth_bump_1d(u[:, j])
+        vals.append(b)
+        ders.append(db / radii[j])
+    vals_arr = np.stack(vals, axis=1)
+    phi = np.prod(vals_arr, axis=1)
+    grad = np.zeros_like(spatial_points)
+    for j in range(3):
+        other = np.prod(np.delete(vals_arr, j, axis=1), axis=1)
+        grad[:, j] = ders[j] * other
+    return phi, grad
+
+
+@dataclass(frozen=True)
+class StaticObserver:
+    """A static observer labelled by its background spatial position."""
+
+    position: Array
+    label: str
+
+    def __post_init__(self) -> None:
+        position = np.asarray(self.position, dtype=float)
+        if position.shape != (3,):
+            raise ValueError("StaticObserver.position must have shape (3,)")
+        object.__setattr__(self, "position", position)
+
+
+@dataclass(frozen=True)
+class StaticClockLink:
+    """An oriented log-redshift comparison from emitter A to receiver B."""
+
+    emitter: StaticObserver
+    receiver: StaticObserver
+    label: str = ""
+
+    def __post_init__(self) -> None:
+        if self.emitter.label == self.receiver.label and np.allclose(
+                self.emitter.position, self.receiver.position):
+            raise ValueError("A clock link requires distinct endpoints")
+        if not self.label:
+            object.__setattr__(
+                self, "label", f"{self.emitter.label}->{self.receiver.label}"
+            )
+
+
+@dataclass(frozen=True)
+class StaticConformalMode:
+    """A stationary conformal perturbation h = phi(x) eta."""
+
+    center: Array
+    radii: Array
+    label: str
+    amplitude: float = 1.0
+
+    def __post_init__(self) -> None:
+        center = np.asarray(self.center, dtype=float)
+        radii = np.asarray(self.radii, dtype=float)
+        if center.shape != (3,) or radii.shape != (3,):
+            raise ValueError("center and radii must have shape (3,)")
+        if np.any(radii <= 0.0):
+            raise ValueError("radii must be strictly positive")
+        object.__setattr__(self, "center", center)
+        object.__setattr__(self, "radii", radii)
+
+    def phi(self, spatial_points: Array) -> Array:
+        values, _ = static_product_bump(spatial_points, self.center, self.radii)
+        return float(self.amplitude) * values
+
+    def tensor(self, spatial_points: Array) -> Array:
+        """Return h_{mu nu}=phi eta, shape (N,4,4)."""
+        values = self.phi(spatial_points)
+        return values[:, None, None] * ETA[None, :, :]
+
+    def contraction(self, spacetime_points: Array, k: Array) -> Array:
+        """Return h(k,k), assembled componentwise along a null ray."""
+        spacetime_points = np.asarray(spacetime_points, dtype=float)
+        if spacetime_points.ndim != 2 or spacetime_points.shape[1] != 4:
+            raise ValueError("spacetime_points must have shape (N,4)")
+        h = self.tensor(spacetime_points[:, 1:])
+        return np.einsum("nij,i,j->n", h, k, k)
+
+
+@dataclass(frozen=True)
+class StaticGaugeMode:
+    r"""A stationary endpoint-fixed pure-gauge perturbation h=2 d^s V.
+
+    The one-form is V_nu(x)=a_nu psi(x), with no t dependence.  If
+    ``zero_point`` is supplied, psi=(x_axis-zero_point_axis) phi, so V vanishes
+    at that endpoint while its derivative can remain nonzero.  Taking a_0=0
+    preserves the static zero-shift ansatz h_{0i}=0.  The assembled tensor may
+    then be nonzero at a clock while h_{00}=2 partial_0 V_0=0.
+    """
+
+    center: Array
+    radii: Array
+    covector: Array
+    label: str
+    zero_point: Array | None = None
+    zero_axis: int = 0
+
+    def __post_init__(self) -> None:
+        center = np.asarray(self.center, dtype=float)
+        radii = np.asarray(self.radii, dtype=float)
+        covector = np.asarray(self.covector, dtype=float)
+        if center.shape != (3,) or radii.shape != (3,):
+            raise ValueError("center and radii must have shape (3,)")
+        if covector.shape != (4,):
+            raise ValueError("covector must have shape (4,)")
+        if np.any(radii <= 0.0):
+            raise ValueError("radii must be strictly positive")
+        if not 0 <= int(self.zero_axis) < 3:
+            raise ValueError("zero_axis must be one of {0,1,2}")
+        zero_point = self.zero_point
+        if zero_point is not None:
+            zero_point = np.asarray(zero_point, dtype=float)
+            if zero_point.shape != (3,):
+                raise ValueError("zero_point must have shape (3,)")
+        object.__setattr__(self, "center", center)
+        object.__setattr__(self, "radii", radii)
+        object.__setattr__(self, "covector", covector)
+        object.__setattr__(self, "zero_point", zero_point)
+        object.__setattr__(self, "zero_axis", int(self.zero_axis))
+
+    def scalar_and_gradient(self, spatial_points: Array) -> tuple[Array, Array]:
+        phi, grad3 = static_product_bump(spatial_points, self.center, self.radii)
+        if self.zero_point is None:
+            return phi, grad3
+        axis = self.zero_axis
+        factor = np.asarray(spatial_points, dtype=float)[:, axis] - self.zero_point[axis]
+        psi = factor * phi
+        grad_psi = factor[:, None] * grad3
+        grad_psi[:, axis] += phi
+        return psi, grad_psi
+
+    def covector_field(self, spatial_points: Array) -> Array:
+        psi, _ = self.scalar_and_gradient(spatial_points)
+        return psi[:, None] * self.covector[None, :]
+
+    def tensor(self, spatial_points: Array) -> Array:
+        """Assemble h_{mu nu}=partial_mu V_nu+partial_nu V_mu."""
+        _, grad3 = self.scalar_and_gradient(spatial_points)
+        n = grad3.shape[0]
+        grad4 = np.zeros((n, 4), dtype=float)
+        grad4[:, 1:] = grad3  # partial_0 V_nu = 0 by stationarity.
+        d_v = grad4[:, :, None] * self.covector[None, None, :]
+        return d_v + np.swapaxes(d_v, 1, 2)
+
+
+def static_conformal_delay_matrix(rays: Iterable[Ray],
+                                  modes: Iterable[StaticConformalMode],
+                                  order: int = DEFAULT_ORDER) -> Array:
+    """Delay-channel matrix for stationary conformal modes.
+
+    Every entry vanishes analytically because eta(k,k)=0.  The componentwise
+    assembly makes this a numerical sign/index test rather than a factored-out
+    scalar identity.
+    """
+    ray_list = list(rays)
+    mode_list = list(modes)
+    out = np.empty((len(ray_list), len(mode_list)), dtype=float)
+    for a, ray in enumerate(ray_list):
+        lam, weights = gauss_legendre_interval(
+            ray.lam_min, ray.lam_max, order=order
+        )
+        points = ray.points(lam)
+        for j, mode in enumerate(mode_list):
+            out[a, j] = 0.5 * float(weights @ mode.contraction(points, ray.k))
+    return out
+
+
+def static_redshift_matrix(links: Iterable[StaticClockLink],
+                           modes: Iterable[StaticConformalMode]) -> Array:
+    r"""Endpoint log-redshift matrix for static conformal perturbations.
+
+    The generic restricted functional is
+        R_AB h = 1/2 [h_00(B)-h_00(A)].
+    Since h_00=-phi for h=phi eta with eta_00=-1, this yields
+        R_AB(phi eta)=1/2 [phi(A)-phi(B)].
+    """
+    link_list = list(links)
+    mode_list = list(modes)
+    out = np.empty((len(link_list), len(mode_list)), dtype=float)
+    for ell, link in enumerate(link_list):
+        point_a = link.emitter.position[None, :]
+        point_b = link.receiver.position[None, :]
+        for j, mode in enumerate(mode_list):
+            h_a = mode.tensor(point_a)[0]
+            h_b = mode.tensor(point_b)[0]
+            out[ell, j] = 0.5 * float(h_b[0, 0] - h_a[0, 0])
+    return out
+
+
+def static_redshift_formula_matrix(links: Iterable[StaticClockLink],
+                                   modes: Iterable[StaticConformalMode]) -> Array:
+    """Independent endpoint-difference expression 1/2[phi(A)-phi(B)]."""
+    link_list = list(links)
+    mode_list = list(modes)
+    out = np.empty((len(link_list), len(mode_list)), dtype=float)
+    for ell, link in enumerate(link_list):
+        point_a = link.emitter.position[None, :]
+        point_b = link.receiver.position[None, :]
+        for j, mode in enumerate(mode_list):
+            phi_a = float(mode.phi(point_a)[0])
+            phi_b = float(mode.phi(point_b)[0])
+            out[ell, j] = 0.5 * (phi_a - phi_b)
+    return out
+
+
+def static_gauge_redshift_matrix(links: Iterable[StaticClockLink],
+                                 modes: Iterable[StaticGaugeMode]) -> Array:
+    """Redshift response of assembled stationary pure-gauge perturbations."""
+    link_list = list(links)
+    mode_list = list(modes)
+    out = np.empty((len(link_list), len(mode_list)), dtype=float)
+    for ell, link in enumerate(link_list):
+        point_a = link.emitter.position[None, :]
+        point_b = link.receiver.position[None, :]
+        for j, mode in enumerate(mode_list):
+            h_a = mode.tensor(point_a)[0]
+            h_b = mode.tensor(point_b)[0]
+            out[ell, j] = 0.5 * float(h_b[0, 0] - h_a[0, 0])
+    return out

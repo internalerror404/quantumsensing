@@ -25,7 +25,7 @@ Counts as of the fix commit; the parenthesised figures are where this stood at f
 | Stage 1 — deterministic design | **4** (2) | 0 | 0 | 0, with 2 partial (2) |
 | Stage 2 — amortized selector (10) | **6** (3) | **1** (2) | **1** (1) | **2** (4) |
 | Required ablations (9) | 0 | 0 | 0 | 9 |
-| §6 static redshift (5) | 0 | 0 | 0 | 5 |
+| §6 static redshift (5) | **5** (0) | 0 | 0 | **0** (5) |
 | §7 PTA / Hellings–Downs (4) | 0 | 0 | 0 | 4 |
 
 Stage 0 now tests its claims — precisely: **seven scientific/numerical checks and one
@@ -105,24 +105,39 @@ Need new code:
 | uniform vs QFI weights | trivial, but `q` is threaded through everywhere |
 | homogeneous vs heterogeneous packet width | width sampler is hardcoded log-uniform |
 | independent vs correlated pure probes | **no off-diagonal `W` support anywhere** — `light_ray.py` and both experiment scripts assume `W=diag(q)`. This is the largest of the five |
-| delay-only vs delay + static redshift | blocked on §6 below |
+| delay-only vs delay + static redshift | **unblocked** — §6 forward blocks exist; the ablation run itself remains |
 
-## §6 static redshift / conformal rank restoration — ABSENT
+## §6 static redshift / conformal rank restoration — DONE
 
-The spec lists five checks; none is implemented. `light_ray.py` has **no redshift functional at
-all** — grep for `redshift`, `emitter`, `receiver`, `zeta` returns nothing.
+Implemented via an externally authored, independently verified patch (base blobs and SHA-256
+checksums matched; order-512 and order-1024 reruns on this machine reproduced the shipped
+reports **byte-identically**). `experiments/run_static_redshift.sh`, canonical report at order
+1024 in `results/static_redshift_experiment.json`; also added to CI. Problem: 4 localized
+stationary conformal modes, 5 static clocks, 10 candidate links, 144 delay rays.
 
-| check | status |
+| check | result |
 |---|---|
-| conformal modes `h_j = φ_j η` | partial — `conformal_contraction` exists, but not as a family |
-| endpoint matrix `R_lj = ½(φ_j(A_l) − φ_j(B_l))` | **ABSENT** |
-| delay-only conformal rank = 0 | **ABSENT** as a rank statement |
-| combined rank = rank(R) | **ABSENT** |
-| invariance under allowed static gauge transformations | **ABSENT** |
+| conformal modes `h_j = φ_j η` as a family | 4 stationary modes, componentwise tensor assembly |
+| endpoint matrix `R_lj = ½(φ_j(A_l) − φ_j(B_l))` | two independent code paths agree exactly; graph form `R = ½ B Φ` exact; link reversal antisymmetric |
+| delay-only conformal rank = 0 | max \|A\| = 3.4e-18 over 144 rays, rank 0 |
+| combined rank = rank(R) | redshift rank 4 = combined rank 4 |
+| rank lifts exactly as predicted | greedy-selected 4 links (O0→O2, O1→O2, O1→O3, O3→O4) give rank 4; 3 links give rank 3 — the row-count lower bound is realized |
+| invariance under allowed static gauge | stationary V, V₀=0, V=0 at every clock; assembled tensor norm 8.6e-2 at endpoints (not a zero perturbation), h₀₀=h₀ᵢ=0, redshift response 0 |
 
-Smallest genuinely new experiment in the program, and the only place clock resources enter.
-Corollary 5.2 is pure finite-dimensional linear algebra once `R` exists — this is a day of work,
-not a research project, and it unblocks the delay+redshift ablation.
+Beyond the five registered checks: an independent **nonlinear lapse** validation
+(exact ζ(ε) from N=√(1+εφ); centered-difference slope 2.00017 → the linear formula is
+derived, not self-compared), and order-512/1024 stability (identical reports up to the
+delay-noise floor; identical selected links).
+
+One caveat recorded honestly: the redshift-block gauge invariance is structural — R reads
+only h₀₀, which vanishes identically for any stationary V with V₀=0. The endpoint-fixing
+makes the tested perturbation visibly nonzero at the clocks, which is what the check
+demonstrates. Integration-side verification (this session): the same gauge modes also vanish
+on the **delay** rays — interior-support cancellation converges 1.4e-8 (order 1024, the
+narrow 0.30-radius bumps) → 2.0e-11 (2048) → 4.4e-15 (4096) → 5.8e-17 (8192) — so the
+**combined** delay+redshift channel is gauge invariant for the allowed class, not only the
+redshift block. The delay+redshift ablation should integrate these modes at order ≥ 2048 or
+widen the bumps.
 
 ## §7 PTA / LISA application gate — ABSENT
 
@@ -188,11 +203,13 @@ Stronger gates for any future v0.3 architecture (Pareto non-domination, quality-
 ## Critical path
 
 Done: gates (3), selector repair (2), task distribution (4), performance (6), the scaling
-study on registered seeds, the post-hoc Pareto analysis, and a CI portability gate
+study on registered seeds, the post-hoc Pareto analysis, a CI portability gate
 (`.github/workflows/experiments.yml`, macos-14 + ubuntu × Python 3.11/3.12, uploading the
-JSON reports). What remains:
+JSON reports), and **§6 static redshift** (externally authored patch, independently
+verified and integrated). What remains:
 
-1. **§6 static redshift** — ~a day, unblocks the delay+redshift ablation. Now the top item.
+1. **Delay-only vs delay+redshift ablation** — the first registered run that joins the two
+   forward blocks; the §6 caveat above sets its quadrature requirements.
 2. **Registered deterministic full-metric campaign** — RMSE, worst-direction error,
    credible-interval coverage, condition number, blocked/unblocked retention, build and
    selection time, at order 1024, over `seed_set`. The paper's main quantitative table.

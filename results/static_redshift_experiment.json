@@ -1,0 +1,173 @@
+{
+  "experiment": "static_redshift_conformal_rank_restoration",
+  "conventions": {
+    "metric": "diag(-1,1,1,1)",
+    "delay": "A_gamma h = 0.5 integral h(k,k) d lambda",
+    "redshift": "R_AB h = 0.5 [h_00(B)-h_00(A)]",
+    "conformal_redshift": "R_AB(phi eta) = 0.5 [phi(A)-phi(B)]",
+    "allowed_static_gauge": "stationary V with V_0=0 and V=0 at every clock endpoint",
+    "svd_relative_tolerance": 1e-10,
+    "zero_matrix_absolute_tolerance": 1e-14
+  },
+  "dimensions": {
+    "conformal_modes": 4,
+    "observers": 5,
+    "candidate_clock_links": 10,
+    "delay_rays": 144
+  },
+  "observer_positions": {
+    "O0": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "O1": [
+      -0.6,
+      -0.55,
+      -0.45
+    ],
+    "O2": [
+      -0.6,
+      0.55,
+      0.45
+    ],
+    "O3": [
+      0.6,
+      -0.55,
+      0.45
+    ],
+    "O4": [
+      0.6,
+      0.55,
+      -0.45
+    ]
+  },
+  "mode_labels": [
+    "phi_1",
+    "phi_2",
+    "phi_3",
+    "phi_4"
+  ],
+  "link_labels": [
+    "O0->O1",
+    "O0->O2",
+    "O0->O3",
+    "O0->O4",
+    "O1->O2",
+    "O1->O3",
+    "O1->O4",
+    "O2->O3",
+    "O2->O4",
+    "O3->O4"
+  ],
+  "checks": {
+    "endpoint_formula": {
+      "pass": true,
+      "max_abs_error": 0.0,
+      "max_relative_error": 0.0,
+      "threshold": 1e-13
+    },
+    "nonlinear_lapse_linearization": {
+      "pass": true,
+      "epsilons": [
+        0.5,
+        0.25,
+        0.125,
+        0.0625
+      ],
+      "max_abs_errors": [
+        5.143987906457148e-06,
+        1.2856382988896131e-06,
+        3.2138716666782474e-07,
+        8.034539130882812e-08
+      ],
+      "observed_loglog_slope": 2.0001685091825374,
+      "target_slope": 2.0,
+      "slope_tolerance": 0.05
+    },
+    "delay_only_conformal_rank_zero": {
+      "pass": true,
+      "max_abs": 3.412346891089037e-18,
+      "rank": 0,
+      "singular_values": [
+        4.281080256706003e-18,
+        2.4901529914735875e-18,
+        2.2551796735185266e-18,
+        2.142324007930596e-18
+      ],
+      "rank_threshold": 1e-14,
+      "rays": 144,
+      "order": 1024
+    },
+    "combined_rank_equals_endpoint_rank": {
+      "pass": true,
+      "redshift_rank": 4,
+      "combined_rank": 4,
+      "redshift_singular_values": [
+        0.055663634635486646,
+        0.055663634635486646,
+        0.055663634635486646,
+        0.024893534183931965
+      ],
+      "combined_singular_values": [
+        0.05566363463548666,
+        0.05566363463548666,
+        0.05566363463548665,
+        0.02489353418393198
+      ],
+      "redshift_rank_threshold": 5.566363463548665e-12,
+      "combined_rank_threshold": 5.566363463548666e-12
+    },
+    "incidence_identity_and_constant_mode": {
+      "pass": true,
+      "incidence_identity_max_abs_error": 0.0,
+      "constant_mode_max_abs": 0.0
+    },
+    "link_reversal_antisymmetry": {
+      "pass": true,
+      "max_abs_error": 0.0
+    },
+    "allowed_static_gauge_invariance": {
+      "pass": true,
+      "endpoint_gauge_vector_max_abs": 0.0,
+      "endpoint_tensor_norm_max": 0.08558287106111159,
+      "h00_max_abs": 0.0,
+      "h0i_max_abs": 0.0,
+      "redshift_response_max_abs": 0.0,
+      "statement": "V fixes every clock endpoint, is stationary with V_0=0, and produces a nonzero spatial gauge tensor but zero redshift."
+    },
+    "four_link_rank_restoration": {
+      "pass": true,
+      "selected_indices": [
+        1,
+        4,
+        5,
+        9
+      ],
+      "selected_labels": [
+        "O0->O2",
+        "O1->O2",
+        "O1->O3",
+        "O3->O4"
+      ],
+      "selected_rank": 4,
+      "selected_singular_values": [
+        0.04678454075584529,
+        0.03813910706238682,
+        0.024893534183931976,
+        0.00864543369345845
+      ],
+      "selected_rank_threshold": 4.678454075584529e-12,
+      "selected_fisher_eigenvalues": [
+        7.474352374798689e-05,
+        0.00061968804416659,
+        0.0014545914875162048,
+        0.002188793253735348
+      ],
+      "three_link_rank": 3,
+      "row_count_lower_bound": 4
+    }
+  },
+  "all_pass": true,
+  "paper_claim": "Delay channels annihilate stationary conformal modes, while endpoint clock comparisons restore exactly the rank carried by the endpoint-difference matrix."
+}
