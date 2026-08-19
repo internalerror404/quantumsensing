@@ -85,19 +85,23 @@ for side in ("top", "right"):
 
 # --- Panel C: precision conversion ------------------------------------------
 ax = axes[2]
-for key, label, color, ls in (("C_plus_4_links", "4 selected links", AQUA, "-"),
-                              ("E_plus_all_links", "all 10 links", BLUE, "--")):
+for key, label, color, ls, ms_mark in (("C_plus_4_links", "4 selected links", AQUA, "-", 6),
+                                       ("E_plus_all_links", "all 10 links", BLUE, "--", 4)):
     sweep = arms[key]["clock_precision_sweep"]
     rho = np.asarray(sweep["rho"]); u = np.asarray(sweep["u_conf"])
     ax.plot(rho, u, lw=1.6, ls=ls, color=color, label=label)
-sweep = arms["C_plus_4_links"]["clock_precision_sweep"]
-rho = np.asarray(sweep["rho"]); u = np.asarray(sweep["u_conf"])
-for mark in sweep["marked_points_rho"]:
-    u_mark = float(np.interp(np.log(mark), np.log(rho), u))
-    ax.plot(mark, u_mark, "o", ms=6, color=AQUA,
-            markerfacecolor="white", markeredgewidth=1.4)
-    ax.annotate(r"$\rho=%g$" % mark, (mark, u_mark),
-                textcoords="offset points", xytext=(6, 6), fontsize=7.5, color=MUTED)
+    for mark in sweep["marked_points_rho"]:
+        u_mark = float(np.interp(np.log(mark), np.log(rho), u))
+        ax.plot(mark, u_mark, "o", ms=ms_mark, color=color,
+                markerfacecolor="white", markeredgewidth=1.2)
+        if key == "C_plus_4_links":
+            ax.annotate(r"$\rho=%g$" % mark, (mark, u_mark),
+                        textcoords="offset points", xytext=(6, 6), fontsize=7.5, color=MUTED)
+# The high-rho floor is a physical-nuisance floor, not residual non-identifiability:
+# finite delay precision in theta propagates through R_p into the inferred alpha.
+ax.annotate("floor = physical-nuisance\nleakage through $R_p$,\nnot a surviving kernel",
+            xy=(60, 0.315), xytext=(5.5, 0.09), fontsize=7.5, color=MUTED,
+            arrowprops=dict(arrowstyle="-", color=MUTED, lw=0.8))
 ax.axhline(1.0, color=MUTED, lw=0.8, ls=":")
 ax.text(0.11, 1.015, "prior-limited", fontsize=7.5, color=MUTED)
 ax.set_xscale("log")
@@ -110,7 +114,7 @@ ax.grid(axis="y", alpha=0.2, lw=0.6)
 for side in ("top", "right"):
     ax.spines[side].set_visible(False)
 
-fig.suptitle("Clock-assisted conformal rank restoration: a new observable, not more data, lifts the kernel",
+fig.suptitle("Clock-assisted conformal rank restoration: a distinct observable\u2014not additional delay samples\u2014lifts the kernel",
              fontsize=11, y=1.02)
 fig.tight_layout()
 fig.savefig(FIG / "joint_rank_restoration.pdf", bbox_inches="tight")
