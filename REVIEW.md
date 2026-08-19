@@ -76,8 +76,10 @@ and `configs/experiment.yaml`. `STATUS.md` is the canonical record for these num
 
 **Supersession note:** §6 static redshift has since been implemented and independently verified
 (byte-identical reruns at orders 512 and 1024); see the canonical `STATUS.md` and
-`results/static_redshift_experiment.json`. Still open: the joint delay+redshift ablation, the
-full deterministic campaign metrics, the remaining ablation sweeps, and spec section 7 (PTA).
+`results/static_redshift_experiment.json`. The joint delay+redshift ablation has also since
+run (Experiment D+R-1, `results/joint_delay_redshift.json` — all checks pass at every
+registered d_p). Still open: the full deterministic campaign metrics, the seven remaining
+ablation sweeps, and spec section 7 (PTA).
 
 ---
 

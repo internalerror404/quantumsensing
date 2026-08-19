@@ -114,7 +114,53 @@ def whitened_metrics(j: np.ndarray, r_diag: np.ndarray) -> dict:
     jw = j / np.sqrt(r_diag)[None, :]
     f = jw.T @ jw
     vals = np.linalg.eigvalsh(0.5 * (f + f.T))
-    return {"lambda_min_whitened": float(vals[0]), "lambda_max_whitened": float(vals[-1])}
+    return {"lambda_min_whitened": float(vals[0]), "lambda_max_whitened": float(vals[-1]),
+            "whitened_eigenvalues": vals.tolist()}
+
+
+def whitened_posterior(j: np.ndarray, r_diag: np.ndarray, d_p: int) -> dict:
+    """Posterior blocks in full-bank-whitened coordinates.
+
+    Invariant to diagonal rescaling of the mode basis, unlike the raw-coordinate
+    block; the report carries both conventions explicitly.
+    """
+    jw = j / np.sqrt(r_diag)[None, :]
+    d = j.shape[1]
+    cov = np.linalg.inv(jw.T @ jw + np.eye(d))
+    n_conf = d - d_p
+    return {
+        "posterior_rmse_physical": float(np.sqrt(np.trace(cov[:d_p, :d_p]) / d_p)),
+        "posterior_rmse_conformal": (
+            float(np.sqrt(np.trace(cov[d_p:, d_p:]) / n_conf)) if n_conf else None),
+        "worst_direction_posterior_std": float(np.sqrt(np.linalg.eigvalsh(cov)[-1])),
+    }
+
+
+def clock_precision_sweep(j_delay: np.ndarray, j_clock: np.ndarray,
+                          r_diag: np.ndarray, d_p: int,
+                          rho_grid: np.ndarray) -> dict:
+    """Conformal posterior std versus relative clock precision rho = sigma_D/sigma_R.
+
+    Computed in full-bank-whitened coordinates:
+        C_rho = [I + Jd~^T Jd~ + rho^2 Jr~^T Jr~]^{-1},
+        u_conf(rho) = sqrt(tr(P_conf C_rho P_conf^T)/4).
+    Rank restoration is exact at every rho; this curve is the separate
+    precision statement.
+    """
+    scale = np.sqrt(r_diag)[None, :]
+    jd = j_delay / scale
+    jr = j_clock / scale
+    d = jd.shape[1]
+    base = np.eye(d) + jd.T @ jd
+    ftr = jr.T @ jr
+    n_conf = d - d_p
+    curve = []
+    for rho in rho_grid:
+        cov = np.linalg.inv(base + float(rho) ** 2 * ftr)
+        curve.append(float(np.sqrt(np.trace(cov[d_p:, d_p:]) / n_conf)))
+    return {"rho": rho_grid.tolist(), "u_conf": curve,
+            "marked_points_rho": [1.0, 10.0, 50.0],
+            "marked_points_note": "rho = 1/s_clock at unit delay noise; s_clock in {1.0, 0.1, 0.02}"}
 
 
 def posterior_stats(j: np.ndarray, d_p: int, rng: np.random.Generator,
@@ -214,6 +260,10 @@ def run(output: Path, *, order: int = DEFAULT_ORDER, svd_tol: float = 1e-10,
         t0 = time.perf_counter()
         ray_sel = greedy_d_design(dp_slice, np.ones(len(rays)), k_rays, ridge=1e-12)
         ray_time = time.perf_counter() - t0
+        # Arm D extras: a highest-sensitivity-norm heuristic (not a conditional
+        # D/E-optimal continuation -- irrelevant to the conclusion, since every
+        # delay row has identically zero conformal columns; the full-144-ray
+        # bank check below closes the question completely).
         remaining = np.setdiff1d(np.arange(len(rays)), ray_sel)
         extra_scores = np.linalg.norm(dp_slice[remaining], axis=1)
         ray_extra = remaining[np.argsort(extra_scores)[-4:]]
@@ -262,30 +312,23 @@ def run(output: Path, *, order: int = DEFAULT_ORDER, svd_tol: float = 1e-10,
                 "rank_threshold": threshold,
                 "nullity": matrix.shape[1] - rank,
                 **whitened_metrics(matrix, r_param),
-                **posterior_stats(matrix, d_p, rng),
+                "posterior_raw_mode_coordinates": posterior_stats(matrix, d_p, rng),
+                "posterior_full_bank_whitened_coordinates": whitened_posterior(
+                    matrix, r_param, d_p),
             }
             arm_reports[name] = report
 
-        # Clock-precision scan: rank restoration is exact at any noise level,
-        # but how much conformal *uncertainty* the clocks remove depends on
-        # their precision. Under the canonical unit-noise declaration the raw
-        # clock rows are weak (entries ~0.05), so the posterior barely moves --
-        # reported as-is rather than hidden by rescaling. This scan declares
-        # clock noise levels explicitly and shows the conversion.
+        # Clock-precision curve: rank restoration is exact at every rho, but
+        # how much conformal *uncertainty* the clocks remove is a precision
+        # statement. A log-spaced sweep in whitened coordinates (not a single
+        # favorable point); the canonical unit-noise value rho=1 stays visible
+        # and the earlier declared points s_clock in {1.0, 0.1, 0.02} are marked.
         n_delay_rows = len(ray_sel)
-        for arm_name, link_idx in (("C_plus_4_links", links4),
-                                   ("E_plus_all_links", np.arange(len(links)))):
+        rho_grid = np.geomspace(0.1, 100.0, 25)
+        for arm_name in ("C_plus_4_links", "E_plus_all_links"):
             matrix = arms[arm_name][0]
-            j_delay = matrix[:n_delay_rows]
-            j_clock = matrix[n_delay_rows:]
-            scan = {}
-            for s_clock in (1.0, 0.1, 0.02):
-                info = (j_delay.T @ j_delay
-                        + (1.0 / s_clock ** 2) * (j_clock.T @ j_clock)
-                        + np.eye(matrix.shape[1]))
-                cov = np.linalg.inv(info)
-                scan[str(s_clock)] = float(np.mean(np.sqrt(np.diag(cov)[d_p:])))
-            arm_reports[arm_name]["conformal_posterior_std_vs_clock_noise"] = scan
+            arm_reports[arm_name]["clock_precision_sweep"] = clock_precision_sweep(
+                matrix[:n_delay_rows], matrix[n_delay_rows:], r_param, d_p, rho_grid)
 
         # Gate 1: physical delay rank on pool and selected rays.
         pool_rank, _, _ = numerical_rank(dp_slice, rtol=svd_tol, atol=1e-14)
@@ -305,9 +348,15 @@ def run(output: Path, *, order: int = DEFAULT_ORDER, svd_tol: float = 1e-10,
             arm_reports["C_plus_4_links"]["observed_rank"] == d_p + 4)
         gate_flags["gate_5_three_link_bound"] &= (
             arm_reports["B_plus_3_links"]["observed_rank"] == d_p + 3)
+        full_bank_delay = np.column_stack((dp_slice, delay_conf_all))
+        full_rank_bank, _, _ = numerical_rank(full_bank_delay, rtol=svd_tol, atol=1e-14)
+        arm_reports["D_plus_4_more_rays"]["full_bank_144_ray_rank"] = full_rank_bank
+        arm_reports["D_plus_4_more_rays"]["full_bank_144_ray_nullity"] = (
+            full_bank_delay.shape[1] - full_rank_bank)
         gate_flags["gate_6_more_delay_negative_control"] &= (
             arm_reports["D_plus_4_more_rays"]["observed_rank"] == d_p
-            and arm_reports["D_plus_4_more_rays"]["nullity"] == 4)
+            and arm_reports["D_plus_4_more_rays"]["nullity"] == 4
+            and full_rank_bank == d_p)
 
         # Arm F / gate 7: constant endpoint mode stays in the joint kernel.
         matrix_f = joint(ray_sel, np.arange(len(links)), with_const=True)
@@ -350,6 +399,12 @@ def run(output: Path, *, order: int = DEFAULT_ORDER, svd_tol: float = 1e-10,
         },
         "gate_8_combined_static_gauge_invariance": gauge_block,
         **{name: {"pass": bool(flag)} for name, flag in gate_flags.items()},
+        "gate_10_stop_on_failure": {
+            "pass": True,
+            "kind": "process control, not a measurement",
+            "statement": "Any failed check raises SystemExit after the full report is written; "
+                         "tolerances are not modified at runtime.",
+        },
     }
     all_pass = all(c["pass"] for c in checks.values())
     report = {
@@ -379,12 +434,19 @@ def run(output: Path, *, order: int = DEFAULT_ORDER, svd_tol: float = 1e-10,
         "checks": checks,
         "all_pass": bool(all_pass),
         "paper_claim": (
-            "Across stationary physical families of dimension 6, 8, 12 and 16, "
-            "delay-only sensing recovered the physical subspace but retained a "
-            "four-dimensional conformal kernel. Selected clock comparisons lifted "
-            "exactly those directions -- three links gave d_p+3, four gave d_p+4 -- "
-            "whereas four additional delay rays did not. The observed joint rank "
-            "agreed with d_p + rank(R_c) in every registered case."
+            "Across stationary physical families of dimensions 6, 8, 12 and 16, the "
+            "delay-only Jacobian had rank d_p and retained a four-dimensional conformal "
+            "kernel. Three independent static-clock comparisons increased the joint rank "
+            "to d_p+3, while four increased it to d_p+4. Adding four further delay "
+            "observations did not change the conformal nullity. Thus the observed rank "
+            "obeyed rank(J_joint) = d_p + rank(R_c) in every tested family."
+        ),
+        "statistical_qualification": (
+            "Under the canonical unit-noise, standard-normal raw-coordinate prior, the "
+            "added clock rows produced limited posterior contraction because the "
+            "synthetic endpoint responses were small relative to the assumed noise. A "
+            "declared clock-precision sweep showed increasing conformal contraction "
+            "without affecting the exact rank result."
         ),
     }
     output.parent.mkdir(parents=True, exist_ok=True)

@@ -27,7 +27,7 @@
     "conformal_modes": 4,
     "candidate_rays": 144,
     "candidate_links": 10,
-    "jacobian_build_seconds": 1.0844924719999653
+    "jacobian_build_seconds": 1.1118404270000042
   },
   "per_dp": {
     "6": {
@@ -60,8 +60,8 @@
         "O1->O3",
         "O3->O4"
       ],
-      "ray_selection_seconds": 0.00031314200003862425,
-      "link_selection_seconds": 0.00019413400002576964,
+      "ray_selection_seconds": 0.0003317439999932503,
+      "link_selection_seconds": 0.0002445890000046802,
       "physical_pool_rank": 6,
       "selected_physical_singular_values": [
         0.14805227806976434,
@@ -82,11 +82,30 @@
           "nullity": 4,
           "lambda_min_whitened": 1.1063923302862308e-35,
           "lambda_max_whitened": 1.146956662463677,
-          "posterior_rmse_physical": 0.9970090673424459,
-          "posterior_rmse_conformal": 1.0,
-          "worst_direction_posterior_std": 1.0,
-          "coverage_95": 0.95125,
-          "conformal_posterior_std_mean": 1.0
+          "whitened_eigenvalues": [
+            1.1063923302862308e-35,
+            1.6897213336511657e-35,
+            9.91023304950343e-35,
+            5.5472132524361045e-34,
+            0.1279114661248249,
+            0.19237721210875874,
+            0.28139102641340996,
+            0.5609579966987952,
+            0.6611884403569845,
+            1.146956662463677
+          ],
+          "posterior_raw_mode_coordinates": {
+            "posterior_rmse_physical": 0.9970090673424459,
+            "posterior_rmse_conformal": 1.0,
+            "worst_direction_posterior_std": 1.0,
+            "coverage_95": 0.95125,
+            "conformal_posterior_std_mean": 1.0
+          },
+          "posterior_full_bank_whitened_coordinates": {
+            "posterior_rmse_physical": 0.8380576326923506,
+            "posterior_rmse_conformal": 1.0,
+            "worst_direction_posterior_std": 1.0000000000000004
+          }
         },
         "B_plus_3_links": {
           "rows": 13,
@@ -97,11 +116,30 @@
           "nullity": 1,
           "lambda_min_whitened": 2.5003660601386367e-17,
           "lambda_max_whitened": 1.182408257965232,
-          "posterior_rmse_physical": 0.9964134057535595,
-          "posterior_rmse_conformal": 0.9995373870431663,
-          "worst_direction_posterior_std": 1.0,
-          "coverage_95": 0.95,
-          "conformal_posterior_std_mean": 0.9995373751996988,
+          "whitened_eigenvalues": [
+            2.5003660601386367e-17,
+            0.11682816486341877,
+            0.1332649055232714,
+            0.18841923949866346,
+            0.28178616026417735,
+            0.5429161754373374,
+            0.5606552561812558,
+            0.6361413667761123,
+            0.9727426127557279,
+            1.182408257965232
+          ],
+          "posterior_raw_mode_coordinates": {
+            "posterior_rmse_physical": 0.9964134057535595,
+            "posterior_rmse_conformal": 0.9995373870431663,
+            "worst_direction_posterior_std": 1.0,
+            "coverage_95": 0.95,
+            "conformal_posterior_std_mean": 0.9995373751996988
+          },
+          "posterior_full_bank_whitened_coordinates": {
+            "posterior_rmse_physical": 0.8329068920098736,
+            "posterior_rmse_conformal": 0.8806535764517165,
+            "worst_direction_posterior_std": 0.9999999999999999
+          },
           "rank_law_prediction": 9
         },
         "C_plus_4_links": {
@@ -113,15 +151,91 @@
           "nullity": 0,
           "lambda_min_whitened": 0.02995598355327325,
           "lambda_max_whitened": 1.1940225234418358,
-          "posterior_rmse_physical": 0.9962133679075756,
-          "posterior_rmse_conformal": 0.999460593238162,
-          "worst_direction_posterior_std": 0.9999628741511325,
-          "coverage_95": 0.9475,
-          "conformal_posterior_std_mean": 0.9994605844231605,
-          "conformal_posterior_std_vs_clock_noise": {
-            "1.0": 0.9994605844231605,
-            "0.1": 0.9622816355836447,
-            "0.02": 0.8064276442727827
+          "whitened_eigenvalues": [
+            0.02995598355327325,
+            0.11684140454765184,
+            0.18151931648246533,
+            0.19659064735683096,
+            0.31915680437918165,
+            0.5602333855083826,
+            0.6354549301528614,
+            0.6693399448621871,
+            1.0145018029449189,
+            1.1940225234418358
+          ],
+          "posterior_raw_mode_coordinates": {
+            "posterior_rmse_physical": 0.9962133679075756,
+            "posterior_rmse_conformal": 0.999460593238162,
+            "worst_direction_posterior_std": 0.9999628741511325,
+            "coverage_95": 0.9475,
+            "conformal_posterior_std_mean": 0.9994605844231605
+          },
+          "posterior_full_bank_whitened_coordinates": {
+            "posterior_rmse_physical": 0.8311864677404679,
+            "posterior_rmse_conformal": 0.8609314012693997,
+            "worst_direction_posterior_std": 0.985350332573903
+          },
+          "clock_precision_sweep": {
+            "rho": [
+              0.1,
+              0.1333521432163324,
+              0.1778279410038923,
+              0.23713737056616552,
+              0.31622776601683794,
+              0.4216965034285822,
+              0.5623413251903491,
+              0.7498942093324558,
+              1.0,
+              1.333521432163324,
+              1.7782794100389228,
+              2.371373705661655,
+              3.1622776601683795,
+              4.216965034285822,
+              5.62341325190349,
+              7.498942093324558,
+              10.0,
+              13.33521432163324,
+              17.78279410038923,
+              23.71373705661655,
+              31.622776601683793,
+              42.169650342858226,
+              56.23413251903491,
+              74.98942093324558,
+              100.0
+            ],
+            "u_conf": [
+              0.9978261503375667,
+              0.9961529283659606,
+              0.9932168353349836,
+              0.9881159535960239,
+              0.9794037997245199,
+              0.9649365698792628,
+              0.9419530737386489,
+              0.9077278529350232,
+              0.8609314012693997,
+              0.8029785401212601,
+              0.73798405567238,
+              0.6708891389315969,
+              0.6050651079688466,
+              0.541426034854863,
+              0.4800618000463848,
+              0.42263312505312256,
+              0.37253927802409575,
+              0.33274914919878573,
+              0.30398486456557067,
+              0.2847977948694189,
+              0.2727578336904415,
+              0.26551601363035504,
+              0.2612775933129891,
+              0.25883815295522106,
+              0.2574479691153807
+            ],
+            "marked_points_rho": [
+              1.0,
+              10.0,
+              50.0
+            ],
+            "marked_points_note": "rho = 1/s_clock at unit delay noise; s_clock in {1.0, 0.1, 0.02}"
           },
           "rank_law_prediction": 10
         },
@@ -134,11 +248,32 @@
           "nullity": 4,
           "lambda_min_whitened": 6.788152891693942e-35,
           "lambda_max_whitened": 1.8744948966748867,
-          "posterior_rmse_physical": 0.9956781492721251,
-          "posterior_rmse_conformal": 1.0,
-          "worst_direction_posterior_std": 1.0,
-          "coverage_95": 0.95625,
-          "conformal_posterior_std_mean": 1.0
+          "whitened_eigenvalues": [
+            6.788152891693942e-35,
+            1.3154120426623914e-34,
+            1.1128158099461742e-33,
+            1.8553322876672913e-33,
+            0.13049400328170738,
+            0.2109058575630355,
+            0.4449072060056989,
+            0.5954378845702692,
+            0.7244194261121133,
+            1.8744948966748867
+          ],
+          "posterior_raw_mode_coordinates": {
+            "posterior_rmse_physical": 0.9956781492721251,
+            "posterior_rmse_conformal": 1.0,
+            "worst_direction_posterior_std": 1.0,
+            "coverage_95": 0.95625,
+            "conformal_posterior_std_mean": 1.0
+          },
+          "posterior_full_bank_whitened_coordinates": {
+            "posterior_rmse_physical": 0.8121024915629197,
+            "posterior_rmse_conformal": 1.0,
+            "worst_direction_posterior_std": 1.0000000000000004
+          },
+          "full_bank_144_ray_rank": 6,
+          "full_bank_144_ray_nullity": 4
         },
         "E_plus_all_links": {
           "rows": 20,
@@ -149,15 +284,91 @@
           "nullity": 0,
           "lambda_min_whitened": 0.11582753138142296,
           "lambda_max_whitened": 1.578134876230415,
-          "posterior_rmse_physical": 0.9954266853575924,
-          "posterior_rmse_conformal": 0.9987705613719263,
-          "worst_direction_posterior_std": 0.9999404781082116,
-          "coverage_95": 0.952,
-          "conformal_posterior_std_mean": 0.9987705613563538,
-          "conformal_posterior_std_vs_clock_noise": {
-            "1.0": 0.9987705613563538,
-            "0.1": 0.9244257214780959,
-            "0.02": 0.6689044781233707
+          "whitened_eigenvalues": [
+            0.11582753138142296,
+            0.18269576106519436,
+            0.20124121152111182,
+            0.30819619118011515,
+            0.5565177956044441,
+            0.6254637579595369,
+            1.1149807558218545,
+            1.25,
+            1.431392801528631,
+            1.578134876230415
+          ],
+          "posterior_raw_mode_coordinates": {
+            "posterior_rmse_physical": 0.9954266853575924,
+            "posterior_rmse_conformal": 0.9987705613719263,
+            "worst_direction_posterior_std": 0.9999404781082116,
+            "coverage_95": 0.952,
+            "conformal_posterior_std_mean": 0.9987705613563538
+          },
+          "posterior_full_bank_whitened_coordinates": {
+            "posterior_rmse_physical": 0.8277847513001813,
+            "posterior_rmse_conformal": 0.7418448000097514,
+            "worst_direction_posterior_std": 0.9466762104148307
+          },
+          "clock_precision_sweep": {
+            "rho": [
+              0.1,
+              0.1333521432163324,
+              0.1778279410038923,
+              0.23713737056616552,
+              0.31622776601683794,
+              0.4216965034285822,
+              0.5623413251903491,
+              0.7498942093324558,
+              1.0,
+              1.333521432163324,
+              1.7782794100389228,
+              2.371373705661655,
+              3.1622776601683795,
+              4.216965034285822,
+              5.62341325190349,
+              7.498942093324558,
+              10.0,
+              13.33521432163324,
+              17.78279410038923,
+              23.71373705661655,
+              31.622776601683793,
+              42.169650342858226,
+              56.23413251903491,
+              74.98942093324558,
+              100.0
+            ],
+            "u_conf": [
+              0.9950507838315455,
+              0.9912677761732813,
+              0.9846841812339007,
+              0.973408214132895,
+              0.9546053498367173,
+              0.924571032302182,
+              0.8796016335530863,
+              0.8179514224167007,
+              0.7418448000097514,
+              0.6573223287376175,
+              0.5717197557517747,
+              0.4915970827573317,
+              0.4221999777131246,
+              0.36687511353100527,
+              0.3263133144957549,
+              0.29875814941625145,
+              0.28117161659515366,
+              0.2704550291111758,
+              0.2641271133453055,
+              0.26046466284957454,
+              0.25837049625782194,
+              0.25718158217508563,
+              0.25650937922854583,
+              0.2561302135184676,
+              0.25591662470728704
+            ],
+            "marked_points_rho": [
+              1.0,
+              10.0,
+              50.0
+            ],
+            "marked_points_note": "rho = 1/s_clock at unit delay noise; s_clock in {1.0, 0.1, 0.02}"
           },
           "rank_law_prediction": 10
         },
@@ -202,8 +413,8 @@
         "O1->O3",
         "O3->O4"
       ],
-      "ray_selection_seconds": 0.0003239910000161217,
-      "link_selection_seconds": 0.00019874600002367515,
+      "ray_selection_seconds": 0.00033551500001749446,
+      "link_selection_seconds": 0.0001998589999914202,
       "physical_pool_rank": 8,
       "selected_physical_singular_values": [
         0.1544032122077687,
@@ -226,11 +437,32 @@
           "nullity": 4,
           "lambda_min_whitened": 0.0,
           "lambda_max_whitened": 1.1896415300163958,
-          "posterior_rmse_physical": 0.9972420039178309,
-          "posterior_rmse_conformal": 1.0,
-          "worst_direction_posterior_std": 1.0,
-          "coverage_95": 0.9514583333333333,
-          "conformal_posterior_std_mean": 1.0
+          "whitened_eigenvalues": [
+            0.0,
+            4.0194233594445635e-35,
+            7.704532484387184e-35,
+            1.884304621316761e-34,
+            0.09818757993421266,
+            0.14761124817498053,
+            0.16692617354445596,
+            0.24232571230304867,
+            0.619871225405607,
+            0.8397672254215148,
+            1.134882171498509,
+            1.1896415300163958
+          ],
+          "posterior_raw_mode_coordinates": {
+            "posterior_rmse_physical": 0.9972420039178309,
+            "posterior_rmse_conformal": 1.0,
+            "worst_direction_posterior_std": 1.0,
+            "coverage_95": 0.9514583333333333,
+            "conformal_posterior_std_mean": 1.0
+          },
+          "posterior_full_bank_whitened_coordinates": {
+            "posterior_rmse_physical": 0.8314029049515078,
+            "posterior_rmse_conformal": 1.0,
+            "worst_direction_posterior_std": 1.0000000000000004
+          }
         },
         "B_plus_3_links": {
           "rows": 15,
@@ -241,11 +473,32 @@
           "nullity": 1,
           "lambda_min_whitened": -4.228833001924225e-17,
           "lambda_max_whitened": 1.204454201840194,
-          "posterior_rmse_physical": 0.9967968733765838,
-          "posterior_rmse_conformal": 0.9995373859884491,
-          "worst_direction_posterior_std": 0.9999999999999999,
-          "coverage_95": 0.9489583333333333,
-          "conformal_posterior_std_mean": 0.9995373741451963,
+          "whitened_eigenvalues": [
+            -4.228833001924225e-17,
+            0.0882795685946321,
+            0.12414112910407882,
+            0.1525125805375736,
+            0.1776581989216639,
+            0.2473746285096855,
+            0.5048034003392301,
+            0.6108805619532283,
+            0.8431106153056495,
+            0.9422785614533044,
+            1.188098754838233,
+            1.204454201840194
+          ],
+          "posterior_raw_mode_coordinates": {
+            "posterior_rmse_physical": 0.9967968733765838,
+            "posterior_rmse_conformal": 0.9995373859884491,
+            "worst_direction_posterior_std": 0.9999999999999999,
+            "coverage_95": 0.9489583333333333,
+            "conformal_posterior_std_mean": 0.9995373741451963
+          },
+          "posterior_full_bank_whitened_coordinates": {
+            "posterior_rmse_physical": 0.8275079858643823,
+            "posterior_rmse_conformal": 0.8806492000553166,
+            "worst_direction_posterior_std": 1.0000000000000002
+          },
           "rank_law_prediction": 11
         },
         "C_plus_4_links": {
@@ -257,15 +510,93 @@
           "nullity": 0,
           "lambda_min_whitened": 0.029873319838027927,
           "lambda_max_whitened": 1.251602916662581,
-          "posterior_rmse_physical": 0.9966496211430305,
-          "posterior_rmse_conformal": 0.9994605872789276,
-          "worst_direction_posterior_std": 0.9999630034339173,
-          "coverage_95": 0.9489583333333333,
-          "conformal_posterior_std_mean": 0.999460578463475,
-          "conformal_posterior_std_vs_clock_noise": {
-            "1.0": 0.999460578463475,
-            "0.1": 0.962261559384313,
-            "0.02": 0.806283292767424
+          "whitened_eigenvalues": [
+            0.029873319838027927,
+            0.08860078832640296,
+            0.13960010816525506,
+            0.1584866088549598,
+            0.21135306681860352,
+            0.2922815359343942,
+            0.5777570827544218,
+            0.623336823289411,
+            0.869025189673824,
+            0.9558796738733196,
+            1.1882496911706604,
+            1.251602916662581
+          ],
+          "posterior_raw_mode_coordinates": {
+            "posterior_rmse_physical": 0.9966496211430305,
+            "posterior_rmse_conformal": 0.9994605872789276,
+            "worst_direction_posterior_std": 0.9999630034339173,
+            "coverage_95": 0.9489583333333333,
+            "conformal_posterior_std_mean": 0.999460578463475
+          },
+          "posterior_full_bank_whitened_coordinates": {
+            "posterior_rmse_physical": 0.8263513189950105,
+            "posterior_rmse_conformal": 0.8608213415475378,
+            "worst_direction_posterior_std": 0.9853898767990694
+          },
+          "clock_precision_sweep": {
+            "rho": [
+              0.1,
+              0.1333521432163324,
+              0.1778279410038923,
+              0.23713737056616552,
+              0.31622776601683794,
+              0.4216965034285822,
+              0.5623413251903491,
+              0.7498942093324558,
+              1.0,
+              1.333521432163324,
+              1.7782794100389228,
+              2.371373705661655,
+              3.1622776601683795,
+              4.216965034285822,
+              5.62341325190349,
+              7.498942093324558,
+              10.0,
+              13.33521432163324,
+              17.78279410038923,
+              23.71373705661655,
+              31.622776601683793,
+              42.169650342858226,
+              56.23413251903491,
+              74.98942093324558,
+              100.0
+            ],
+            "u_conf": [
+              0.9978261254786394,
+              0.9961528504201693,
+              0.9932165925146528,
+              0.9881152056365455,
+              0.9794015398064563,
+              0.9649299573294823,
+              0.9419346890381208,
+              0.9076804844179274,
+              0.8608213415475378,
+              0.802752870275508,
+              0.7375790133698512,
+              0.6702480232237428,
+              0.6041525197923607,
+              0.5402259806328348,
+              0.4785634854187436,
+              0.42082246362704284,
+              0.37040712209397525,
+              0.3303081662365108,
+              0.3012771631231638,
+              0.281884892185329,
+              0.2697023598778593,
+              0.2623688662516401,
+              0.25807453287579063,
+              0.25560211225798823,
+              0.2541928638602954
+            ],
+            "marked_points_rho": [
+              1.0,
+              10.0,
+              50.0
+            ],
+            "marked_points_note": "rho = 1/s_clock at unit delay noise; s_clock in {1.0, 0.1, 0.02}"
           },
           "rank_law_prediction": 12
         },
@@ -278,11 +609,34 @@
           "nullity": 4,
           "lambda_min_whitened": 0.0,
           "lambda_max_whitened": 1.8735639126684274,
-          "posterior_rmse_physical": 0.996361026532658,
-          "posterior_rmse_conformal": 1.0,
-          "worst_direction_posterior_std": 1.0,
-          "coverage_95": 0.9514583333333333,
-          "conformal_posterior_std_mean": 1.0
+          "whitened_eigenvalues": [
+            0.0,
+            8.33618332629235e-35,
+            3.21801218323331e-34,
+            2.16378090219736e-33,
+            0.10092732863140891,
+            0.16305592392188403,
+            0.17874238466629738,
+            0.29892765817694483,
+            0.7717196213908629,
+            0.9637270625798042,
+            1.2022725768168157,
+            1.8735639126684274
+          ],
+          "posterior_raw_mode_coordinates": {
+            "posterior_rmse_physical": 0.996361026532658,
+            "posterior_rmse_conformal": 1.0,
+            "worst_direction_posterior_std": 1.0,
+            "coverage_95": 0.9514583333333333,
+            "conformal_posterior_std_mean": 1.0
+          },
+          "posterior_full_bank_whitened_coordinates": {
+            "posterior_rmse_physical": 0.8110249766012446,
+            "posterior_rmse_conformal": 1.0,
+            "worst_direction_posterior_std": 1.0
+          },
+          "full_bank_144_ray_rank": 8,
+          "full_bank_144_ray_nullity": 4
         },
         "E_plus_all_links": {
           "rows": 22,
@@ -293,15 +647,93 @@
           "nullity": 0,
           "lambda_min_whitened": 0.087306073035614,
           "lambda_max_whitened": 1.6408007740299875,
-          "posterior_rmse_physical": 0.996064362057433,
-          "posterior_rmse_conformal": 0.9987705360472913,
-          "worst_direction_posterior_std": 0.9999559163999825,
-          "coverage_95": 0.9545833333333333,
-          "conformal_posterior_std_mean": 0.9987705360318249,
-          "conformal_posterior_std_vs_clock_noise": {
-            "1.0": 0.9987705360318249,
-            "0.1": 0.9243732301020375,
-            "0.02": 0.6687437685373692
+          "whitened_eigenvalues": [
+            0.087306073035614,
+            0.14015762766492676,
+            0.15895046623225756,
+            0.2134894554145741,
+            0.28374803081431205,
+            0.5838411463431844,
+            0.7980802497008205,
+            1.0484626114962976,
+            1.1639701811238046,
+            1.2499999999999998,
+            1.464074128569218,
+            1.6408007740299875
+          ],
+          "posterior_raw_mode_coordinates": {
+            "posterior_rmse_physical": 0.996064362057433,
+            "posterior_rmse_conformal": 0.9987705360472913,
+            "worst_direction_posterior_std": 0.9999559163999825,
+            "coverage_95": 0.9545833333333333,
+            "conformal_posterior_std_mean": 0.9987705360318249
+          },
+          "posterior_full_bank_whitened_coordinates": {
+            "posterior_rmse_physical": 0.8238506193985373,
+            "posterior_rmse_conformal": 0.7415498664138308,
+            "worst_direction_posterior_std": 0.9590121140511864
+          },
+          "clock_precision_sweep": {
+            "rho": [
+              0.1,
+              0.1333521432163324,
+              0.1778279410038923,
+              0.23713737056616552,
+              0.31622776601683794,
+              0.4216965034285822,
+              0.5623413251903491,
+              0.7498942093324558,
+              1.0,
+              1.333521432163324,
+              1.7782794100389228,
+              2.371373705661655,
+              3.1622776601683795,
+              4.216965034285822,
+              5.62341325190349,
+              7.498942093324558,
+              10.0,
+              13.33521432163324,
+              17.78279410038923,
+              23.71373705661655,
+              31.622776601683793,
+              42.169650342858226,
+              56.23413251903491,
+              74.98942093324558,
+              100.0
+            ],
+            "u_conf": [
+              0.9950506629165246,
+              0.9912674004686504,
+              0.9846830291841958,
+              0.9734047603777456,
+              0.9545953761777948,
+              0.9245438850408744,
+              0.8795338807324039,
+              0.8178005625516538,
+              0.7415498664138308,
+              0.6568136925725442,
+              0.5709284184894161,
+              0.49045842728248107,
+              0.42066317738291514,
+              0.3649224668128221,
+              0.3239740524898832,
+              0.2961013639764934,
+              0.2782821445330876,
+              0.2674099744517574,
+              0.2609846514990271,
+              0.2572637966385423,
+              0.2551355357043365,
+              0.25392703290279584,
+              0.2532436789924147,
+              0.25285819910427165,
+              0.252641045676116
+            ],
+            "marked_points_rho": [
+              1.0,
+              10.0,
+              50.0
+            ],
+            "marked_points_note": "rho = 1/s_clock at unit delay noise; s_clock in {1.0, 0.1, 0.02}"
           },
           "rank_law_prediction": 12
         },
@@ -350,8 +782,8 @@
         "O1->O3",
         "O3->O4"
       ],
-      "ray_selection_seconds": 0.000412378999953944,
-      "link_selection_seconds": 0.00019487899999148794,
+      "ray_selection_seconds": 0.0004761010000038368,
+      "link_selection_seconds": 0.00016068499999732921,
       "physical_pool_rank": 12,
       "selected_physical_singular_values": [
         0.16109981101190068,
@@ -378,11 +810,36 @@
           "nullity": 4,
           "lambda_min_whitened": 3.45246048025552e-35,
           "lambda_max_whitened": 1.8076158201842123,
-          "posterior_rmse_physical": 0.9973775742069043,
-          "posterior_rmse_conformal": 1.0,
-          "worst_direction_posterior_std": 1.0,
-          "coverage_95": 0.9484375,
-          "conformal_posterior_std_mean": 1.0
+          "whitened_eigenvalues": [
+            3.45246048025552e-35,
+            7.185487518266771e-35,
+            1.4158722212824196e-34,
+            1.7656597540578073e-34,
+            0.03780656468633994,
+            0.0701942083419434,
+            0.12290235513397599,
+            0.14976387853605833,
+            0.22214809085654966,
+            0.2633629497483246,
+            0.4260605543397771,
+            0.4595054814789242,
+            0.7786099227571708,
+            0.9485117575804847,
+            0.9653233714942454,
+            1.8076158201842123
+          ],
+          "posterior_raw_mode_coordinates": {
+            "posterior_rmse_physical": 0.9973775742069043,
+            "posterior_rmse_conformal": 1.0,
+            "worst_direction_posterior_std": 1.0,
+            "coverage_95": 0.9484375,
+            "conformal_posterior_std_mean": 1.0
+          },
+          "posterior_full_bank_whitened_coordinates": {
+            "posterior_rmse_physical": 0.8463098646127265,
+            "posterior_rmse_conformal": 1.0,
+            "worst_direction_posterior_std": 1.0
+          }
         },
         "B_plus_3_links": {
           "rows": 19,
@@ -393,11 +850,36 @@
           "nullity": 1,
           "lambda_min_whitened": -1.253916350526985e-18,
           "lambda_max_whitened": 1.8293513167194013,
-          "posterior_rmse_physical": 0.9968818896376594,
-          "posterior_rmse_conformal": 0.9995385074722773,
-          "worst_direction_posterior_std": 1.0,
-          "coverage_95": 0.94890625,
-          "conformal_posterior_std_mean": 0.999538495744558,
+          "whitened_eigenvalues": [
+            -1.253916350526985e-18,
+            0.03428536733998252,
+            0.06724031967270147,
+            0.12151945861885446,
+            0.12395468421112646,
+            0.1656788092739019,
+            0.21570401948498236,
+            0.2661803256898914,
+            0.4014094049874792,
+            0.41719600207883856,
+            0.5835698374416698,
+            0.7845271311566527,
+            0.9260391145777176,
+            0.988864062276521,
+            1.062127528389984,
+            1.8293513167194013
+          ],
+          "posterior_raw_mode_coordinates": {
+            "posterior_rmse_physical": 0.9968818896376594,
+            "posterior_rmse_conformal": 0.9995385074722773,
+            "worst_direction_posterior_std": 1.0,
+            "coverage_95": 0.94890625,
+            "conformal_posterior_std_mean": 0.999538495744558
+          },
+          "posterior_full_bank_whitened_coordinates": {
+            "posterior_rmse_physical": 0.8420008028826357,
+            "posterior_rmse_conformal": 0.8830710461683468,
+            "worst_direction_posterior_std": 1.0000000000000002
+          },
           "rank_law_prediction": 15
         },
         "C_plus_4_links": {
@@ -409,15 +891,97 @@
           "nullity": 0,
           "lambda_min_whitened": 0.028053387258950267,
           "lambda_max_whitened": 1.8394050237409738,
-          "posterior_rmse_physical": 0.9967839192153857,
-          "posterior_rmse_conformal": 0.9994617079841479,
-          "worst_direction_posterior_std": 0.9999707373372262,
-          "coverage_95": 0.95140625,
-          "conformal_posterior_std_mean": 0.9994616991980028,
-          "conformal_posterior_std_vs_clock_noise": {
-            "1.0": 0.9994616991980028,
-            "0.1": 0.9673042800435411,
-            "0.02": 0.8814202772647294
+          "whitened_eigenvalues": [
+            0.028053387258950267,
+            0.03634083566139689,
+            0.06803606401220567,
+            0.12239894900583012,
+            0.13684270643431026,
+            0.2013913571557538,
+            0.23304931648144614,
+            0.2894782801396976,
+            0.4033041527468789,
+            0.4620902883909837,
+            0.6277005560408533,
+            0.798302096635437,
+            0.9397717094846868,
+            1.0158837938244512,
+            1.0880534688702406,
+            1.8394050237409738
+          ],
+          "posterior_raw_mode_coordinates": {
+            "posterior_rmse_physical": 0.9967839192153857,
+            "posterior_rmse_conformal": 0.9994617079841479,
+            "worst_direction_posterior_std": 0.9999707373372262,
+            "coverage_95": 0.95140625,
+            "conformal_posterior_std_mean": 0.9994616991980028
+          },
+          "posterior_full_bank_whitened_coordinates": {
+            "posterior_rmse_physical": 0.8412282944491776,
+            "posterior_rmse_conformal": 0.8632931877578783,
+            "worst_direction_posterior_std": 0.9862616944440562
+          },
+          "clock_precision_sweep": {
+            "rho": [
+              0.1,
+              0.1333521432163324,
+              0.1778279410038923,
+              0.23713737056616552,
+              0.31622776601683794,
+              0.4216965034285822,
+              0.5623413251903491,
+              0.7498942093324558,
+              1.0,
+              1.333521432163324,
+              1.7782794100389228,
+              2.371373705661655,
+              3.1622776601683795,
+              4.216965034285822,
+              5.62341325190349,
+              7.498942093324558,
+              10.0,
+              13.33521432163324,
+              17.78279410038923,
+              23.71373705661655,
+              31.622776601683793,
+              42.169650342858226,
+              56.23413251903491,
+              74.98942093324558,
+              100.0
+            ],
+            "u_conf": [
+              0.9978268320076148,
+              0.9961550590388545,
+              0.9932234363820188,
+              0.9881360933407961,
+              0.9794636699524791,
+              0.9651071244290053,
+              0.9424077871036347,
+              0.9088299939856264,
+              0.8632931877578783,
+              0.8073786435044111,
+              0.7451268943676378,
+              0.6812127154434425,
+              0.6188148145079224,
+              0.5589478228024682,
+              0.5020345658688512,
+              0.44994416827365397,
+              0.4057979581788434,
+              0.3718358232167688,
+              0.3480314536509905,
+              0.33256194856997207,
+              0.32304247571053657,
+              0.31739199809880714,
+              0.3141124906281033,
+              0.31223445184254767,
+              0.31116735502828263
+            ],
+            "marked_points_rho": [
+              1.0,
+              10.0,
+              50.0
+            ],
+            "marked_points_note": "rho = 1/s_clock at unit delay noise; s_clock in {1.0, 0.1, 0.02}"
           },
           "rank_law_prediction": 16
         },
@@ -430,11 +994,38 @@
           "nullity": 4,
           "lambda_min_whitened": 5.268537283271123e-35,
           "lambda_max_whitened": 2.2465806750987287,
-          "posterior_rmse_physical": 0.9966733760552238,
-          "posterior_rmse_conformal": 1.0,
-          "worst_direction_posterior_std": 1.0,
-          "coverage_95": 0.94875,
-          "conformal_posterior_std_mean": 1.0
+          "whitened_eigenvalues": [
+            5.268537283271123e-35,
+            1.7583351640789872e-34,
+            4.80994528850588e-34,
+            1.4515309862778658e-33,
+            0.043384649111748455,
+            0.07925541324342744,
+            0.1341047173485366,
+            0.1497667561369216,
+            0.22433278873388102,
+            0.26876796786342233,
+            0.46036601543267597,
+            0.5553274204689408,
+            0.7836947444119378,
+            1.242969183463982,
+            1.6309583873313864,
+            2.2465806750987287
+          ],
+          "posterior_raw_mode_coordinates": {
+            "posterior_rmse_physical": 0.9966733760552238,
+            "posterior_rmse_conformal": 1.0,
+            "worst_direction_posterior_std": 1.0,
+            "coverage_95": 0.94875,
+            "conformal_posterior_std_mean": 1.0
+          },
+          "posterior_full_bank_whitened_coordinates": {
+            "posterior_rmse_physical": 0.8298446115999992,
+            "posterior_rmse_conformal": 1.0,
+            "worst_direction_posterior_std": 1.0
+          },
+          "full_bank_144_ray_rank": 12,
+          "full_bank_144_ray_nullity": 4
         },
         "E_plus_all_links": {
           "rows": 26,
@@ -445,15 +1036,97 @@
           "nullity": 0,
           "lambda_min_whitened": 0.03416449035642677,
           "lambda_max_whitened": 1.8955009961520985,
-          "posterior_rmse_physical": 0.996197029540976,
-          "posterior_rmse_conformal": 0.9987740661017805,
-          "worst_direction_posterior_std": 0.9999697568517463,
-          "coverage_95": 0.9509375,
-          "conformal_posterior_std_mean": 0.9987740660901596,
-          "conformal_posterior_std_vs_clock_noise": {
-            "1.0": 0.9987740660901596,
-            "0.1": 0.9360706127235666,
-            "0.02": 0.7850530419391084
+          "whitened_eigenvalues": [
+            0.03416449035642677,
+            0.06567523861421248,
+            0.12160534238603339,
+            0.1381938585071941,
+            0.2060547660505714,
+            0.2232371249793104,
+            0.29528268579590444,
+            0.4066341338730009,
+            0.45191709200770924,
+            0.7463317791163038,
+            0.8851020818209995,
+            0.9547337509006766,
+            1.3058715161923515,
+            1.4904348029982766,
+            1.6076593568791147,
+            1.8955009961520985
+          ],
+          "posterior_raw_mode_coordinates": {
+            "posterior_rmse_physical": 0.996197029540976,
+            "posterior_rmse_conformal": 0.9987740661017805,
+            "worst_direction_posterior_std": 0.9999697568517463,
+            "coverage_95": 0.9509375,
+            "conformal_posterior_std_mean": 0.9987740660901596
+          },
+          "posterior_full_bank_whitened_coordinates": {
+            "posterior_rmse_physical": 0.8386205631869574,
+            "posterior_rmse_conformal": 0.7471909360493353,
+            "worst_direction_posterior_std": 0.983343359262331
+          },
+          "clock_precision_sweep": {
+            "rho": [
+              0.1,
+              0.1333521432163324,
+              0.1778279410038923,
+              0.23713737056616552,
+              0.31622776601683794,
+              0.4216965034285822,
+              0.5623413251903491,
+              0.7498942093324558,
+              1.0,
+              1.333521432163324,
+              1.7782794100389228,
+              2.371373705661655,
+              3.1622776601683795,
+              4.216965034285822,
+              5.62341325190349,
+              7.498942093324558,
+              10.0,
+              13.33521432163324,
+              17.78279410038923,
+              23.71373705661655,
+              31.622776601683793,
+              42.169650342858226,
+              56.23413251903491,
+              74.98942093324558,
+              100.0
+            ],
+            "u_conf": [
+              0.9950528611907622,
+              0.9912742374815986,
+              0.984704028904942,
+              0.973467893178629,
+              0.954778526700762,
+              0.9250459205507258,
+              0.8807992172334446,
+              0.8206518960983192,
+              0.7471909360493353,
+              0.6666245522090011,
+              0.5862198321060931,
+              0.5123268863712211,
+              0.44980136794628756,
+              0.4013331121102165,
+              0.36685150569215996,
+              0.3440768552519563,
+              0.3298710257710421,
+              0.32135700249288374,
+              0.3163844690061099,
+              0.3135259891749475,
+              0.3118981389783375,
+              0.3109761408057102,
+              0.31045555393361485,
+              0.310162134914711,
+              0.30999692011449365
+            ],
+            "marked_points_rho": [
+              1.0,
+              10.0,
+              50.0
+            ],
+            "marked_points_note": "rho = 1/s_clock at unit delay noise; s_clock in {1.0, 0.1, 0.02}"
           },
           "rank_law_prediction": 16
         },
@@ -506,8 +1179,8 @@
         "O1->O3",
         "O3->O4"
       ],
-      "ray_selection_seconds": 0.0005722239999954581,
-      "link_selection_seconds": 0.00017294799999945099,
+      "ray_selection_seconds": 0.0005324420000079044,
+      "link_selection_seconds": 0.00018939099999215614,
       "physical_pool_rank": 16,
       "selected_physical_singular_values": [
         0.1669875421430113,
@@ -538,11 +1211,40 @@
           "nullity": 4,
           "lambda_min_whitened": 2.968614567495629e-36,
           "lambda_max_whitened": 1.7209933103034754,
-          "posterior_rmse_physical": 0.9974213319819547,
-          "posterior_rmse_conformal": 1.0,
-          "worst_direction_posterior_std": 1.0,
-          "coverage_95": 0.952625,
-          "conformal_posterior_std_mean": 1.0
+          "whitened_eigenvalues": [
+            2.968614567495629e-36,
+            2.89974823893556e-35,
+            5.497970137782905e-35,
+            1.38301874056618e-34,
+            0.03876465895647281,
+            0.0706617042071919,
+            0.08254459637347984,
+            0.11152230098242401,
+            0.12650367495308804,
+            0.14809305745238252,
+            0.20763975002044807,
+            0.27809538387187666,
+            0.4143585218337042,
+            0.44135526452947427,
+            0.5462487307863638,
+            0.6466020994450762,
+            0.7525614417190754,
+            1.0884502794006794,
+            1.2620547983677612,
+            1.7209933103034754
+          ],
+          "posterior_raw_mode_coordinates": {
+            "posterior_rmse_physical": 0.9974213319819547,
+            "posterior_rmse_conformal": 1.0,
+            "worst_direction_posterior_std": 1.0,
+            "coverage_95": 0.952625,
+            "conformal_posterior_std_mean": 1.0
+          },
+          "posterior_full_bank_whitened_coordinates": {
+            "posterior_rmse_physical": 0.8515852002272455,
+            "posterior_rmse_conformal": 1.0,
+            "worst_direction_posterior_std": 1.0
+          }
         },
         "B_plus_3_links": {
           "rows": 23,
@@ -553,11 +1255,40 @@
           "nullity": 1,
           "lambda_min_whitened": 5.068141445865162e-17,
           "lambda_max_whitened": 1.7319481527677003,
-          "posterior_rmse_physical": 0.9969756858108471,
-          "posterior_rmse_conformal": 0.9995388769547721,
-          "worst_direction_posterior_std": 0.9999999999999999,
-          "coverage_95": 0.95125,
-          "conformal_posterior_std_mean": 0.9995388652264499,
+          "whitened_eigenvalues": [
+            5.068141445865162e-17,
+            0.035149462663353,
+            0.06359485739475765,
+            0.07362755558485959,
+            0.1088917058006278,
+            0.12397088045723162,
+            0.14226037105463785,
+            0.17349196390176927,
+            0.2000085497974792,
+            0.2782308112101442,
+            0.3728844132810785,
+            0.42596713807812076,
+            0.48424128418357215,
+            0.6466774779583903,
+            0.6933826298622114,
+            0.7476721717785065,
+            0.9676652440735307,
+            1.1074682286726238,
+            1.3415432436634616,
+            1.7319481527677003
+          ],
+          "posterior_raw_mode_coordinates": {
+            "posterior_rmse_physical": 0.9969756858108471,
+            "posterior_rmse_conformal": 0.9995388769547721,
+            "worst_direction_posterior_std": 0.9999999999999999,
+            "coverage_95": 0.95125,
+            "conformal_posterior_std_mean": 0.9995388652264499
+          },
+          "posterior_full_bank_whitened_coordinates": {
+            "posterior_rmse_physical": 0.8476355444016497,
+            "posterior_rmse_conformal": 0.8840144197715755,
+            "worst_direction_posterior_std": 1.0
+          },
           "rank_law_prediction": 19
         },
         "C_plus_4_links": {
@@ -569,15 +1300,101 @@
           "nullity": 0,
           "lambda_min_whitened": 0.028092880126014724,
           "lambda_max_whitened": 1.7379226818776399,
-          "posterior_rmse_physical": 0.9969015952887496,
-          "posterior_rmse_conformal": 0.9994620798260253,
-          "worst_direction_posterior_std": 0.9999705923043289,
-          "coverage_95": 0.946625,
-          "conformal_posterior_std_mean": 0.9994620710111239,
-          "conformal_posterior_std_vs_clock_noise": {
-            "1.0": 0.9994620710111239,
-            "0.1": 0.9689041915369934,
-            "0.02": 0.9131081091988782
+          "whitened_eigenvalues": [
+            0.028092880126014724,
+            0.03652538890539467,
+            0.06460755673936612,
+            0.07884972839423973,
+            0.10929114669642871,
+            0.12533498429289897,
+            0.1430903327104898,
+            0.1987242450246764,
+            0.2432870906181249,
+            0.2927919944437259,
+            0.41063386514836864,
+            0.43320822501705913,
+            0.4842427672203551,
+            0.6494191340078389,
+            0.7199841355035896,
+            0.8011095207023875,
+            1.003638389033893,
+            1.115305827908447,
+            1.3450708517775096,
+            1.7379226818776399
+          ],
+          "posterior_raw_mode_coordinates": {
+            "posterior_rmse_physical": 0.9969015952887496,
+            "posterior_rmse_conformal": 0.9994620798260253,
+            "worst_direction_posterior_std": 0.9999705923043289,
+            "coverage_95": 0.946625,
+            "conformal_posterior_std_mean": 0.9994620710111239
+          },
+          "posterior_full_bank_whitened_coordinates": {
+            "posterior_rmse_physical": 0.8470279277333347,
+            "posterior_rmse_conformal": 0.8643084084115141,
+            "worst_direction_posterior_std": 0.986242751274229
+          },
+          "clock_precision_sweep": {
+            "rho": [
+              0.1,
+              0.1333521432163324,
+              0.1778279410038923,
+              0.23713737056616552,
+              0.31622776601683794,
+              0.4216965034285822,
+              0.5623413251903491,
+              0.7498942093324558,
+              1.0,
+              1.333521432163324,
+              1.7782794100389228,
+              2.371373705661655,
+              3.1622776601683795,
+              4.216965034285822,
+              5.62341325190349,
+              7.498942093324558,
+              10.0,
+              13.33521432163324,
+              17.78279410038923,
+              23.71373705661655,
+              31.622776601683793,
+              42.169650342858226,
+              56.23413251903491,
+              74.98942093324558,
+              100.0
+            ],
+            "u_conf": [
+              0.9978270622063868,
+              0.9961557804362647,
+              0.99322568161234,
+              0.9881429987187771,
+              0.9794844850694081,
+              0.9651678370953394,
+              0.942576061732382,
+              0.9092634580156594,
+              0.8643084084115141,
+              0.8095065798523788,
+              0.7490925763640489,
+              0.6878086176289786,
+              0.6287684449238877,
+              0.5729577793908607,
+              0.5208927632527933,
+              0.4743971035095774,
+              0.43610778212655743,
+              0.40749465660953965,
+              0.3879451721119124,
+              0.37548958811731337,
+              0.36792976250437953,
+              0.3634821671614756,
+              0.3609147758680281,
+              0.35944923898993664,
+              0.35861806606636354
+            ],
+            "marked_points_rho": [
+              1.0,
+              10.0,
+              50.0
+            ],
+            "marked_points_note": "rho = 1/s_clock at unit delay noise; s_clock in {1.0, 0.1, 0.02}"
           },
           "rank_law_prediction": 20
         },
@@ -590,11 +1407,42 @@
           "nullity": 4,
           "lambda_min_whitened": 1.315906710068998e-35,
           "lambda_max_whitened": 2.2841124105410415,
-          "posterior_rmse_physical": 0.9968642788318216,
-          "posterior_rmse_conformal": 1.0,
-          "worst_direction_posterior_std": 1.0000000000000004,
-          "coverage_95": 0.945375,
-          "conformal_posterior_std_mean": 1.0
+          "whitened_eigenvalues": [
+            1.315906710068998e-35,
+            1.6837199315237082e-34,
+            4.8157450283122645e-34,
+            1.259004340627339e-33,
+            0.04413673971244784,
+            0.07364351991570674,
+            0.08612909914062489,
+            0.11254798460990932,
+            0.12890870449639072,
+            0.15196441820920564,
+            0.2198331046055966,
+            0.28209441483096676,
+            0.43544653218212914,
+            0.47168973557711286,
+            0.6614778937510161,
+            0.7567645604065938,
+            0.8741271873592509,
+            1.4070314329316655,
+            1.861668844456753,
+            2.2841124105410415
+          ],
+          "posterior_raw_mode_coordinates": {
+            "posterior_rmse_physical": 0.9968642788318216,
+            "posterior_rmse_conformal": 1.0,
+            "worst_direction_posterior_std": 1.0000000000000004,
+            "coverage_95": 0.945375,
+            "conformal_posterior_std_mean": 1.0
+          },
+          "posterior_full_bank_whitened_coordinates": {
+            "posterior_rmse_physical": 0.8371283237775958,
+            "posterior_rmse_conformal": 1.0,
+            "worst_direction_posterior_std": 1.0
+          },
+          "full_bank_144_ray_rank": 16,
+          "full_bank_144_ray_nullity": 4
         },
         "E_plus_all_links": {
           "rows": 30,
@@ -605,15 +1453,101 @@
           "nullity": 0,
           "lambda_min_whitened": 0.03500137893444437,
           "lambda_max_whitened": 1.7801741151395074,
-          "posterior_rmse_physical": 0.9962388924638497,
-          "posterior_rmse_conformal": 0.9987775974545408,
-          "worst_direction_posterior_std": 0.9999697207750318,
-          "coverage_95": 0.9505,
-          "conformal_posterior_std_mean": 0.9987775974545406,
-          "conformal_posterior_std_vs_clock_noise": {
-            "1.0": 0.9987775974545406,
-            "0.1": 0.9466717853556821,
-            "0.02": 0.8981403954884601
+          "whitened_eigenvalues": [
+            0.03500137893444437,
+            0.06573304077909281,
+            0.07399660677761821,
+            0.10877452628842263,
+            0.12529101950820107,
+            0.13899344473694392,
+            0.1984964920824721,
+            0.22090457013978898,
+            0.32812720886206426,
+            0.38016795440235557,
+            0.4322394298388752,
+            0.51173433099357,
+            0.6168106409389963,
+            0.7569367702980966,
+            1.0471576751500533,
+            1.1577329595742019,
+            1.5364466603831162,
+            1.5759288218682421,
+            1.6079325567966318,
+            1.7801741151395074
+          ],
+          "posterior_raw_mode_coordinates": {
+            "posterior_rmse_physical": 0.9962388924638497,
+            "posterior_rmse_conformal": 0.9987775974545408,
+            "worst_direction_posterior_std": 0.9999697207750318,
+            "coverage_95": 0.9505,
+            "conformal_posterior_std_mean": 0.9987775974545406
+          },
+          "posterior_full_bank_whitened_coordinates": {
+            "posterior_rmse_physical": 0.8438318330599298,
+            "posterior_rmse_conformal": 0.7528494563351932,
+            "worst_direction_posterior_std": 0.982945719575035
+          },
+          "clock_precision_sweep": {
+            "rho": [
+              0.1,
+              0.1333521432163324,
+              0.1778279410038923,
+              0.23713737056616552,
+              0.31622776601683794,
+              0.4216965034285822,
+              0.5623413251903491,
+              0.7498942093324558,
+              1.0,
+              1.333521432163324,
+              1.7782794100389228,
+              2.371373705661655,
+              3.1622776601683795,
+              4.216965034285822,
+              5.62341325190349,
+              7.498942093324558,
+              10.0,
+              13.33521432163324,
+              17.78279410038923,
+              23.71373705661655,
+              31.622776601683793,
+              42.169650342858226,
+              56.23413251903491,
+              74.98942093324558,
+              100.0
+            ],
+            "u_conf": [
+              0.995055111411489,
+              0.9912812344535239,
+              0.9847255112796478,
+              0.9735324316796187,
+              0.9549655295281462,
+              0.9255574798138427,
+              0.8820843461754482,
+              0.823533264535533,
+              0.7528494563351932,
+              0.6763633750508629,
+              0.6011796548762689,
+              0.5333050736686438,
+              0.4770753439327889,
+              0.4344982736833727,
+              0.40489667254948414,
+              0.38572588083162324,
+              0.37394377120882044,
+              0.3669531817181655,
+              0.3628963604323287,
+              0.3605732435204138,
+              0.3592532540576692,
+              0.35850659582778716,
+              0.3580853230303685,
+              0.3578479801344248,
+              0.3577143716585663
+            ],
+            "marked_points_rho": [
+              1.0,
+              10.0,
+              50.0
+            ],
+            "marked_points_note": "rho = 1/s_clock at unit delay noise; s_clock in {1.0, 0.1, 0.02}"
           },
           "rank_law_prediction": 20
         },
@@ -670,8 +1604,14 @@
     },
     "gate_9_no_physical_degradation": {
       "pass": true
+    },
+    "gate_10_stop_on_failure": {
+      "pass": true,
+      "kind": "process control, not a measurement",
+      "statement": "Any failed check raises SystemExit after the full report is written; tolerances are not modified at runtime."
     }
   },
   "all_pass": true,
-  "paper_claim": "Across stationary physical families of dimension 6, 8, 12 and 16, delay-only sensing recovered the physical subspace but retained a four-dimensional conformal kernel. Selected clock comparisons lifted exactly those directions -- three links gave d_p+3, four gave d_p+4 -- whereas four additional delay rays did not. The observed joint rank agreed with d_p + rank(R_c) in every registered case."
+  "paper_claim": "Across stationary physical families of dimensions 6, 8, 12 and 16, the delay-only Jacobian had rank d_p and retained a four-dimensional conformal kernel. Three independent static-clock comparisons increased the joint rank to d_p+3, while four increased it to d_p+4. Adding four further delay observations did not change the conformal nullity. Thus the observed rank obeyed rank(J_joint) = d_p + rank(R_c) in every tested family.",
+  "statistical_qualification": "Under the canonical unit-noise, standard-normal raw-coordinate prior, the added clock rows produced limited posterior contraction because the synthetic endpoint responses were small relative to the assumed noise. A declared clock-precision sweep showed increasing conformal contraction without affecting the exact rank result."
 }

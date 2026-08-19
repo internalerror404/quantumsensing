@@ -24,7 +24,7 @@ Counts as of the fix commit; the parenthesised figures are where this stood at f
 | Stage 0 — 7 numerical checks + 1 process control | **8** (3) | **0** (3) | **0** (1) | 0 |
 | Stage 1 — deterministic design | **4** (2) | 0 | 0 | 0, with 2 partial (2) |
 | Stage 2 — amortized selector (10) | **6** (3) | **1** (2) | **1** (1) | **2** (4) |
-| Required ablations (9) | 0 | 0 | 0 | 9 |
+| Required ablations (8 + 1 convergence sweep) | **1** (0) | 0 | 0 | **7** (9) |
 | §6 static redshift (5) | **5** (0) | 0 | 0 | **0** (5) |
 | §7 PTA / Hellings–Downs (4) | 0 | 0 | 0 | 4 |
 
@@ -32,10 +32,10 @@ Stage 0 now tests its claims — precisely: **seven scientific/numerical checks 
 stop-on-failure process control (gate 7) pass**; calling all eight "theorem gates" would
 overstate what gate 7 measures. Stage 1 produces exact rather than Monte-Carlo metrics. Stage 2
 has a working policy and a minimal harness that computes gates 2, 3 and 4 — gate 3 fails, which
-is a reported result rather than a defect. What remains is the **full** harness (gates 1 and 5,
-What remains is the deterministic full-metric campaign, the eight scientific ablations and
-numerical-convergence sweep, and the separate §7 detector application. §6 is done and
-independently verified; the registered scaling campaign has run on the registered seeds.
+is a reported result rather than a defect. What remains is the deterministic full-metric
+campaign, the seven remaining scientific ablations and the numerical-convergence sweep, and
+the separate §7 detector application. §6 and the joint delay+redshift ablation (D+R-1) are
+done and verified; the registered scaling campaign has run on the registered seeds.
 
 ---
 
@@ -88,7 +88,7 @@ Gate 3's failure is the substantive open question: the policy sits ~40× below t
 oracle and ~18× below a 0.6 ms greedy heuristic. Closing it needs a better selection mechanism,
 not a longer run.
 
-## Required ablations — 0 run (8 registered scientific ablations in `experiment.yaml`, plus one numerical-convergence sweep the spec text lists; quadrature convergence validates implementation, not physics, so it is counted separately)
+## Required ablations — 1 of 8 complete (8 registered scientific ablations in `experiment.yaml`, plus one numerical-convergence sweep tracked separately; quadrature convergence validates implementation, not physics). Delay-only vs delay+redshift is DONE (Experiment D+R-1); seven remain.
 
 Runnable today via existing flags, just never swept:
 
@@ -160,9 +160,12 @@ pass**, including stop-on-patch. Observed ranks, every d_p:
 | F: E + constant conformal mode | d_p+4; kernel on that mode | ✓, kernel weight > 0.999 |
 
 The rank law `rank(J_joint) = d_p + rank(R_c)` held in every registered case. Arm D is the
-load-bearing negative control: four *optimally chosen* additional delay rays leave the
-conformal nullity at exactly 4, while four clock links lift it to 0 — more data through the
-null channel does nothing; a new observable does everything. Whitened λ_min moves from
+load-bearing negative control: four additional delay rays (highest-sensitivity-norm
+heuristic — the choice is irrelevant, since every delay row has identically zero conformal
+columns) leave the conformal nullity at exactly 4, and the machine-readable full-bank check
+confirms it for the **entire 144-ray delay bank** (rank d_p, nullity 4). Four clock links
+lift it to 0 — more data through the null channel does nothing; a new observable does
+everything. Whitened λ_min moves from
 ~1e-35 (arms A, D) to 3e-2 (arm C). Gate 9 confirms appending clock rows never shrinks the
 physical block's spectrum (max degradation ≤ 0); gate 7's kernel vector localizes on the
 constant conformal mode to >0.999.
@@ -172,13 +175,21 @@ The supplementary §6 gauge check is now a **machine-readable gate**
 1024/2048/4096, selected order 2048 against 1e-10; redshift response exactly 0), so it no
 longer lives only in narrative history.
 
-Statistical layer, declared not hidden: unit channel noise, standard normal prior, parameter
-metric from the full candidate bank. Under that declaration the clock rows are weak (entries
-~0.05, the bump amplitude at the clocks), so conformal posterior std moves only 1.0000 →
-0.9995; a declared clock-precision scan shows the conversion (s_clock = 1.0 / 0.1 / 0.02 →
-0.9995 / 0.962 / 0.806 at d_p=6). Rank restoration is exact at any noise level; how much
-*uncertainty* the clocks remove is a precision statement, and the report keeps the two
-claims separate. Coverage is calibrated (~0.95) in every arm.
+Statistical layer, declared not hidden, in **both coordinate conventions**: raw mode
+coordinates (transparent audit; conformal std 1.0000 → 0.9995 under unit noise — honest and
+deliberately weak, and the physical block sits at ~0.997 too: the whole synthetic instance is
+low-information relative to its N(0,I) prior, not just the clocks) and full-bank-whitened
+coordinates (rescaling-invariant; conformal rmse 0.861 at ρ=1). The clock-precision curve is
+a **log-spaced sweep** in ρ = σ_D/σ_R (25 points, 0.1–100, whitened coordinates), with the
+declared points ρ ∈ {1, 10, 50} marked: u_conf = 0.861 / 0.401 / 0.312 (4 links, d_p=12).
+Rank restoration is exact at every ρ; posterior contraction is the separate precision
+statement, and the report keeps the two claims apart (`paper_claim` uses rank language only;
+`statistical_qualification` carries the caveat). Coverage is calibrated (~0.95) in every arm.
+The central three-panel figure (visibility spectrum / rank restoration / precision
+conversion) is generated by `experiments/src/make_joint_figure.py` →
+`paper/figures/joint_rank_restoration.{pdf,png}`. The static ansatz is now **enforced at
+runtime**: `static_tensor_redshift_matrix` rejects any mode with |h₀ᵢ| > 1e-14 at a clock
+endpoint rather than silently producing rows the endpoint formula does not cover.
 
 ## §7 PTA / LISA application gate — ABSENT
 
@@ -254,9 +265,10 @@ verified and integrated). What remains:
 2. **Registered deterministic full-metric campaign** — RMSE, worst-direction error,
    credible-interval coverage, condition number, blocked/unblocked retention, build and
    selection time, at order 1024, over `seed_set`. The paper's main quantitative table.
-3. **Deterministic ablations** — no-gauge-quotient negative control, uniform vs QFI weights,
-   homogeneous vs heterogeneous widths, delay vs delay+redshift (after §6), candidate
-   density, K/d, D vs E. The learned-policy ablation campaign is no longer needed for
+3. **Deterministic ablations (7 remaining)** — in priority order: no-gauge-quotient
+   negative control; uniform vs QFI channel weighting; homogeneous vs heterogeneous packet
+   width; D-optimal vs E-optimal design; candidate density; K/d; integration-domain and
+   quadrature stability. The learned-policy ablation campaign is no longer needed for
    Paper 1. Off-diagonal W (correlated probes) is deliberately deferred past Paper 1 — it
    is the foundation of the quantum companion paper, not a blocker here.
 4. **v0.3 learned selector** — only if an activation condition in the YAML becomes true;

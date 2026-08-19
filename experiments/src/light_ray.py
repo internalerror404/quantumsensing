@@ -636,14 +636,31 @@ def static_tensor_delay_matrix(rays: Iterable[Ray], modes: Iterable,
 
 
 def static_tensor_redshift_matrix(links: Iterable[StaticClockLink],
-                                  modes: Iterable) -> Array:
+                                  modes: Iterable,
+                                  h0i_tolerance: float = 1e-14) -> Array:
     """Endpoint matrix R_AB h = 1/2 [h_00(B) - h_00(A)] for stationary modes.
 
-    Valid within the static ansatz (stationary h, h_0i = 0 for the modes it is
-    applied to). Works for any mode exposing .tensor(spatial_points).
+    Valid only within the static ansatz (stationary h, h_0i = 0), under which
+    the paper derives the endpoint formula. Enforced at runtime: a mode whose
+    assembled tensor carries h_0i above tolerance at any clock endpoint raises,
+    rather than silently producing rows the formula does not cover.
     """
     link_list = list(links)
     mode_list = list(modes)
+    endpoints = np.vstack([
+        np.vstack((link.emitter.position, link.receiver.position))
+        for link in link_list
+    ]) if link_list else np.zeros((0, 3))
+    for mode in mode_list:
+        h = mode.tensor(endpoints)
+        h0i = float(np.max(np.abs(h[:, 0, 1:]))) if h.shape[0] else 0.0
+        if h0i > h0i_tolerance:
+            raise ValueError(
+                f"mode {getattr(mode, 'label', mode)!r} has |h_0i| = {h0i:.3e} "
+                "at a clock endpoint; the static redshift formula "
+                "R_AB h = 1/2 [h_00(B) - h_00(A)] does not apply outside the "
+                "h_0i = 0 static ansatz"
+            )
     out = np.empty((len(link_list), len(mode_list)), dtype=float)
     for ell, link in enumerate(link_list):
         point_a = link.emitter.position[None, :]

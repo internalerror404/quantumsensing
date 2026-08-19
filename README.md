@@ -37,7 +37,11 @@ All rank and design metrics are computed after declaring a parameter-space norma
 > the packet; gate 6 uses a non-polynomial profile; gate 8 certifies the gauge quotient at
 > d in {6,8,12,16}). The **§6 static redshift experiment is implemented and passing**
 > (`experiments/run_static_redshift.sh`, report in `results/static_redshift_experiment.json`).
-> The deterministic scaling study has run on the registered seeds (`run_scaling_study.sh`).
+> The deterministic scaling study has run on the registered seeds (`run_scaling_study.sh`),
+> and the **joint delay+redshift rank-restoration ablation (D+R-1) is complete and passing**
+> (`experiments/run_joint_ablation.sh` — the rank law rank(J_joint) = d_p + rank(R_c) held
+> at every registered d_p; four extra delay rays restored nothing, four clock links restored
+> everything).
 > The **DeepSets v0.2 selector is frozen as a dominated negative baseline** — it beats random
 > and angular-spread but is strictly Pareto-dominated by greedy D-optimal selection (23x
 > objective at 0.37 ms vs 16.6 ms); the large learned-selector campaign will not be run for
@@ -62,6 +66,7 @@ The script stops rather than modifying tolerances if any gate fails.
 5. **Packet-width scaling:** the log-log QFI slope versus `s` is `-2.00 +/- 0.01`.
 6. **Endpoint failure mode:** when `V` is nonzero at an endpoint, `A_gamma(2 d^s V)=[g(V,k)]_boundary` holds to relative error `1e-8`.
 7. **No silent patching:** any deviation from the paper's proved statements terminates the run and writes a failure report.
+8. **Gauge-quotient independence:** the physical family is independent modulo the sampled gauge span at every registered dimension `d in {6, 8, 12, 16}` (margin > 1e3 against the numerical gauge floor).
 
 The current deterministic report is written to `results/task1_verification.json`.
 
@@ -255,6 +260,12 @@ pip install -r requirements.txt
 
 # Deterministic design scaling study (registered seeds)
 ./run_scaling_study.sh
+
+# Joint delay-versus-redshift rank-restoration experiment (D+R-1)
+./run_joint_ablation.sh
 ```
 
-The short selector run verifies code paths only. The paper result requires the registered multi-seed train/validation/test campaign, bootstrap intervals, and saved task manifests.
+The short selector run verifies code paths only. DeepSets v0.2 is frozen as a dominated
+negative baseline, and the large learned train/validation/test campaign will not be run for
+it. Paper 1's quantitative claims rest on the registered deterministic campaign (scaling
+study, D+R-1, and the order-1024 full-metric campaign over the registered seed set).
