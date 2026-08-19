@@ -24,7 +24,7 @@ Counts as of the fix commit; the parenthesised figures are where this stood at f
 | Stage 0 — 7 numerical checks + 1 process control | **8** (3) | **0** (3) | **0** (1) | 0 |
 | Stage 1 — deterministic design | **5** (2) | 0 | 0 | 0, with 1 partial (2) |
 | Stage 2 — amortized selector (10) | **6** (3) | **1** (2) | **1** (1) | **2** (4) |
-| Required ablations (8 + 1 convergence sweep) | **4** (0) | 0 | 0 | 2 analyze-from-records · 1 deferred |
+| Required ablations (8 + 1 convergence sweep) | **7** (0) | 0 | 0 | 1 deferred |
 | §6 static redshift (5) | **5** (0) | 0 | 0 | **0** (5) |
 | §7 PTA / Hellings–Downs (4) | 0 | 0 | 0 | 4 |
 
@@ -88,7 +88,7 @@ Gate 3's failure is the substantive open question: the policy sits ~40× below t
 oracle and ~18× below a 0.6 ms greedy heuristic. Closing it needs a better selection mechanism,
 not a longer run.
 
-## Required ablations — 1 of 8 complete
+## Required ablations — 7 of 8 complete, 1 deferred
 
 8 registered scientific ablations in `experiment.yaml`, plus one numerical-convergence sweep
 tracked separately (quadrature convergence validates implementation, not physics). The audit
@@ -97,7 +97,7 @@ taxonomy distinguishes ABSENT (no code) from READY/UNRUN (mechanism exists, swee
 | status | ablations |
 |---|---|
 | **DONE** | delay-only vs delay+redshift (D+R-1); **QFI vs uniform weights × homogeneous vs heterogeneous packets** (W-1, run as the registered 2×2 with cross-evaluation and total-information control, `results/weight_packet_ablation.json`); **no-gauge-quotient negative control** (NQ-1, `results/no_quotient_control.json`, also in CI); **D vs E** (cross-objective table from the representative computations, `paper/tables/d_vs_e_cross.md`) |
-| **ANALYZE FROM EXISTING RECORDS** | candidate-pool density and K/d — the registered campaign already sweeps M ∈ {256,512,1024,4096} and K/d ∈ {1,1.25,1.5,2}; extraction, not new runs (caveat: whitening is per-pool, so absolute cross-pool λ_min needs care) |
+| **DONE (analysis of existing records)** | candidate-pool density and K/d — reduced from the 320 registered campaign records by `experiments/src/analyze_density_budget.py` → `paper/tables/density_budget_analysis.md`, `results/density_budget_analysis.json`. No new numerics. The per-pool-whitening caveat is handled explicitly: cross-M comparisons use raw-coordinate posteriors (fixed prior) plus the declared rescaling M·λ_min; whitened comparisons are used as-is only along the K/d axis at fixed (M, d), where R is identical |
 | **CONSOLIDATED** | quadrature/integration stability — one supplement, `paper/tables/convergence_supplement.md`, drawn programmatically from the canonical JSONs |
 | **DEFERRED past Paper 1** | independent vs correlated probes (off-diagonal W — foundation of the quantum companion paper) |
 
@@ -116,6 +116,16 @@ order 1024): unquotiented nullity is exactly 4 at every ray budget in {16,32,64,
 scale separation is explicit — exact conformal zeros 1.2e-18, quadrature potential-gauge
 floor 2.4e-10, smallest physical singular value 6.9e-2 — with the rank threshold pinned
 between the floors so quadrature noise is never counted as recovered gauge information.
+
+**Density/budget headline** (reduction of the 320 campaign records, medians over the
+registered seeds): rank is never the constraint anywhere on the registered surface — full
+rank in all 320 records, including under pinned 20%-sector blocking — so pool density and
+ray budget act purely on conditioning and precision. Enlarging the pool 16× (M 256 → 4096
+at K/d = 1.5) buys ~2× pool-rescaled λ_min at d ≤ 12 and **4.03×** at d = 16, at only
+1.7–3.2× selection-latency cost (still ≤ 5 ms median); the density benefit grows with
+dimension, consistent with W-1. Doubling the ray budget (K/d 1 → 2 at M = 1024) buys
+2.4–3.2× whitened λ_min and 1.6–2× conditioning; marginal per-step gains stay ≥ 1.25× up
+to K/d = 2 at d ≥ 8, while at d = 6 they saturate at K/d = 1.5 (last step 1.01×).
 
 Runnable today via existing flags, just never swept:
 
@@ -323,8 +333,9 @@ verified and integrated). What remains:
 3. ~~Deterministic ablations~~ — the minimal submission package is **complete**: W-1
    (weights × packets, cross-evaluated), NQ-1 (no-quotient control), the D-vs-E
    cross-objective table, and the consolidated convergence supplement. Candidate density
-   and K/d are analyzed from the existing campaign records. Off-diagonal W remains
-   deliberately deferred to the quantum companion paper.
+   and K/d are analyzed from the existing campaign records
+   (`paper/tables/density_budget_analysis.md`). Off-diagonal W remains deliberately
+   deferred to the quantum companion paper.
 4. **Manuscript work is now the bottleneck** (v1.0 checked against the canonical JSONs —
    the cited numbers match, and it wisely says "millisecond scale" rather than pinning a
    jittery worst-case): theorem-by-theorem proof audit, quantum-metrology review of the

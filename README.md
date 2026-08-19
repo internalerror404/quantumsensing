@@ -270,6 +270,9 @@ pip install -r requirements.txt
 # Weights x packets ablation (W-1) and no-quotient control (NQ-1)
 ./run_weight_ablation.sh
 ./run_no_quotient_control.sh
+
+# Density/budget reduction of the campaign records (analysis only, no new numerics)
+"${PYTHON:-python3}" src/analyze_density_budget.py
 ```
 
 The short selector run verifies code paths only. DeepSets v0.2 is frozen as a dominated
