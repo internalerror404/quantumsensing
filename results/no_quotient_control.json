@@ -1,0 +1,106 @@
+{
+  "experiment": "no_gauge_quotient_negative_control",
+  "conventions": {
+    "quadrature_order": 1024,
+    "seed": 20260818,
+    "gauge_columns": [
+      "conformal_0",
+      "conformal_1",
+      "potential_0",
+      "potential_1"
+    ],
+    "rank_threshold": "sqrt(gauge_floor * sigma_min_physical), pinned above quadrature noise and below physics"
+  },
+  "dimensions": {
+    "physical": 12,
+    "gauge_columns": 4,
+    "unquotiented": 16
+  },
+  "per_budget": [
+    {
+      "rays": 16,
+      "rank_J": 12,
+      "rank_F": 12,
+      "nullity": 4,
+      "threshold": 5.309209064165074e-07,
+      "sigma_min_physical": 0.001196495493232009,
+      "smallest_4_singular_values": [
+        2.31350755073833e-10,
+        6.669145529782109e-11,
+        4.896998775514933e-19,
+        7.096358823942691e-21
+      ]
+    },
+    {
+      "rays": 32,
+      "rank_J": 12,
+      "rank_F": 12,
+      "nullity": 4,
+      "threshold": 1.4477965938116337e-06,
+      "sigma_min_physical": 0.0088974696212101,
+      "smallest_4_singular_values": [
+        5.485905448214327e-10,
+        1.6772457029032197e-10,
+        4.39802568299076e-18,
+        1.429800519215514e-18
+      ]
+    },
+    {
+      "rays": 64,
+      "rank_J": 12,
+      "rank_F": 12,
+      "nullity": 4,
+      "threshold": 2.609180034150606e-06,
+      "sigma_min_physical": 0.02889744899925766,
+      "smallest_4_singular_values": [
+        5.0617935868575e-10,
+        4.333037770279791e-10,
+        1.5588582133505023e-17,
+        4.10312326684853e-18
+      ]
+    },
+    {
+      "rays": 128,
+      "rank_J": 12,
+      "rank_F": 12,
+      "nullity": 4,
+      "threshold": 3.3178261484321475e-06,
+      "sigma_min_physical": 0.04672600638009086,
+      "smallest_4_singular_values": [
+        2.382102094985005e-09,
+        6.336800876187405e-10,
+        2.7612282292570956e-17,
+        6.945379674147658e-18
+      ]
+    },
+    {
+      "rays": 288,
+      "rank_J": 12,
+      "rank_F": 12,
+      "nullity": 4,
+      "threshold": 4.023926817874444e-06,
+      "sigma_min_physical": 0.06873082551938042,
+      "smallest_4_singular_values": [
+        3.4143624030782047e-09,
+        1.6742238388399032e-09,
+        5.739225307145299e-17,
+        2.1934164010288987e-17
+      ]
+    }
+  ],
+  "checks": {
+    "unquotiented_rank_deficit": {
+      "pass": true,
+      "statement": "rank(J_unquotiented) = 12 < 16 = dim at EVERY ray budget; F = J^T W J singular regardless of budget; nullity = #gauge columns = 4"
+    },
+    "scale_separation": {
+      "pass": true,
+      "exact_conformal_zero_floor": 1.1748218537327934e-18,
+      "quadrature_potential_gauge_floor": 2.355855165895454e-10,
+      "smallest_physical_singular_value": 0.06873082551938042,
+      "statement": "conformal columns are exact zeros; potential columns are quadrature-limited; neither is counted as signal"
+    }
+  },
+  "all_pass": true,
+  "paper_claim": "Without the gauge quotient the Fisher matrix is singular at every ray budget; the quotient is operationally necessary, not notation."
+}

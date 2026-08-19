@@ -1,0 +1,656 @@
+{
+  "experiment": "qfi_vs_uniform_weights_x_homogeneous_vs_heterogeneous_packets",
+  "conventions": {
+    "quadrature_order": 1024,
+    "total_information_control": "(1/M) sum_a q_a = 1 in every condition",
+    "homogeneous_matching": "1/s_0^2 = mean(1/s_a^2) over the heterogeneous draw",
+    "designer": "greedy D-optimal (deployment method)",
+    "cross_evaluation": "every design scored under the TRUE objective of its resource condition",
+    "success_criterion": "none preregistered; the comparison itself is the result"
+  },
+  "registered_seed_set": [
+    2026,
+    3407,
+    9181,
+    17041,
+    27183
+  ],
+  "cells": [
+    {
+      "M": 256,
+      "d": 12,
+      "K": 18,
+      "seeds": [
+        {
+          "seed": 2026,
+          "selected_set_overlap_uniform_vs_qfi": 0.3333333333333333,
+          "homogeneous_resources": {
+            "lambda_min_whitened": 0.005393772163004951,
+            "logdet_whitened": -26.01606485676025,
+            "posterior_rmse_whitened": 0.9258265526687348,
+            "posterior_rmse_raw": 0.9996129712866287,
+            "worst_direction_std_whitened": 0.9973139749031763
+          },
+          "het_uniform_selected_eval_qfi": {
+            "lambda_min_whitened": 0.007452727848641348,
+            "logdet_whitened": -24.268794031107547,
+            "posterior_rmse_whitened": 0.9119391961486235,
+            "posterior_rmse_raw": 0.9995358573942412,
+            "worst_direction_std_whitened": 0.9962943362370208
+          },
+          "het_qfi_selected_eval_qfi": {
+            "lambda_min_whitened": 0.012616543954216049,
+            "logdet_whitened": -19.837197759775997,
+            "posterior_rmse_whitened": 0.8892822693483928,
+            "posterior_rmse_raw": 0.9993676406470574,
+            "worst_direction_std_whitened": 0.9937507987332214
+          },
+          "het_qfi_selected_eval_uniform": {
+            "lambda_min_whitened": 0.005130614509333851,
+            "logdet_whitened": -28.63068376013414,
+            "posterior_rmse_whitened": 0.939038811140125,
+            "posterior_rmse_raw": 0.9996927228812035,
+            "worst_direction_std_whitened": 0.997444521931453
+          },
+          "het_uniform_selected_eval_uniform": {
+            "lambda_min_whitened": 0.005393772163004951,
+            "logdet_whitened": -26.01606485676025,
+            "posterior_rmse_whitened": 0.9258265526687348,
+            "posterior_rmse_raw": 0.9996129712866287,
+            "worst_direction_std_whitened": 0.9973139749031763
+          },
+          "qfi_weighting_gain_lambda_min": 1.692875979164606,
+          "heterogeneity_effect_lambda_min": 2.339094713853687
+        },
+        {
+          "seed": 3407,
+          "selected_set_overlap_uniform_vs_qfi": 0.3333333333333333,
+          "homogeneous_resources": {
+            "lambda_min_whitened": 0.005393772163004951,
+            "logdet_whitened": -26.01606485676025,
+            "posterior_rmse_whitened": 0.9258265526687348,
+            "posterior_rmse_raw": 0.9996129712866287,
+            "worst_direction_std_whitened": 0.9973139749031763
+          },
+          "het_uniform_selected_eval_qfi": {
+            "lambda_min_whitened": 0.005306692454784961,
+            "logdet_whitened": -28.176325001001647,
+            "posterior_rmse_whitened": 0.9292100692908313,
+            "posterior_rmse_raw": 0.9996031355958342,
+            "worst_direction_std_whitened": 0.997357167657201
+          },
+          "het_qfi_selected_eval_qfi": {
+            "lambda_min_whitened": 0.01047651778935222,
+            "logdet_whitened": -20.29834339573947,
+            "posterior_rmse_whitened": 0.8935598502265768,
+            "posterior_rmse_raw": 0.9993716980358059,
+            "worst_direction_std_whitened": 0.9948025440668196
+          },
+          "het_qfi_selected_eval_uniform": {
+            "lambda_min_whitened": 0.004967515976548188,
+            "logdet_whitened": -27.7561164072405,
+            "posterior_rmse_whitened": 0.9347064389339438,
+            "posterior_rmse_raw": 0.9996565339581825,
+            "worst_direction_std_whitened": 0.9975254574520104
+          },
+          "het_uniform_selected_eval_uniform": {
+            "lambda_min_whitened": 0.005393772163004951,
+            "logdet_whitened": -26.01606485676025,
+            "posterior_rmse_whitened": 0.9258265526687348,
+            "posterior_rmse_raw": 0.9996129712866287,
+            "worst_direction_std_whitened": 0.9973139749031763
+          },
+          "qfi_weighting_gain_lambda_min": 1.9742085825806068,
+          "heterogeneity_effect_lambda_min": 1.9423359891263177
+        },
+        {
+          "seed": 9181,
+          "selected_set_overlap_uniform_vs_qfi": 0.16666666666666666,
+          "homogeneous_resources": {
+            "lambda_min_whitened": 0.005393772163004951,
+            "logdet_whitened": -26.01606485676025,
+            "posterior_rmse_whitened": 0.9258265526687348,
+            "posterior_rmse_raw": 0.9996129712866287,
+            "worst_direction_std_whitened": 0.9973139749031763
+          },
+          "het_uniform_selected_eval_qfi": {
+            "lambda_min_whitened": 0.0026105599562098016,
+            "logdet_whitened": -33.291503640340935,
+            "posterior_rmse_whitened": 0.9510860836488585,
+            "posterior_rmse_raw": 0.99977056513184,
+            "worst_direction_std_whitened": 0.9986972701086008
+          },
+          "het_qfi_selected_eval_qfi": {
+            "lambda_min_whitened": 0.00796323399138094,
+            "logdet_whitened": -21.33407687842216,
+            "posterior_rmse_whitened": 0.8955328927213301,
+            "posterior_rmse_raw": 0.9993503888477259,
+            "worst_direction_std_whitened": 0.9960420062027272
+          },
+          "het_qfi_selected_eval_uniform": {
+            "lambda_min_whitened": 0.0038561578030172836,
+            "logdet_whitened": -29.473011087419316,
+            "posterior_rmse_whitened": 0.941597638031953,
+            "posterior_rmse_raw": 0.9996803591970884,
+            "worst_direction_std_whitened": 0.9980774794720925
+          },
+          "het_uniform_selected_eval_uniform": {
+            "lambda_min_whitened": 0.005393772163004951,
+            "logdet_whitened": -26.01606485676025,
+            "posterior_rmse_whitened": 0.9258265526687348,
+            "posterior_rmse_raw": 0.9996129712866287,
+            "worst_direction_std_whitened": 0.9973139749031763
+          },
+          "qfi_weighting_gain_lambda_min": 3.0503930669887906,
+          "heterogeneity_effect_lambda_min": 1.4763756700736321
+        },
+        {
+          "seed": 17041,
+          "selected_set_overlap_uniform_vs_qfi": 0.2777777777777778,
+          "homogeneous_resources": {
+            "lambda_min_whitened": 0.005393772163004951,
+            "logdet_whitened": -26.01606485676025,
+            "posterior_rmse_whitened": 0.9258265526687348,
+            "posterior_rmse_raw": 0.9996129712866287,
+            "worst_direction_std_whitened": 0.9973139749031763
+          },
+          "het_uniform_selected_eval_qfi": {
+            "lambda_min_whitened": 0.005985093427817488,
+            "logdet_whitened": -27.632120593390177,
+            "posterior_rmse_whitened": 0.9262173538226869,
+            "posterior_rmse_raw": 0.9995917383780587,
+            "worst_direction_std_whitened": 0.9970208196406785
+          },
+          "het_qfi_selected_eval_qfi": {
+            "lambda_min_whitened": 0.014105921508025806,
+            "logdet_whitened": -20.041453784404386,
+            "posterior_rmse_whitened": 0.8929077865720377,
+            "posterior_rmse_raw": 0.9993455605245367,
+            "worst_direction_std_whitened": 0.9930207892085947
+          },
+          "het_qfi_selected_eval_uniform": {
+            "lambda_min_whitened": 0.008075667243601366,
+            "logdet_whitened": -27.936641804556544,
+            "posterior_rmse_whitened": 0.9388479531717528,
+            "posterior_rmse_raw": 0.9996834547217552,
+            "worst_direction_std_whitened": 0.9959864591002118
+          },
+          "het_uniform_selected_eval_uniform": {
+            "lambda_min_whitened": 0.005393772163004951,
+            "logdet_whitened": -26.01606485676025,
+            "posterior_rmse_whitened": 0.9258265526687348,
+            "posterior_rmse_raw": 0.9996129712866287,
+            "worst_direction_std_whitened": 0.9973139749031763
+          },
+          "qfi_weighting_gain_lambda_min": 2.3568423247103163,
+          "heterogeneity_effect_lambda_min": 2.6152238325482378
+        },
+        {
+          "seed": 27183,
+          "selected_set_overlap_uniform_vs_qfi": 0.2222222222222222,
+          "homogeneous_resources": {
+            "lambda_min_whitened": 0.005393772163004951,
+            "logdet_whitened": -26.01606485676025,
+            "posterior_rmse_whitened": 0.9258265526687348,
+            "posterior_rmse_raw": 0.9996129712866287,
+            "worst_direction_std_whitened": 0.9973139749031763
+          },
+          "het_uniform_selected_eval_qfi": {
+            "lambda_min_whitened": 0.0019194664917118875,
+            "logdet_whitened": -32.12594349633953,
+            "posterior_rmse_whitened": 0.9436350166303409,
+            "posterior_rmse_raw": 0.9996859585425498,
+            "worst_direction_std_whitened": 0.9990416461797075
+          },
+          "het_qfi_selected_eval_qfi": {
+            "lambda_min_whitened": 0.006178189349298094,
+            "logdet_whitened": -21.38519257915778,
+            "posterior_rmse_whitened": 0.8916161672696189,
+            "posterior_rmse_raw": 0.9993372109351191,
+            "worst_direction_std_whitened": 0.996925145786136
+          },
+          "het_qfi_selected_eval_uniform": {
+            "lambda_min_whitened": 0.003698368717730749,
+            "logdet_whitened": -29.332409114633084,
+            "posterior_rmse_whitened": 0.9369771797205034,
+            "posterior_rmse_raw": 0.9996482510609678,
+            "worst_direction_std_whitened": 0.9981559291081754
+          },
+          "het_uniform_selected_eval_uniform": {
+            "lambda_min_whitened": 0.005393772163004951,
+            "logdet_whitened": -26.01606485676025,
+            "posterior_rmse_whitened": 0.9258265526687348,
+            "posterior_rmse_raw": 0.9996129712866287,
+            "worst_direction_std_whitened": 0.9973139749031763
+          },
+          "qfi_weighting_gain_lambda_min": 3.2187013297575406,
+          "heterogeneity_effect_lambda_min": 1.1454301669754126
+        }
+      ]
+    },
+    {
+      "M": 1024,
+      "d": 12,
+      "K": 18,
+      "seeds": [
+        {
+          "seed": 2026,
+          "selected_set_overlap_uniform_vs_qfi": 0.2222222222222222,
+          "homogeneous_resources": {
+            "lambda_min_whitened": 0.001794376749837704,
+            "logdet_whitened": -42.14019621294724,
+            "posterior_rmse_whitened": 0.9770931318149184,
+            "posterior_rmse_raw": 0.9996179233141218,
+            "worst_direction_std_whitened": 0.9991040172429088
+          },
+          "het_uniform_selected_eval_qfi": {
+            "lambda_min_whitened": 0.0013608946307809523,
+            "logdet_whitened": -45.32847689811205,
+            "posterior_rmse_whitened": 0.9788037398085132,
+            "posterior_rmse_raw": 0.9996380533626779,
+            "worst_direction_std_whitened": 0.9993202464107376
+          },
+          "het_qfi_selected_eval_qfi": {
+            "lambda_min_whitened": 0.003740822792355434,
+            "logdet_whitened": -34.53052095691945,
+            "posterior_rmse_whitened": 0.9617233065037316,
+            "posterior_rmse_raw": 0.9992798638485706,
+            "worst_direction_std_whitened": 0.9981348199565754
+          },
+          "het_qfi_selected_eval_uniform": {
+            "lambda_min_whitened": 0.0014863081464608994,
+            "logdet_whitened": -43.99503671093933,
+            "posterior_rmse_whitened": 0.9812932396029141,
+            "posterior_rmse_raw": 0.9996641114443402,
+            "worst_direction_std_whitened": 0.999257673318998
+          },
+          "het_uniform_selected_eval_uniform": {
+            "lambda_min_whitened": 0.001794376749837704,
+            "logdet_whitened": -42.14019621294724,
+            "posterior_rmse_whitened": 0.9770931318149184,
+            "posterior_rmse_raw": 0.9996179233141218,
+            "worst_direction_std_whitened": 0.9991040172429088
+          },
+          "qfi_weighting_gain_lambda_min": 2.74879678980639,
+          "heterogeneity_effect_lambda_min": 2.0847476945372705
+        },
+        {
+          "seed": 3407,
+          "selected_set_overlap_uniform_vs_qfi": 0.0,
+          "homogeneous_resources": {
+            "lambda_min_whitened": 0.001794376749837704,
+            "logdet_whitened": -42.14019621294724,
+            "posterior_rmse_whitened": 0.9770931318149184,
+            "posterior_rmse_raw": 0.9996179233141218,
+            "worst_direction_std_whitened": 0.9991040172429088
+          },
+          "het_uniform_selected_eval_qfi": {
+            "lambda_min_whitened": 0.0008162836402281046,
+            "logdet_whitened": -51.60656255430957,
+            "posterior_rmse_whitened": 0.9887096548883064,
+            "posterior_rmse_raw": 0.9998187884877352,
+            "worst_direction_std_whitened": 0.9995921078796548
+          },
+          "het_qfi_selected_eval_qfi": {
+            "lambda_min_whitened": 0.0027149971354963848,
+            "logdet_whitened": -34.38211996017127,
+            "posterior_rmse_whitened": 0.9573137693870585,
+            "posterior_rmse_raw": 0.9991032571225872,
+            "worst_direction_std_whitened": 0.998645259396611
+          },
+          "het_qfi_selected_eval_uniform": {
+            "lambda_min_whitened": 0.0011605248402322872,
+            "logdet_whitened": -44.5478827792719,
+            "posterior_rmse_whitened": 0.9813401843299179,
+            "posterior_rmse_raw": 0.9996358090099824,
+            "worst_direction_std_whitened": 0.9994202421486511
+          },
+          "het_uniform_selected_eval_uniform": {
+            "lambda_min_whitened": 0.001794376749837704,
+            "logdet_whitened": -42.14019621294724,
+            "posterior_rmse_whitened": 0.9770931318149184,
+            "posterior_rmse_raw": 0.9996179233141218,
+            "worst_direction_std_whitened": 0.9991040172429088
+          },
+          "qfi_weighting_gain_lambda_min": 3.3260462438493787,
+          "heterogeneity_effect_lambda_min": 1.513058579109403
+        },
+        {
+          "seed": 9181,
+          "selected_set_overlap_uniform_vs_qfi": 0.05555555555555555,
+          "homogeneous_resources": {
+            "lambda_min_whitened": 0.001794376749837704,
+            "logdet_whitened": -42.14019621294724,
+            "posterior_rmse_whitened": 0.9770931318149184,
+            "posterior_rmse_raw": 0.9996179233141218,
+            "worst_direction_std_whitened": 0.9991040172429088
+          },
+          "het_uniform_selected_eval_qfi": {
+            "lambda_min_whitened": 0.0017595140066802655,
+            "logdet_whitened": -45.91102224533577,
+            "posterior_rmse_whitened": 0.9798274097869236,
+            "posterior_rmse_raw": 0.999659670027811,
+            "worst_direction_std_whitened": 0.9991214022555849
+          },
+          "het_qfi_selected_eval_qfi": {
+            "lambda_min_whitened": 0.004074331144306289,
+            "logdet_whitened": -32.834789734275105,
+            "posterior_rmse_whitened": 0.9559779311260487,
+            "posterior_rmse_raw": 0.9991204966391594,
+            "worst_direction_std_whitened": 0.9979690384324595
+          },
+          "het_qfi_selected_eval_uniform": {
+            "lambda_min_whitened": 0.0018867881248184832,
+            "logdet_whitened": -43.80068950719335,
+            "posterior_rmse_whitened": 0.9811337671677177,
+            "posterior_rmse_raw": 0.9996468597583159,
+            "worst_direction_std_whitened": 0.999057938830552
+          },
+          "het_uniform_selected_eval_uniform": {
+            "lambda_min_whitened": 0.001794376749837704,
+            "logdet_whitened": -42.14019621294724,
+            "posterior_rmse_whitened": 0.9770931318149184,
+            "posterior_rmse_raw": 0.9996179233141218,
+            "worst_direction_std_whitened": 0.9991040172429088
+          },
+          "qfi_weighting_gain_lambda_min": 2.315600290101394,
+          "heterogeneity_effect_lambda_min": 2.2706107536640787
+        },
+        {
+          "seed": 17041,
+          "selected_set_overlap_uniform_vs_qfi": 0.1111111111111111,
+          "homogeneous_resources": {
+            "lambda_min_whitened": 0.001794376749837704,
+            "logdet_whitened": -42.14019621294724,
+            "posterior_rmse_whitened": 0.9770931318149184,
+            "posterior_rmse_raw": 0.9996179233141218,
+            "worst_direction_std_whitened": 0.9991040172429088
+          },
+          "het_uniform_selected_eval_qfi": {
+            "lambda_min_whitened": 0.0015531601504890507,
+            "logdet_whitened": -46.42070794787751,
+            "posterior_rmse_whitened": 0.9786269095453938,
+            "posterior_rmse_raw": 0.9996706507170573,
+            "worst_direction_std_whitened": 0.9992243233704211
+          },
+          "het_qfi_selected_eval_qfi": {
+            "lambda_min_whitened": 0.003264404501336146,
+            "logdet_whitened": -32.28651239611635,
+            "posterior_rmse_whitened": 0.949035528579401,
+            "posterior_rmse_raw": 0.998924308538286,
+            "worst_direction_std_whitened": 0.9983717830357618
+          },
+          "het_qfi_selected_eval_uniform": {
+            "lambda_min_whitened": 0.0011364803981001397,
+            "logdet_whitened": -43.895535137322845,
+            "posterior_rmse_whitened": 0.9788664222835051,
+            "posterior_rmse_raw": 0.9995927739286968,
+            "worst_direction_std_whitened": 0.9994322436880838
+          },
+          "het_uniform_selected_eval_uniform": {
+            "lambda_min_whitened": 0.001794376749837704,
+            "logdet_whitened": -42.14019621294724,
+            "posterior_rmse_whitened": 0.9770931318149184,
+            "posterior_rmse_raw": 0.9996179233141218,
+            "worst_direction_std_whitened": 0.9991040172429088
+          },
+          "qfi_weighting_gain_lambda_min": 2.101782292256383,
+          "heterogeneity_effect_lambda_min": 1.8192414171836555
+        },
+        {
+          "seed": 27183,
+          "selected_set_overlap_uniform_vs_qfi": 0.2222222222222222,
+          "homogeneous_resources": {
+            "lambda_min_whitened": 0.001794376749837704,
+            "logdet_whitened": -42.14019621294724,
+            "posterior_rmse_whitened": 0.9770931318149184,
+            "posterior_rmse_raw": 0.9996179233141218,
+            "worst_direction_std_whitened": 0.9991040172429088
+          },
+          "het_uniform_selected_eval_qfi": {
+            "lambda_min_whitened": 0.0030544861566175925,
+            "logdet_whitened": -40.769922992453985,
+            "posterior_rmse_whitened": 0.9721743560765332,
+            "posterior_rmse_raw": 0.9994948544716283,
+            "worst_direction_std_whitened": 0.998476246746931
+          },
+          "het_qfi_selected_eval_qfi": {
+            "lambda_min_whitened": 0.003866547917465577,
+            "logdet_whitened": -32.47272354713894,
+            "posterior_rmse_whitened": 0.9515966097365719,
+            "posterior_rmse_raw": 0.9991011415748874,
+            "worst_direction_std_whitened": 0.9980723143602085
+          },
+          "het_qfi_selected_eval_uniform": {
+            "lambda_min_whitened": 0.0014435358104921657,
+            "logdet_whitened": -43.42640432442754,
+            "posterior_rmse_whitened": 0.9789838853297482,
+            "posterior_rmse_raw": 0.9996418873888044,
+            "worst_direction_std_whitened": 0.9992790125792927
+          },
+          "het_uniform_selected_eval_uniform": {
+            "lambda_min_whitened": 0.001794376749837704,
+            "logdet_whitened": -42.14019621294724,
+            "posterior_rmse_whitened": 0.9770931318149184,
+            "posterior_rmse_raw": 0.9996179233141218,
+            "worst_direction_std_whitened": 0.9991040172429088
+          },
+          "qfi_weighting_gain_lambda_min": 1.2658587137769932,
+          "heterogeneity_effect_lambda_min": 2.154813874965386
+        }
+      ]
+    },
+    {
+      "M": 4096,
+      "d": 16,
+      "K": 24,
+      "seeds": [
+        {
+          "seed": 2026,
+          "selected_set_overlap_uniform_vs_qfi": 0.0,
+          "homogeneous_resources": {
+            "lambda_min_whitened": 0.0005521071873203635,
+            "logdet_whitened": -74.99155624282365,
+            "posterior_rmse_whitened": 0.9926201360951924,
+            "posterior_rmse_raw": 0.999561791455819,
+            "worst_direction_std_whitened": 0.9997240606621532
+          },
+          "het_uniform_selected_eval_qfi": {
+            "lambda_min_whitened": 0.0001798680317967524,
+            "logdet_whitened": -79.32311262558774,
+            "posterior_rmse_whitened": 0.993240776842967,
+            "posterior_rmse_raw": 0.9996157731639076,
+            "worst_direction_std_whitened": 0.9999100781144743
+          },
+          "het_qfi_selected_eval_qfi": {
+            "lambda_min_whitened": 0.0013093903308706327,
+            "logdet_whitened": -61.66501748383731,
+            "posterior_rmse_whitened": 0.9836751669502545,
+            "posterior_rmse_raw": 0.999031157945579,
+            "worst_direction_std_whitened": 0.9993459470724588
+          },
+          "het_qfi_selected_eval_uniform": {
+            "lambda_min_whitened": 0.00045561986971551926,
+            "logdet_whitened": -77.2062720195303,
+            "posterior_rmse_whitened": 0.9936422057221014,
+            "posterior_rmse_raw": 0.9996323853438007,
+            "worst_direction_std_whitened": 0.9997722678816467
+          },
+          "het_uniform_selected_eval_uniform": {
+            "lambda_min_whitened": 0.0005521071873203635,
+            "logdet_whitened": -74.99155624282365,
+            "posterior_rmse_whitened": 0.9926201360951924,
+            "posterior_rmse_raw": 0.999561791455819,
+            "worst_direction_std_whitened": 0.9997240606621532
+          },
+          "qfi_weighting_gain_lambda_min": 7.279727908237857,
+          "heterogeneity_effect_lambda_min": 2.3716234110729864
+        },
+        {
+          "seed": 3407,
+          "selected_set_overlap_uniform_vs_qfi": 0.08333333333333333,
+          "homogeneous_resources": {
+            "lambda_min_whitened": 0.0005521071873203635,
+            "logdet_whitened": -74.99155624282365,
+            "posterior_rmse_whitened": 0.9926201360951924,
+            "posterior_rmse_raw": 0.999561791455819,
+            "worst_direction_std_whitened": 0.9997240606621532
+          },
+          "het_uniform_selected_eval_qfi": {
+            "lambda_min_whitened": 0.0008136899595690979,
+            "logdet_whitened": -73.09135947764284,
+            "posterior_rmse_whitened": 0.9909842329852819,
+            "posterior_rmse_raw": 0.9994550561592627,
+            "worst_direction_std_whitened": 0.9995934031362365
+          },
+          "het_qfi_selected_eval_qfi": {
+            "lambda_min_whitened": 0.0015864753544991262,
+            "logdet_whitened": -60.91997100453682,
+            "posterior_rmse_whitened": 0.9827765581809967,
+            "posterior_rmse_raw": 0.9989372535226628,
+            "worst_direction_std_whitened": 0.9992077049156846
+          },
+          "het_qfi_selected_eval_uniform": {
+            "lambda_min_whitened": 0.0005713071415908421,
+            "logdet_whitened": -75.96742661886962,
+            "posterior_rmse_whitened": 0.9928482362134949,
+            "posterior_rmse_raw": 0.9995737143287867,
+            "worst_direction_std_whitened": 0.9997144687679057
+          },
+          "het_uniform_selected_eval_uniform": {
+            "lambda_min_whitened": 0.0005521071873203635,
+            "logdet_whitened": -74.99155624282365,
+            "posterior_rmse_whitened": 0.9926201360951924,
+            "posterior_rmse_raw": 0.999561791455819,
+            "worst_direction_std_whitened": 0.9997240606621532
+          },
+          "qfi_weighting_gain_lambda_min": 1.9497295448247496,
+          "heterogeneity_effect_lambda_min": 2.8734915808632002
+        },
+        {
+          "seed": 9181,
+          "selected_set_overlap_uniform_vs_qfi": 0.20833333333333334,
+          "homogeneous_resources": {
+            "lambda_min_whitened": 0.0005521071873203635,
+            "logdet_whitened": -74.99155624282365,
+            "posterior_rmse_whitened": 0.9926201360951924,
+            "posterior_rmse_raw": 0.999561791455819,
+            "worst_direction_std_whitened": 0.9997240606621532
+          },
+          "het_uniform_selected_eval_qfi": {
+            "lambda_min_whitened": 0.00019920687231080543,
+            "logdet_whitened": -77.18667479274143,
+            "posterior_rmse_whitened": 0.9918972636192488,
+            "posterior_rmse_raw": 0.9994947303819043,
+            "worst_direction_std_whitened": 0.9999004114426416
+          },
+          "het_qfi_selected_eval_qfi": {
+            "lambda_min_whitened": 0.0015542038625191894,
+            "logdet_whitened": -60.43234962943299,
+            "posterior_rmse_whitened": 0.9821579913314512,
+            "posterior_rmse_raw": 0.9989532021089838,
+            "worst_direction_std_whitened": 0.999223802728246
+          },
+          "het_qfi_selected_eval_uniform": {
+            "lambda_min_whitened": 0.0005247384735491267,
+            "logdet_whitened": -76.08612959027862,
+            "posterior_rmse_whitened": 0.9928496213922817,
+            "posterior_rmse_raw": 0.9995977131875414,
+            "worst_direction_std_whitened": 0.9997377339745185
+          },
+          "het_uniform_selected_eval_uniform": {
+            "lambda_min_whitened": 0.0005521071873203635,
+            "logdet_whitened": -74.99155624282365,
+            "posterior_rmse_whitened": 0.9926201360951924,
+            "posterior_rmse_raw": 0.999561791455819,
+            "worst_direction_std_whitened": 0.9997240606621532
+          },
+          "qfi_weighting_gain_lambda_min": 7.801959061403756,
+          "heterogeneity_effect_lambda_min": 2.8150400831810822
+        },
+        {
+          "seed": 17041,
+          "selected_set_overlap_uniform_vs_qfi": 0.041666666666666664,
+          "homogeneous_resources": {
+            "lambda_min_whitened": 0.0005521071873203635,
+            "logdet_whitened": -74.99155624282365,
+            "posterior_rmse_whitened": 0.9926201360951924,
+            "posterior_rmse_raw": 0.999561791455819,
+            "worst_direction_std_whitened": 0.9997240606621532
+          },
+          "het_uniform_selected_eval_qfi": {
+            "lambda_min_whitened": 0.00016044540061938657,
+            "logdet_whitened": -81.38639381841512,
+            "posterior_rmse_whitened": 0.9937506566476926,
+            "posterior_rmse_raw": 0.9995715717830547,
+            "worst_direction_std_whitened": 0.9999197869519223
+          },
+          "het_qfi_selected_eval_qfi": {
+            "lambda_min_whitened": 0.001152214417754568,
+            "logdet_whitened": -60.84991137385018,
+            "posterior_rmse_whitened": 0.9827602404258379,
+            "posterior_rmse_raw": 0.998923855230195,
+            "worst_direction_std_whitened": 0.999424390162854
+          },
+          "het_qfi_selected_eval_uniform": {
+            "lambda_min_whitened": 0.0005492175536287202,
+            "logdet_whitened": -76.14115638552404,
+            "posterior_rmse_whitened": 0.9933075940296718,
+            "posterior_rmse_raw": 0.9995913483413384,
+            "worst_direction_std_whitened": 0.9997255042864103
+          },
+          "het_uniform_selected_eval_uniform": {
+            "lambda_min_whitened": 0.0005521071873203635,
+            "logdet_whitened": -74.99155624282365,
+            "posterior_rmse_whitened": 0.9926201360951924,
+            "posterior_rmse_raw": 0.999561791455819,
+            "worst_direction_std_whitened": 0.9997240606621532
+          },
+          "qfi_weighting_gain_lambda_min": 7.181349002879092,
+          "heterogeneity_effect_lambda_min": 2.0869397178957367
+        },
+        {
+          "seed": 27183,
+          "selected_set_overlap_uniform_vs_qfi": 0.0,
+          "homogeneous_resources": {
+            "lambda_min_whitened": 0.0005521071873203635,
+            "logdet_whitened": -74.99155624282365,
+            "posterior_rmse_whitened": 0.9926201360951924,
+            "posterior_rmse_raw": 0.999561791455819,
+            "worst_direction_std_whitened": 0.9997240606621532
+          },
+          "het_uniform_selected_eval_qfi": {
+            "lambda_min_whitened": 0.0003302976989706908,
+            "logdet_whitened": -81.28935054912192,
+            "posterior_rmse_whitened": 0.9946817056648221,
+            "posterior_rmse_raw": 0.9996692825215422,
+            "worst_direction_std_whitened": 0.9998348920504709
+          },
+          "het_qfi_selected_eval_qfi": {
+            "lambda_min_whitened": 0.002339683922794138,
+            "logdet_whitened": -61.47848694674119,
+            "posterior_rmse_whitened": 0.9834485445336569,
+            "posterior_rmse_raw": 0.9989744706298735,
+            "worst_direction_std_whitened": 0.9988322068396912
+          },
+          "het_qfi_selected_eval_uniform": {
+            "lambda_min_whitened": 0.0008471690909630932,
+            "logdet_whitened": -77.03078118975205,
+            "posterior_rmse_whitened": 0.993615193800125,
+            "posterior_rmse_raw": 0.9996121777994992,
+            "worst_direction_std_whitened": 0.9995766844004569
+          },
+          "het_uniform_selected_eval_uniform": {
+            "lambda_min_whitened": 0.0005521071873203635,
+            "logdet_whitened": -74.99155624282365,
+            "posterior_rmse_whitened": 0.9926201360951924,
+            "posterior_rmse_raw": 0.999561791455819,
+            "worst_direction_std_whitened": 0.9997240606621532
+          },
+          "qfi_weighting_gain_lambda_min": 7.083561072587888,
+          "heterogeneity_effect_lambda_min": 4.237734948080874
+        }
+      ]
+    }
+  ]
+}

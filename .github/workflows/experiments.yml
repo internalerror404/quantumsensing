@@ -36,6 +36,8 @@ jobs:
         run: bash experiments/run_static_redshift.sh
       - name: Joint delay-redshift ablation (D+R-1)
         run: bash experiments/run_joint_ablation.sh
+      - name: No-gauge-quotient negative control (NQ-1)
+        run: bash experiments/run_no_quotient_control.sh
       - name: Selector sanity training
         run: bash experiments/run_selector_sanity.sh
       - name: Selector held-out evaluation

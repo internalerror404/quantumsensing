@@ -263,6 +263,13 @@ pip install -r requirements.txt
 
 # Joint delay-versus-redshift rank-restoration experiment (D+R-1)
 ./run_joint_ablation.sh
+
+# Registered full-metric campaign (order 1024, registered seeds)
+./run_full_metric_campaign.sh
+
+# Weights x packets ablation (W-1) and no-quotient control (NQ-1)
+./run_weight_ablation.sh
+./run_no_quotient_control.sh
 ```
 
 The short selector run verifies code paths only. DeepSets v0.2 is frozen as a dominated

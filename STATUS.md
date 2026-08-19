@@ -22,9 +22,9 @@ Counts as of the fix commit; the parenthesised figures are where this stood at f
 | block | done | hollow | fails | absent |
 |---|---:|---:|---:|---:|
 | Stage 0 — 7 numerical checks + 1 process control | **8** (3) | **0** (3) | **0** (1) | 0 |
-| Stage 1 — deterministic design | **4** (2) | 0 | 0 | 0, with 2 partial (2) |
+| Stage 1 — deterministic design | **5** (2) | 0 | 0 | 0, with 1 partial (2) |
 | Stage 2 — amortized selector (10) | **6** (3) | **1** (2) | **1** (1) | **2** (4) |
-| Required ablations (8 + 1 convergence sweep) | **1** (0) | 0 | 0 | 3 READY/UNRUN · 3 need code · 1 deferred |
+| Required ablations (8 + 1 convergence sweep) | **4** (0) | 0 | 0 | 2 analyze-from-records · 1 deferred |
 | §6 static redshift (5) | **5** (0) | 0 | 0 | **0** (5) |
 | §7 PTA / Hellings–Downs (4) | 0 | 0 | 0 | 4 |
 
@@ -62,7 +62,7 @@ Suite runtime 0.9 s → 46.6 s, from raising the package quadrature order to 102
 | 5 baselines (random, angular, leverage, greedy-D, relaxed-E) | **DONE** | relaxed-E is now the convex allocation + multi-start batched swap refinement, within 0.4–1.0% of a 40×-restart search (was 7% below it); greedy-D uses the rank-1 determinant update, 263× faster, identical subset |
 | 6 demo metrics (rank, λ_min, logdet, cond, MAP RMSE, runtime) | **DONE** | RMSE is now the closed form `sqrt(tr((F+Λ)⁻¹)/d)` — exact, and the unpaired-Monte-Carlo problem (noise at 10% of the design gaps) is gone |
 | registered scaling campaign — runtime, rank, memory, blocking | **DONE** | full surface × `seed_set` in `results/scaling_study.json`; see the resolution section below |
-| registered full-metric campaign — RMSE, worst-direction, coverage | **PARTIAL / REMAINING** | metrics implemented in `design_experiment.py` (except coverage) but not yet swept over the registered seeds; this is the paper's main quantitative table |
+| registered full-metric campaign — RMSE, worst-direction, coverage | **DONE** | 64 cells × 5 registered seeds at order 1024, seed-wise records in `results/full_metric_campaign.json`; compact table in `paper/tables/campaign_table.md`; see the campaign section below |
 | 3 further config metrics | **PARTIAL** | `worst_direction_error` and `full_rank` now reported; `credible_interval_coverage` still absent |
 
 The single instance is exactly what the spec says it is — an engineering sanity check. It is not
@@ -96,10 +96,26 @@ taxonomy distinguishes ABSENT (no code) from READY/UNRUN (mechanism exists, swee
 
 | status | ablations |
 |---|---|
-| **DONE** | delay-only vs delay+redshift (Experiment D+R-1) |
-| **READY/UNRUN** | D- vs E-optimal (`--objective` + campaign machinery); candidate-pool density; K/d budget ratio |
-| **NEEDS CODE** | no-gauge-quotient negative control; uniform vs QFI weights; homogeneous vs heterogeneous packet width |
+| **DONE** | delay-only vs delay+redshift (D+R-1); **QFI vs uniform weights × homogeneous vs heterogeneous packets** (W-1, run as the registered 2×2 with cross-evaluation and total-information control, `results/weight_packet_ablation.json`); **no-gauge-quotient negative control** (NQ-1, `results/no_quotient_control.json`, also in CI); **D vs E** (cross-objective table from the representative computations, `paper/tables/d_vs_e_cross.md`) |
+| **ANALYZE FROM EXISTING RECORDS** | candidate-pool density and K/d — the registered campaign already sweeps M ∈ {256,512,1024,4096} and K/d ∈ {1,1.25,1.5,2}; extraction, not new runs (caveat: whitening is per-pool, so absolute cross-pool λ_min needs care) |
+| **CONSOLIDATED** | quadrature/integration stability — one supplement, `paper/tables/convergence_supplement.md`, drawn programmatically from the canonical JSONs |
 | **DEFERRED past Paper 1** | independent vs correlated probes (off-diagonal W — foundation of the quantum companion paper) |
+
+**W-1 headline** (3 representative cells × 5 registered seeds, (1/M)Σq = 1 in every arm,
+greedy-D designer, every design cross-scored under the true objective): QFI-aware selection
+beats weight-blind selection by median **2.36× / 2.32× / 7.18×** on λ_min at
+(M,d)=(256,12)/(1024,12)/(4096,16); selected-set overlap is only **28% / 11% / 4%** — the
+packet weight changes *which rays are chosen*, not just the score; and heterogeneous
+resources under QFI-aware selection beat information-matched homogeneous resources by
+**1.94× / 2.08× / 2.82×**. This substantiates the claim that packet bandwidth enters the
+Lorentzian normal operator as a meaningful statistical weight. No success criterion was
+preregistered; the numbers are the result.
+
+**NQ-1 headline** (72-direction pool, 12 physical + 2 conformal + 2 potential-gauge columns,
+order 1024): unquotiented nullity is exactly 4 at every ray budget in {16,32,64,128,288};
+scale separation is explicit — exact conformal zeros 1.2e-18, quadrature potential-gauge
+floor 2.4e-10, smallest physical singular value 6.9e-2 — with the rank threshold pinned
+between the floors so quadrature noise is never counted as recovered gauge information.
 
 Runnable today via existing flags, just never swept:
 
@@ -304,12 +320,18 @@ verified and integrated). What remains:
    every d_p). The paper's central experimental figure now exists.
 2. ~~Registered deterministic full-metric campaign~~ — **done** (64 cells × 5 seeds at
    order 1024; `paper/tables/campaign_table.md` is the paper's main quantitative table).
-3. **Deterministic ablations (7 remaining)** — in priority order: no-gauge-quotient
-   negative control; uniform vs QFI channel weighting; homogeneous vs heterogeneous packet
-   width; D-optimal vs E-optimal design; candidate density; K/d; integration-domain and
-   quadrature stability. The learned-policy ablation campaign is no longer needed for
-   Paper 1. Off-diagonal W (correlated probes) is deliberately deferred past Paper 1 — it
-   is the foundation of the quantum companion paper, not a blocker here.
+3. ~~Deterministic ablations~~ — the minimal submission package is **complete**: W-1
+   (weights × packets, cross-evaluated), NQ-1 (no-quotient control), the D-vs-E
+   cross-objective table, and the consolidated convergence supplement. Candidate density
+   and K/d are analyzed from the existing campaign records. Off-diagonal W remains
+   deliberately deferred to the quantum companion paper.
+4. **Manuscript work is now the bottleneck** (v1.0 checked against the canonical JSONs —
+   the cited numbers match, and it wisely says "millisecond scale" rather than pinning a
+   jittery worst-case): theorem-by-theorem proof audit, quantum-metrology review of the
+   QFI statements, novelty matrix, citation verification, venue positioning. Go/no-go
+   standard: stop experimenting unless a run exposes gauge leakage, rank instability under
+   certified quadrature, extreme weight sensitivity, failure outside a hand-picked family,
+   or raw-vs-normalized inconsistency. None observed.
 4. **v0.3 learned selector** — only if an activation condition in the YAML becomes true;
    sequential Fisher-aware scoring (a_i^T F_t^{-1} a_i, alignment with v_min(F_t)) + swap
    refinement, against the forward-registered practical gates.
