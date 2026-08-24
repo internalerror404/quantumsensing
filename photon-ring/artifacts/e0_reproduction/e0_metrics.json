@@ -1,0 +1,222 @@
+{
+  "run_id": "E0_20260824T215711Z_2ba66f02",
+  "registered_symbols": {
+    "H": 44,
+    "K": 6,
+    "W": 24,
+    "M": 2,
+    "N_max": 5,
+    "D": 4,
+    "Gamma": 0.6,
+    "restricted_dim": 24
+  },
+  "arithmetic_identity": {
+    "claim": "H == W + N_max * D",
+    "values": "44 == 24 + 5*4",
+    "holds": true
+  },
+  "readings": {
+    "A_screen6_cells2": {
+      "n_screen": 6,
+      "n_cells": 2,
+      "gloss": "K=6 screen samples, M=2 source-plane cells"
+    },
+    "B_cells6_screen2": {
+      "n_screen": 2,
+      "n_cells": 6,
+      "gloss": "K=6 source-plane cells, M=2 screen channels"
+    }
+  },
+  "rows": [
+    {
+      "reading": "A_screen6_cells2",
+      "arm": "resolved_identical",
+      "readout": "resolved",
+      "spatial": "identical",
+      "source_dimension": 88,
+      "data_dimension": 864,
+      "restricted_dimension": -1,
+      "numerical_rank": 88,
+      "nullity": 0,
+      "sigma_max": 2.4672886342814224,
+      "sigma_min_positive": 0.06572708041739299,
+      "kappa_positive": 37.53838780930421,
+      "stable_rank": 33.82530514196564,
+      "effective_rank": 67.46437121697372,
+      "trace_information": 205.91199170994145,
+      "restricted_rank": -1,
+      "restricted_nullity": -1,
+      "restricted_sigma_min": NaN,
+      "restricted_kappa_positive": NaN,
+      "restricted_status": "NOT_CONSTRUCTIBLE: cannot build 4 DCT modes on an axis of length 2"
+    },
+    {
+      "reading": "A_screen6_cells2",
+      "arm": "resolved_diverse",
+      "readout": "resolved",
+      "spatial": "rotation_shear",
+      "source_dimension": 88,
+      "data_dimension": 864,
+      "restricted_dimension": -1,
+      "numerical_rank": 88,
+      "nullity": 0,
+      "sigma_max": 2.5514974470474647,
+      "sigma_min_positive": 0.03703196912890418,
+      "kappa_positive": 68.89985888047123,
+      "stable_rank": 33.825045290042546,
+      "effective_rank": 68.28056270178297,
+      "trace_information": 220.20575403843247,
+      "restricted_rank": -1,
+      "restricted_nullity": -1,
+      "restricted_sigma_min": NaN,
+      "restricted_kappa_positive": NaN,
+      "restricted_status": "NOT_CONSTRUCTIBLE: cannot build 4 DCT modes on an axis of length 2"
+    },
+    {
+      "reading": "A_screen6_cells2",
+      "arm": "unresolved_diverse",
+      "readout": "unresolved",
+      "spatial": "rotation_shear",
+      "source_dimension": 88,
+      "data_dimension": 144,
+      "restricted_dimension": -1,
+      "numerical_rank": 48,
+      "nullity": 40,
+      "sigma_max": 4.282694083058519,
+      "sigma_min_positive": 0.9210820920906069,
+      "kappa_positive": 4.649633425548383,
+      "stable_rank": 12.005895423750609,
+      "effective_rank": 42.70554339408548,
+      "trace_information": 220.20575403843236,
+      "restricted_rank": -1,
+      "restricted_nullity": -1,
+      "restricted_sigma_min": NaN,
+      "restricted_kappa_positive": NaN,
+      "restricted_status": "NOT_CONSTRUCTIBLE: cannot build 4 DCT modes on an axis of length 2"
+    },
+    {
+      "restricted_status": "ok",
+      "reading": "B_cells6_screen2",
+      "arm": "resolved_identical",
+      "readout": "resolved",
+      "spatial": "identical",
+      "source_dimension": 264,
+      "data_dimension": 288,
+      "restricted_dimension": 24,
+      "numerical_rank": 88,
+      "nullity": 176,
+      "sigma_max": 1.2597066374224533,
+      "sigma_min_positive": 0.04697599114613899,
+      "kappa_positive": 26.815967192764383,
+      "stable_rank": 43.25352925417242,
+      "effective_rank": 69.02040114249588,
+      "trace_information": 68.63733056998055,
+      "restricted_rank": 12,
+      "restricted_nullity": 12,
+      "restricted_sigma_min": 0.07596065159473937,
+      "restricted_kappa_positive": 16.40703973509871
+    },
+    {
+      "restricted_status": "ok",
+      "reading": "B_cells6_screen2",
+      "arm": "resolved_diverse",
+      "readout": "resolved",
+      "spatial": "rotation_shear",
+      "source_dimension": 264,
+      "data_dimension": 288,
+      "restricted_dimension": 24,
+      "numerical_rank": 216,
+      "nullity": 48,
+      "sigma_max": 1.3199443649094005,
+      "sigma_min_positive": 0.00026507239420585653,
+      "kappa_positive": 4979.561786748435,
+      "stable_rank": 45.61262336777371,
+      "effective_rank": 118.3395299546453,
+      "trace_information": 79.46873566836742,
+      "restricted_rank": 24,
+      "restricted_nullity": 0,
+      "restricted_sigma_min": 0.009879810742804007,
+      "restricted_kappa_positive": 132.25375366782023
+    },
+    {
+      "restricted_status": "ok",
+      "reading": "B_cells6_screen2",
+      "arm": "unresolved_diverse",
+      "readout": "unresolved",
+      "spatial": "rotation_shear",
+      "source_dimension": 264,
+      "data_dimension": 48,
+      "restricted_dimension": 24,
+      "numerical_rank": 48,
+      "nullity": 216,
+      "sigma_max": 2.1705974404865906,
+      "sigma_min_positive": 0.5990392080097618,
+      "kappa_positive": 3.623464727289134,
+      "stable_rank": 16.866995552034265,
+      "effective_rank": 43.81804747972272,
+      "trace_information": 79.46873566836739,
+      "restricted_rank": 22,
+      "restricted_nullity": 2,
+      "restricted_sigma_min": 1.2839015600352716e-07,
+      "restricted_kappa_positive": 16840114.994072746
+    }
+  ],
+  "gates": {
+    "G1_v01_reproduction_relative": {
+      "status": "NOT_RUN",
+      "threshold": 1e-08,
+      "note": "v0.1 generator and v0.1 manuscript absent from this session; no original output exists to compare against. The independent reimplementation ran and is reported, but agreement with the original is untested and is NOT claimed."
+    },
+    "G2_dense_operator_relative": {
+      "status": "PASS",
+      "measured": 0.0,
+      "threshold": 1e-10
+    },
+    "G3_adjoint_relative": {
+      "status": "PASS",
+      "measured": 2.9158772117310166e-14,
+      "threshold": 1e-08,
+      "note": "worst of 20 probes, seed 42"
+    },
+    "G4_order_collapse_relative": {
+      "status": "PASS",
+      "measured": 0.0,
+      "threshold": 1e-10
+    },
+    "G5_kernel_normalized_residual": {
+      "status": "PASS",
+      "measured": 5.5134678907531145e-17,
+      "threshold": 1e-08,
+      "note": "null dim 48, source moved by 0.064 relative"
+    },
+    "G6_monotonicity_relative_negative_eigenvalue": {
+      "status": "PASS",
+      "measured": 1.6753685104361782e-16,
+      "threshold": 1e-10,
+      "note": "min relative increment eigenvalue per order: [-1.68e-16, -4.9e-17, -5.9e-17, -3.7e-17, -2e-17]"
+    },
+    "G9_source_split_disjoint": {
+      "status": "PASS",
+      "measured": 0,
+      "threshold": 0,
+      "note": "all namespaces disjoint"
+    },
+    "G13_replay": {
+      "status": "PASS",
+      "measured": 0.0,
+      "threshold": 0.0,
+      "note": "3 builds compared"
+    },
+    "G11_cpu_mps_inference_relative": {
+      "status": "NOT_RUN",
+      "threshold": 0.0001,
+      "note": "no MPS device on this host; see protocol_deviations D2_no_mps"
+    },
+    "E0_oracle_is_upper_bound": {
+      "status": "PASS",
+      "measured": 0.0,
+      "threshold": 1e-12,
+      "note": "max amount by which a deployable rule beat the oracle-tuned curve; must be non-positive up to rounding"
+    }
+  }
+}

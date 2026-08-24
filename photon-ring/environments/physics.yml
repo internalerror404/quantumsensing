@@ -1,0 +1,24 @@
+name: phrt-physics
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - numpy
+  - scipy
+  - pandas
+  - pyarrow
+  - matplotlib
+  - h5py
+  - scikit-image
+  - scikit-learn
+  - pyyaml
+  - pydantic
+  - jupyterlab
+  - pytest
+  - hypothesis
+  - tqdm
+  - rich
+  - psutil
+  - pip
+  - pip:
+      - aart

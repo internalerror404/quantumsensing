@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Photon Ring Historical Inversion Run Manifest v0.2",
+  "type": "object",
+  "required": [
+    "run_id",
+    "experiment_id",
+    "git_commit",
+    "config_path",
+    "config_sha256",
+    "environment_sha256",
+    "hardware",
+    "seeds",
+    "inputs",
+    "outputs",
+    "gate_status"
+  ],
+  "properties": {
+    "run_id": {"type": "string"},
+    "experiment_id": {"type": "string"},
+    "git_commit": {"type": "string"},
+    "dirty_tree": {"type": "boolean"},
+    "config_path": {"type": "string"},
+    "config_sha256": {"type": "string"},
+    "environment_sha256": {"type": "string"},
+    "hardware": {
+      "type": "object",
+      "required": ["platform", "architecture", "memory_bytes"],
+      "properties": {
+        "platform": {"type": "string"},
+        "architecture": {"type": "string"},
+        "memory_bytes": {"type": "integer"},
+        "cpu": {"type": "string"},
+        "mps_available": {"type": "boolean"}
+      }
+    },
+    "seeds": {"type": "object"},
+    "inputs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["path", "sha256"],
+        "properties": {
+          "path": {"type": "string"},
+          "sha256": {"type": "string"}
+        }
+      }
+    },
+    "outputs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["path", "sha256"],
+        "properties": {
+          "path": {"type": "string"},
+          "sha256": {"type": "string"}
+        }
+      }
+    },
+    "gate_status": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["status"],
+        "properties": {
+          "status": {"enum": ["PASS", "FAIL", "NOT_RUN"]},
+          "measured": {},
+          "threshold": {},
+          "evidence_path": {"type": "string"}
+        }
+      }
+    },
+    "runtime_seconds": {"type": "number"},
+    "peak_rss_mb": {"type": "number"},
+    "started_at": {"type": "string"},
+    "finished_at": {"type": "string"}
+  }
+}

@@ -1,0 +1,159 @@
+project:
+  name: photon-ring-retarded-time-tomography-I
+  protocol_version: "0.2"
+  execution_target: macos_native
+  paper_scope: theory_and_synthetic_computation
+  real_data_claims_allowed: false
+
+units:
+  length: GM_over_c2
+  time: GM_over_c3
+
+profiles:
+  smoke:
+    rays_per_order: 256
+    observer_times: 8
+    source_dimension: 36
+    geometry_count: 1
+    latent_dimension: 4
+  core:
+    rays_per_order: 1536
+    observer_times: 24
+    source_dimension: 224
+    geometry_count: 12
+    latent_dimension: 16
+  stress:
+    rays_per_order: 4096
+    observer_times: 32
+    source_dimension: 480
+    geometry_count: 4
+    latent_dimension: 24
+  refine:
+    rays_per_order: 8192
+    observer_times: 24
+    source_dimension: 224
+    geometry_count: 2
+    latent_dimension: null
+
+geometry_grid:
+  spin: [0.0, 0.5, 0.9, 0.98]
+  inclination_deg: [20.0, 50.0, 75.0]
+  orders: [0, 1, 2]
+
+source_basis_core:
+  radial_bspline_modes: 4
+  azimuthal_real_fourier_modes: 7
+  temporal_dct_modes: 8
+  dimension: 224
+
+source_seed_namespaces:
+  train: [100000, 109999]
+  validation: [200000, 201999]
+  test_id: [300000, 303999]
+  test_ood: [400000, 403999]
+  null_pair: [500000, 500999]
+
+source_families:
+  - smooth_separable
+  - orbiting_hotspot
+  - gaussian_random_field
+  - ood_two_hotspots
+  - ood_spiral
+  - ood_abrupt_flare
+
+readouts:
+  - direct_only
+  - resolved_012
+  - partial_leakage
+  - two_channel_direct_vs_indirect
+  - unresolved_sum
+  - duplicate_order_control
+
+leakage_levels: [0.0, 0.02, 0.05, 0.10, 0.20, 0.40, 0.70, 1.0]
+leakage_miscalibration_relative: [0.0, 0.01, 0.05, 0.10]
+
+snr_levels: [null, 300.0, 100.0, 30.0, 10.0]
+
+geometry_mismatch:
+  spin_offsets: [-0.05, -0.02, 0.02, 0.05]
+  inclination_offsets_deg: [-5.0, -3.0, -1.0, 1.0, 3.0, 5.0]
+  delay_scale_relative: [-0.05, -0.02, -0.01, -0.005, 0.005, 0.01, 0.02, 0.05]
+  position_angle_offsets_deg: [-5.0, -3.0, -1.0, 1.0, 3.0, 5.0]
+
+experiments:
+  E0: reproduce_v01
+  E1: structured_factorial
+  E2: null_mode_atlas
+  E3: kerr_raymap_validation
+  E4: delay_spatial_mechanism
+  E5: order_leakage
+  E6: geometry_mismatch
+  E7: linear_state_space_reconstruction
+  E8: learned_manifold_identifiability
+  E9: ml_prior_dominance
+  E10: instrument_projection_optional
+
+mechanism_arms:
+  - full_physical
+  - delay_only_counterfactual
+  - spatial_only_counterfactual
+  - no_rotation_alignment
+  - weight_equalized
+  - delay_shuffled
+  - duplicate_order
+
+linear_baselines:
+  - tsvd
+  - ridge
+  - temporal_second_difference
+  - nonnegative_tv
+  - gaussian_state_space
+  - oracle_source_projection
+
+ml_models:
+  autoencoder:
+    input_dimension: 224
+    hidden_dimensions: [256, 128, 48]
+    latent_dimension: 16
+    activation: gelu
+    training_seeds: [0, 1, 2, 3, 4]
+  optional:
+    - latent_map_inverse
+    - amortized_latent_inverse
+    - coordinate_neural_field
+
+rank_rules:
+  numerical_relative_thresholds: [1.0e-8, 1.0e-10, 1.0e-12]
+  primary_lapack_rule: max_shape_times_eps_times_sigma_max
+  report_threshold_sensitivity: true
+
+correctness_gates:
+  G1_v01_reproduction_relative: 1.0e-8
+  G2_dense_operator_relative: 1.0e-10
+  G3_adjoint_relative: 1.0e-8
+  G4_order_collapse_relative: 1.0e-10
+  G5_kernel_normalized_residual: 1.0e-8
+  G6_monotonicity_relative_negative_eigenvalue: 1.0e-10
+  G11_cpu_mps_inference_relative: 1.0e-4
+  G7_grid_convergence: freeze_after_pilot
+  G8_cross_tracer: freeze_after_pilot
+  G12_coverage_band: freeze_after_pilot
+
+canonical_artifacts:
+  gates: artifacts/gates/correctness_gates.json
+  identifiability: artifacts/tables/physical_identifiability.parquet
+  mechanism: artifacts/tables/e4_mechanism_decomposition.parquet
+  leakage: artifacts/tables/e5_leakage.parquet
+  geometry_mismatch: artifacts/tables/e6_geometry_mismatch.parquet
+  reconstruction: artifacts/tables/e7_reconstruction.parquet
+  latent: artifacts/tables/e8_latent_identifiability.parquet
+  prior_audit: artifacts/tables/e9_prior_audit.parquet
+  runtime: artifacts/tables/runtime_memory.parquet
+
+final_rulings:
+  - PHYSICAL_STRUCTURAL_GAIN_SUPPORTED
+  - PHYSICAL_CONDITIONING_GAIN_ONLY
+  - ORACLE_ORDER_RESOLUTION_ONLY
+  - PRIOR_DOMINATED_RECOVERY
+  - NO_USEFUL_HISTORICAL_GAIN
+  - INSTRUMENT_LIMITED_NEGATIVE_RESULT

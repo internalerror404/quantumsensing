@@ -1,3 +1,6 @@
 __pycache__/
 *.pyc
 .venv/
+
+# photon-ring: python bytecode
+photon-ring/**/__pycache__/

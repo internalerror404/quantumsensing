@@ -1,0 +1,22 @@
+name: phrt-ml
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - numpy
+  - scipy
+  - pandas
+  - pyarrow
+  - matplotlib
+  - h5py
+  - scikit-learn
+  - pyyaml
+  - pydantic
+  - pytest
+  - tqdm
+  - rich
+  - psutil
+  - pip
+  - pip:
+      - torch
+      - torchvision
