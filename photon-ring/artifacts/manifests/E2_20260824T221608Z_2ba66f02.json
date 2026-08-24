@@ -1,0 +1,95 @@
+{
+  "run_id": "E2_20260824T221608Z_2ba66f02",
+  "experiment_id": "E2",
+  "git_commit": "79fbb89d109131ab7454f45094d01720d5397bc6",
+  "dirty_tree": true,
+  "config_path": "/home/user/quantumsensing/photon-ring/configs/paper1_experiment_registry_v0.2.yaml",
+  "config_sha256": "2ba66f0209fe1cdec97b8cf5862494c22fb94704318f9601a7a1f9eb4b783796",
+  "environment_sha256": "2a20e241e1761eea7769c0c2d6d1b2c0a47388deba3f9875fe68cba909b1c9dd",
+  "hardware": {
+    "platform": "Linux",
+    "platform_release": "6.18.44-fc-v21",
+    "architecture": "x86_64",
+    "memory_bytes": 16856150016,
+    "cpu": "Intel(R) Xeon(R) Processor @ 2.10GHz",
+    "cpu_count": 4,
+    "mps_available": false
+  },
+  "seeds": {
+    "seed": 9000,
+    "alpha": 1.0,
+    "operational_threshold": 1.0
+  },
+  "inputs": [
+    {
+      "path": "/home/user/quantumsensing/photon-ring/configs/paper1_experiment_registry_v0.2.yaml",
+      "sha256": "2ba66f0209fe1cdec97b8cf5862494c22fb94704318f9601a7a1f9eb4b783796"
+    }
+  ],
+  "outputs": [
+    {
+      "path": "/home/user/quantumsensing/photon-ring/artifacts/tables/e2_mode_atlas.parquet",
+      "sha256": "a46fec2028e918758366532f0eaa546cadeadce07f7d5c1f18090aae7a6e727d"
+    },
+    {
+      "path": "/home/user/quantumsensing/photon-ring/artifacts/tables/e2_injection.parquet",
+      "sha256": "f983f8311e6a46b40b40d50e5ec0e3aed7010f0f2c11e5763c9c810e84c7f466"
+    },
+    {
+      "path": "/home/user/quantumsensing/photon-ring/artifacts/tables/e2_mode_onset.parquet",
+      "sha256": "9e0c5c73f8c34cfa76523aad9f9b6c3e47dd390bf5f550d720eb7ceeee5f450c"
+    }
+  ],
+  "gate_status": {
+    "E2_null_injection_invisible": {
+      "status": "PASS",
+      "measured": 5.314327918403255e-16,
+      "threshold": 1e-08,
+      "note": "850 injected exact-null vectors; worst relative data change"
+    },
+    "E2_null_injection_moves_source": {
+      "status": "PASS",
+      "measured": -1.9999999999999982,
+      "threshold": -1e-06,
+      "note": "every exact-null injection must actually change the source"
+    },
+    "E2_near_null_is_not_null": {
+      "status": "PASS",
+      "measured": -5.241506169880632e-08,
+      "threshold": 0.0,
+      "note": "smallest retained near-null singular value must be strictly positive"
+    }
+  },
+  "started_at": "2026-08-24T22:16:08+00:00",
+  "finished_at": "2026-08-24T22:16:11+00:00",
+  "peak_rss_mb": 610.9609375,
+  "packages": {
+    "numpy": "2.4.6",
+    "scipy": "1.17.1",
+    "pandas": "3.0.5",
+    "pyarrow": "25.0.1",
+    "h5py": "3.16.0",
+    "matplotlib": "3.11.1",
+    "scikit-learn": "1.9.0",
+    "scikit-image": "0.26.0",
+    "pyyaml": "6.0.1",
+    "torch": "2.13.0",
+    "aart": "2.1.10",
+    "imageio": "2.37.4"
+  },
+  "protocol_deviations": [
+    {
+      "id": "D1_platform",
+      "registered": "macos_native (execution_target in registry)",
+      "actual": "Linux x86_64",
+      "effect": "No macOS-specific or Apple-Silicon-specific result can be claimed. All float64 CPU numerics are platform-portable and unaffected; runtime and peak-RSS rows describe this Linux host, not a Mac."
+    },
+    {
+      "id": "D2_no_mps",
+      "registered": "optional Apple-Silicon MPS for compact neural models",
+      "actual": "no MPS device present",
+      "effect": "Gate G11 (CPU/MPS inference parity) cannot be executed and is recorded NOT_RUN. Neural training runs on CPU float32. CUDA is not substituted for MPS in any registered gate."
+    }
+  ],
+  "runtime_seconds": 2.223076343536377
+}

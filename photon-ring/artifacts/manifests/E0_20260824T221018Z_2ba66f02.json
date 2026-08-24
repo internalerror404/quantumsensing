@@ -1,0 +1,141 @@
+{
+  "run_id": "E0_20260824T221018Z_2ba66f02",
+  "experiment_id": "E0",
+  "git_commit": "79fbb89d109131ab7454f45094d01720d5397bc6",
+  "dirty_tree": true,
+  "config_path": "/home/user/quantumsensing/photon-ring/configs/paper1_experiment_registry_v0.2.yaml",
+  "config_sha256": "2ba66f0209fe1cdec97b8cf5862494c22fb94704318f9601a7a1f9eb4b783796",
+  "environment_sha256": "2a20e241e1761eea7769c0c2d6d1b2c0a47388deba3f9875fe68cba909b1c9dd",
+  "hardware": {
+    "platform": "Linux",
+    "platform_release": "6.18.44-fc-v21",
+    "architecture": "x86_64",
+    "memory_bytes": 16856150016,
+    "cpu": "Intel(R) Xeon(R) Processor @ 2.10GHz",
+    "cpu_count": 4,
+    "mps_available": false
+  },
+  "seeds": {
+    "operator_seed": 42,
+    "registered": {
+      "H": 44,
+      "K": 6,
+      "W": 24,
+      "M": 2,
+      "N_max": 5,
+      "D": 4,
+      "Gamma": 0.6,
+      "restricted_dim": 24
+    }
+  },
+  "inputs": [
+    {
+      "path": "/home/user/quantumsensing/photon-ring/configs/paper1_experiment_registry_v0.2.yaml",
+      "sha256": "2ba66f0209fe1cdec97b8cf5862494c22fb94704318f9601a7a1f9eb4b783796"
+    }
+  ],
+  "outputs": [
+    {
+      "path": "/home/user/quantumsensing/photon-ring/artifacts/tables/e0_reproduction.parquet",
+      "sha256": "3c3abdbc16ba7b2c3a51dd43937b535770f183dbf46fce74997faa98c3670144"
+    },
+    {
+      "path": "/home/user/quantumsensing/photon-ring/artifacts/tables/e0_reconstruction.parquet",
+      "sha256": "129748f6944ea2af34e4c47b0040589ebe9cd42fc5e346cf874a16d3e5c8ec48"
+    },
+    {
+      "path": "/home/user/quantumsensing/photon-ring/artifacts/e0_reproduction/e0_metrics.json",
+      "sha256": "87c63349301bf701f34cc62d40bbaf237873b97db6ce127eca459978d2ce28e1"
+    }
+  ],
+  "gate_status": {
+    "G1_v01_reproduction_relative": {
+      "status": "NOT_RUN",
+      "threshold": 1e-08,
+      "note": "v0.1 generator and v0.1 manuscript absent from this session; no original output exists to compare against. The independent reimplementation ran and is reported, but agreement with the original is untested and is NOT claimed."
+    },
+    "G2_dense_operator_relative": {
+      "status": "PASS",
+      "measured": 0.0,
+      "threshold": 1e-10
+    },
+    "G3_adjoint_relative": {
+      "status": "PASS",
+      "measured": 2.9158772117310166e-14,
+      "threshold": 1e-08,
+      "note": "worst of 20 probes, seed 42"
+    },
+    "G4_order_collapse_relative": {
+      "status": "PASS",
+      "measured": 0.0,
+      "threshold": 1e-10
+    },
+    "G5_kernel_normalized_residual": {
+      "status": "PASS",
+      "measured": 5.5134678907531145e-17,
+      "threshold": 1e-08,
+      "note": "null dim 48, source moved by 0.064 relative"
+    },
+    "G6_monotonicity_relative_negative_eigenvalue": {
+      "status": "PASS",
+      "measured": 1.6753685104361782e-16,
+      "threshold": 1e-10,
+      "note": "min relative increment eigenvalue per order: [-1.68e-16, -4.9e-17, -5.9e-17, -3.7e-17, -2e-17]"
+    },
+    "G9_source_split_disjoint": {
+      "status": "PASS",
+      "measured": 0,
+      "threshold": 0,
+      "note": "all namespaces disjoint"
+    },
+    "G13_replay": {
+      "status": "PASS",
+      "measured": 0.0,
+      "threshold": 0.0,
+      "note": "3 builds compared"
+    },
+    "G11_cpu_mps_inference_relative": {
+      "status": "NOT_RUN",
+      "threshold": 0.0001,
+      "note": "no MPS device on this host; see protocol_deviations D2_no_mps"
+    },
+    "E0_oracle_is_upper_bound": {
+      "status": "PASS",
+      "measured": 0.0,
+      "threshold": 1e-12,
+      "note": "max amount by which a deployable rule beat the oracle-tuned curve; must be non-positive up to rounding"
+    }
+  },
+  "started_at": "2026-08-24T22:10:18+00:00",
+  "finished_at": "2026-08-24T22:10:20+00:00",
+  "peak_rss_mb": 614.69140625,
+  "packages": {
+    "numpy": "2.4.6",
+    "scipy": "1.17.1",
+    "pandas": "3.0.5",
+    "pyarrow": "25.0.1",
+    "h5py": "3.16.0",
+    "matplotlib": "3.11.1",
+    "scikit-learn": "1.9.0",
+    "scikit-image": "0.26.0",
+    "pyyaml": "6.0.1",
+    "torch": "2.13.0",
+    "aart": "2.1.10",
+    "imageio": "2.37.4"
+  },
+  "protocol_deviations": [
+    {
+      "id": "D1_platform",
+      "registered": "macos_native (execution_target in registry)",
+      "actual": "Linux x86_64",
+      "effect": "No macOS-specific or Apple-Silicon-specific result can be claimed. All float64 CPU numerics are platform-portable and unaffected; runtime and peak-RSS rows describe this Linux host, not a Mac."
+    },
+    {
+      "id": "D2_no_mps",
+      "registered": "optional Apple-Silicon MPS for compact neural models",
+      "actual": "no MPS device present",
+      "effect": "Gate G11 (CPU/MPS inference parity) cannot be executed and is recorded NOT_RUN. Neural training runs on CPU float32. CUDA is not substituted for MPS in any registered gate."
+    }
+  ],
+  "runtime_seconds": 0.6507658958435059
+}

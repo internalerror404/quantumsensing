@@ -12,7 +12,15 @@ A source history is a movie ``x`` with ``M`` source-plane cells and ``H``
 retarded-time samples, flattened cell-major as ``x[m*H + h]``.
 
   * ``D_Delta`` samples, per cell, the length-``W`` window beginning at the
-    order's integer delay.  With the registered E0 numbers the identity
+    order's integer delay.
+
+    **Time convention.** The history axis is indexed by *retarded age*: index 0
+    is the most recent source state and increasing index goes deeper into the
+    past.  Order ``n`` carries a delay ``Delta_n``, so it shows the source as it
+    was ``Delta_n`` earlier and therefore samples ages ``[Delta_n, Delta_n+W)``.
+    Deeper orders see older source states, which is the physical content of the
+    retarded-time story -- and, combined with ``a_n = exp(-Gamma n)``, the
+    reason the deep past is reached only through the faintest channels.  With the registered E0 numbers the identity
     ``H = W + N_max*D`` holds exactly (44 = 24 + 5*4), so the deepest order's
     window ends precisely at the end of the history.  Nothing is truncated and
     nothing is padded -- the history length is exactly what the order stack

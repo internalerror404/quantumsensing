@@ -1,5 +1,5 @@
 {
-  "run_id": "E0_20260824T215711Z_2ba66f02",
+  "run_id": "E0_20260824T221018Z_2ba66f02",
   "registered_symbols": {
     "H": 44,
     "K": 6,
@@ -82,12 +82,12 @@
       "restricted_dimension": -1,
       "numerical_rank": 48,
       "nullity": 40,
-      "sigma_max": 4.282694083058519,
-      "sigma_min_positive": 0.9210820920906069,
-      "kappa_positive": 4.649633425548383,
-      "stable_rank": 12.005895423750609,
+      "sigma_max": 1.7484025379883423,
+      "sigma_min_positive": 0.3760301894728687,
+      "kappa_positive": 4.649633425548384,
+      "stable_rank": 12.00589542375061,
       "effective_rank": 42.70554339408548,
-      "trace_information": 220.20575403843236,
+      "trace_information": 36.70095900640541,
       "restricted_rank": -1,
       "restricted_nullity": -1,
       "restricted_sigma_min": NaN,
@@ -149,16 +149,16 @@
       "restricted_dimension": 24,
       "numerical_rank": 48,
       "nullity": 216,
-      "sigma_max": 2.1705974404865906,
-      "sigma_min_positive": 0.5990392080097618,
-      "kappa_positive": 3.623464727289134,
-      "stable_rank": 16.866995552034265,
+      "sigma_max": 0.886142694363887,
+      "sigma_min_positive": 0.24455673259081176,
+      "kappa_positive": 3.6234647272891327,
+      "stable_rank": 16.866995552034272,
       "effective_rank": 43.81804747972272,
-      "trace_information": 79.46873566836739,
+      "trace_information": 13.24478927806123,
       "restricted_rank": 22,
       "restricted_nullity": 2,
-      "restricted_sigma_min": 1.2839015600352716e-07,
-      "restricted_kappa_positive": 16840114.994072746
+      "restricted_sigma_min": 5.2415061698806337e-08,
+      "restricted_kappa_positive": 16840114.99472248
     }
   ],
   "gates": {

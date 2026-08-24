@@ -2,12 +2,12 @@
 
 ## Identity
 - branch: `claude/experiment-review-mac-rthiz1`
-- commit: `fdd6cfad88ddcc668f0ef297308400b6b0732029`  (source tree dirty: True)
+- commit: `79fbb89d109131ab7454f45094d01720d5397bc6`  (source tree dirty: True)
 - config: `paper1_experiment_registry_v0.2.yaml`  sha256 `2ba66f0209fe1cdec97b8cf5862494c22fb94704318f9601a7a1f9eb4b783796`
 - environment sha256: `2a20e241e1761eea7769c0c2d6d1b2c0a47388deba3f9875fe68cba909b1c9dd`
 - hardware: Linux x86_64, 4 cores, 15.7 GiB
 - python 3.11.15; numpy 2.4.6, scipy 1.17.1, torch 2.13.0, aart 2.1.10
-- run_id: `E0_20260824T215711Z_2ba66f02`
+- run_id: `E0_20260824T221018Z_2ba66f02`
 
 ## Mechanical gate result
 **STOP on G1 / PASS on everything E0 can execute without the original.**
@@ -65,7 +65,7 @@ Reading A is rejected on three independent grounds:
 |---|---:|---:|---:|---:|---:|
 | `resolved_identical` | 288 | 88 / 264 | 12 / 24 | 7.5961e-02 | 1.6407e+01 |
 | `resolved_diverse` | 288 | 216 / 264 | 24 / 24 | 9.8798e-03 | 1.3225e+02 |
-| `unresolved_diverse` | 48 | 48 / 264 | 22 / 24 | 1.2839e-07 | 1.6840e+07 |
+| `unresolved_diverse` | 48 | 48 / 264 | 22 / 24 | 5.2415e-08 | 1.6840e+07 |
 
 Reading B produces three distinct rows, a non-trivial null space in every arm,
 and a 24-dimensional smooth class that exists exactly (4 spatial x 6 temporal).
@@ -107,9 +107,9 @@ sources, ridge with three hyperparameter rules:
 | `resolved_identical` | noise-free | – | 0.48335 | 0.48335 |
 | `resolved_identical` | 10 | 0.58167 | 0.58607 | 0.55569 |
 | `resolved_identical` | 100 | 0.50328 | 0.48595 | 0.47004 |
-| `unresolved_diverse` | noise-free | – | 0.41449 | 0.41449 |
-| `unresolved_diverse` | 10 | 0.71524 | 0.73020 | 0.68355 |
-| `unresolved_diverse` | 100 | 0.61955 | 0.70079 | 0.61523 |
+| `unresolved_diverse` | noise-free | – | 0.44189 | 0.44189 |
+| `unresolved_diverse` | 10 | 0.75893 | 0.85090 | 0.75253 |
+| `unresolved_diverse` | 100 | 0.66108 | 0.73158 | 0.62734 |
 
 Median error of the **null component** of the same reconstructions:
 
@@ -121,7 +121,7 @@ Median error of the **null component** of the same reconstructions:
 | `resolved_identical` | noise-free | – | 0.80140 | 0.80140 |
 | `resolved_identical` | 10 | 0.80140 | 0.80140 | 0.80140 |
 | `resolved_identical` | 100 | 0.80140 | 0.80140 | 0.76804 |
-| `unresolved_diverse` | noise-free | – | 0.52496 | 0.52496 |
+| `unresolved_diverse` | noise-free | – | 0.52497 | 0.52497 |
 | `unresolved_diverse` | 10 | 0.52497 | 0.52497 | 0.52497 |
 | `unresolved_diverse` | 100 | 0.52497 | 0.52497 | 0.52497 |
 
@@ -191,7 +191,7 @@ established; any black-hole language whatsoever at this stage.
 - `artifacts/tables/e0_reconstruction.parquet` (+ `.csv`)
 - `artifacts/e0_reproduction/e0_metrics.json`
 - `artifacts/gates/correctness_gates.json`
-- `artifacts/manifests/E0_20260824T215711Z_2ba66f02.json`
+- `artifacts/manifests/E0_20260824T221018Z_2ba66f02.json`
 
 ## Next authorized step
 P3 — E1 structured factorial and E2 null-mode atlas. (P2, the operator library

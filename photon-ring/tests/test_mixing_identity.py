@@ -43,3 +43,27 @@ def test_miscalibration_does_not_renormalise_rows():
     L = mixing.leakage_matrix(N, 0.1)
     Lm = mixing.miscalibrate(L, 0.10, rng)
     assert not np.allclose(Lm.sum(axis=1), 1.0)
+
+
+def test_noise_scale_is_the_row_norm_of_the_mixer():
+    """Channel c sees sum_n L[c,n] eta_n, so its sigma is sigma*||L[c,:]||_2."""
+    assert np.allclose(mixing.resolved(N).noise_scale(), 1.0)
+    assert np.isclose(mixing.unresolved(N).noise_scale()[0], np.sqrt(N))
+    tc = mixing.two_channel(N)
+    assert np.isclose(tc.noise_scale()[0], 1.0)
+    assert np.isclose(tc.noise_scale()[1], 1.0 / np.sqrt(N - 1))
+
+
+def test_whiten_uses_propagated_noise_not_a_flat_sigma():
+    """A flat sigma would credit the unresolved channel with a free sqrt(6)
+    amplitude gain purely for summing the orders together."""
+    m = mixing.unresolved(N)
+    flat = m.apply(BLOCKS)
+    propagated = m.whiten(BLOCKS)
+    ratio = np.linalg.norm(flat) / np.linalg.norm(propagated)
+    assert np.isclose(ratio, np.sqrt(N), rtol=1e-12)
+
+
+def test_resolved_whitening_is_unchanged_by_propagation():
+    m = mixing.resolved(N)
+    assert np.allclose(m.whiten(BLOCKS), m.apply(BLOCKS))

@@ -83,6 +83,35 @@ class OrderMixer:
                 for c in range(self.n_channels)]
         return np.vstack(rows)
 
+    def noise_scale(self) -> np.ndarray:
+        """Per-channel noise standard deviation induced by the mixer.
+
+        Channel c observes ``sum_n L[c,n] (A_n x + eta_n)`` with independent
+        per-order detector noise ``eta_n ~ N(0, sigma^2 I)``, so its noise
+        standard deviation is ``sigma * ||L[c,:]||_2``.
+
+        This is not a convention, it is forced by the model, and leaving it out
+        is a real error rather than a cosmetic one: whitening every readout at
+        the same sigma hands the unresolved channel a free sqrt(n_orders)
+        amplitude boost for summing orders, which then shows up as an apparent
+        conditioning advantage for destroying the order labels.
+        """
+        return np.linalg.norm(self.L, axis=1)
+
+    def noise_model(self, rows_per_channel: int, sigma: float = 1.0):
+        """Row-wise noise model for the stacked mixed operator."""
+        from phrt.operators.whitening import NoiseModel
+
+        per_channel = sigma * self.noise_scale()
+        return NoiseModel(np.repeat(per_channel, rows_per_channel),
+                          f"{self.name}_propagated_sigma{sigma:g}")
+
+    def whiten(self, blocks: Sequence[np.ndarray], sigma: float = 1.0) -> np.ndarray:
+        """Mix and whiten in one step, with the mixer's own noise propagation."""
+        A = self.apply(blocks)
+        rows_per_channel = A.shape[0] // self.n_channels
+        return self.noise_model(rows_per_channel, sigma).whiten(A)
+
     def condition_number(self) -> float:
         s = np.linalg.svd(self.L, compute_uv=False)
         s = s[s > 0]

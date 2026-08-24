@@ -76,8 +76,7 @@ def arm_row(reading: str, arm: str, readout: str, spatial: str) -> dict:
     blocks = build_order_blocks(spec, E0_SEED)
     n_orders = spec.max_order + 1
     mixer = mixing.resolved(n_orders) if readout == "resolved" else mixing.unresolved(n_orders)
-    A = mixer.apply(blocks)
-    B = NoiseModel.homoscedastic(A.shape[0]).whiten(A)
+    A, B = mixer.apply(blocks), mixer.whiten(blocks)
     full = spectrum_of(B, spec.source_dimension)
     try:
         Q = source_class("smooth_separable", spec.n_cells, spec.history_length)
@@ -144,6 +143,11 @@ def reconstruction_diagnostics(reading: str) -> list[dict]:
         Q = source_class("smooth_separable", spec.n_cells, spec.history_length)
         for snr in (None, 100.0, 10.0):
             nm = NoiseModel.from_snr(A, snr)
+            # scale by the mixer's own noise propagation so readouts are
+            # compared at equal per-order detector noise, not equal per-channel
+            rows_per_channel = A.shape[0] // mixer.n_channels
+            nm = NoiseModel(nm.sigma * np.repeat(mixer.noise_scale(), rows_per_channel),
+                            nm.name + "_mixerscaled")
             B = nm.whiten(A) @ Q
             vis = visible_subspace(B)
             for idx in range(8):
